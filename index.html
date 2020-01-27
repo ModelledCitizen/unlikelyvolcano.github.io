@@ -1,40 +1,31 @@
 <head></head>
 <style>
-#headbar {
-  height: 35px;
-  padding: 5px 5px;
-}
-#container {
-  #overflow: hidden;
-}
-#sidebar {
-  width: 45%;
-  float: left;
-  margin-left: auto;
-  margin-right: auto;
-}
-#main_content {
-  width: 55%;
-  float: right;
-}
-#headshot {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  border-radius: 25%;
-}
-#title {
+header {
+  font-family: monospace;
   color: #ff6600;
-  font-family: "Lucida Console", Monaco, monospace;
-  text-decoration: none;
-}
-#title:hover {
-  color: #ff8533;
+  white-space: pre;
+  text-align: center;
+  clear:both;
 }
 body {
   background-color: black;
   color: white;
+}
+footer {
+  font-family: monospace;
+  color: white;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+a {
+  color: #ff6600;
+}
+a:hover {
+  color: blue;
+}
+a:visited {
+  color: purple;
 }
 .center {
   margin: auto;
@@ -42,15 +33,16 @@ body {
   text-align: center;
 }
 a.button {
+  display: inline-block;
   background-color: #003399;
   border: none;
   border-radius: 7.5px;
   color: white;
-  padding: 5px 5px;
+  padding: 4px 4px 4px 4px;
   text-align: center;
   font-family: "Lucida Console", Monaco, monospace;
-  font-weight: bold;
   font-size: 16px;
+  line-height: 20px;
   text-decoration: none;
   cursor: pointer;
 }
@@ -69,6 +61,27 @@ h3 {
 p {
   font-family: Arial, Helvetica, sans-serif;
 }
+#container {
+  #overflow: hidden;
+}
+#sidebar {
+  width: 45%;
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+#main_content {
+  width: 55%;
+  float: right;
+}
+
+#headshot {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  border-radius: 25%;
+}
 </style>
 <head>
   <title>Unlikely Volcano | David Azizi</title>
@@ -77,16 +90,23 @@ p {
   <meta name="author" content="David Azizi">
 </head>
 <body>
-  <div id="headbar"></div>
+  <header>
+    _   _      _ _ _       _    __   __   _                  
+   | | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
+   | |_| | ' \| | | / / -_) | || \ V / _ \ / _/ _` | ' \/ _ \
+    \___/|_||_|_|_|_\_\___|_|\_, |\_/\___/_\__\__,_|_||_\___/
+                             |__/                            
+  </header>
   <div id="container">
     <div id="sidebar" class = "center">
       <img src="headshot.jpg" alt="Headshot of David" id="headshot">
-      <a href = "index.html" id = "title"><h1>Unlikely Volcano</h1></a>
         <br>
         <div>
-          <a class="button" href = "https://github.com/doomnomitron" target = "_blank">GitHub</a>
-          <a class="button" href = "https://www.linkedin.com/in/davidazizi" target = "_blank">LinkedIn</a>
-          <a class="button" href = "resume.pdf" target = "_blank">R&eacute;sum&eacute;</a>
+          <a class="button" href="https://github.com/doomnomitron" target="_blank">GitHub</a>
+          <a class="button" href="https://www.linkedin.com/in/davidazizi" target="_blank">LinkedIn</a>
+          <a class="button" href="resume.pdf" target ="_blank">R&eacute;sum&eacute;</a>
+          <a class="button" href="https://twitter.com/UnlikelyVolcano" target="_blank">Twitter</a>
+          <h2>Skills</h2>
         </div>
     </div>
     <div id="main_content">
@@ -94,13 +114,17 @@ p {
       <h3>Researcher | University of Pennsylvania</h3>
       <p>Seeking opportunities in data analysis, data science, machine learning.
       <h2>About Me</h2>
-      <p>David Azizi manages Hopkins Lab and contributes to an array of research projects. David specializes in computational and statistical approaches to social science researcg. David recieved a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the Program on Opinion Research and Election Studies, NBC Elections, and Prof. Marc Meredith on a project to update the process used to weight the National Election Poll exit poll.</p>
+        <p>David Azizi manages Hopkins Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David recieved a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, NBC Elections, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Poll exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>.
+        </p>
       <br>
       <br>
       <h2>Projects</h2>
-      <h3>Project Reweigh</h3>
-      <h3>Project Barnstorm</h3>
-      <h3>Project Upshot</h3>
+        <h3>Project Reweigh</h3>
+        <h3>Project Barnstorm</h3>
+        <h3>Project Upshot</h3>
     </div>
   </div>
+  <footer id="footbar">
+
+  </footer>
 </body>
