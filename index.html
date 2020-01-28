@@ -19,16 +19,33 @@ footer {
   clear:both;
 }
 a {
+  background-color: #003399;
   color: #ff6600;
-}
-a:hover {
-  color: blue;
+  text-decoration: none;
 }
 a:visited {
-  color: purple;
+  background-color: #003399;
+  color: white;
+  text-decoration: none;
 }
 .center {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+  width = 100%;
+  text-align: center;
+}
+.left {
+  margin-left: 15%;
+  width = 100%;
+  text-align: left;
+}
+.title {
+  display: inline-block;
+  background-color: #ff6600; 
+}
+div.buttons {
+  margin-left: 15%;
+  margin-right: 15%;
   width = 100%;
   text-align: center;
 }
@@ -38,7 +55,7 @@ a.button {
   border: none;
   border-radius: 7.5px;
   color: white;
-  padding: 4px 4px 4px 4px;
+  padding: 5px 5px 5px 5px;
   text-align: center;
   font-family: "Lucida Console", Monaco, monospace;
   font-size: 16px;
@@ -46,7 +63,7 @@ a.button {
   text-decoration: none;
   cursor: pointer;
 }
-.button:hover {
+a.button:hover {
   background-color: #3366cc;
 }
 h1 {
@@ -61,20 +78,20 @@ h3 {
 p {
   font-family: Arial, Helvetica, sans-serif;
 }
+ul {
+  font-family: Arial, Helvetica, sans-serif;
+}
 #container {
   #overflow: hidden;
 }
 #sidebar {
   width: 45%;
   float: left;
-  margin-left: auto;
-  margin-right: auto;
 }
 #main_content {
   width: 55%;
   float: right;
 }
-
 #headshot {
   display: block;
   margin-left: auto;
@@ -102,26 +119,39 @@ p {
       <img src="headshot.jpg" alt="Headshot of David" id="headshot">
         <br>
         <div>
-          <a class="button" href="https://github.com/doomnomitron" target="_blank">GitHub</a>
-          <a class="button" href="https://www.linkedin.com/in/davidazizi" target="_blank">LinkedIn</a>
-          <a class="button" href="resume.pdf" target ="_blank">R&eacute;sum&eacute;</a>
-          <a class="button" href="https://twitter.com/UnlikelyVolcano" target="_blank">Twitter</a>
-          <h2>Skills</h2>
+          <div class="buttons">
+            <a class="button" href="https://github.com/unlikelyvolcano" target="_blank">GitHub</a>
+            <a class="button" href="https://www.linkedin.com/in/davidazizi" target="_blank">LinkedIn</a>
+            <a class="button" href="https://twitter.com/UnlikelyVolcano" target="_blank">Twitter</a>
+            <a class="button" href="resume.pdf" target ="_blank">R&eacute;sum&eacute;</a>
+          </div>
+          <div class="left">
+            <h2>Skills</h2>
+              <ul>
+                <li>Statistical analysis in R</li>
+                <li>Programming in Python</li>
+             </ul>
+          </div>
         </div>
     </div>
     <div id="main_content">
       <h1>David Azizi</h1>
       <h3>Researcher | University of Pennsylvania</h3>
-      <p>Seeking opportunities in data analysis, data science, machine learning.
+      <p>Seeking opportunities in data analysis, data science, machine learning.</p>
+      <br>
       <h2>About Me</h2>
-        <p>David Azizi manages Hopkins Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David recieved a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, NBC Elections, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Poll exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>.
+        <p>David Azizi manages Hopkins Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David received a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, NBC Elections, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Poll exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>.
         </p>
       <br>
-      <br>
       <h2>Projects</h2>
+        <h3>Nationalization</h3>
+          <p>LDA on state party platforms database.</p>
         <h3>Project Reweigh</h3>
+          <p>Identifying a new weighting scheme for the National Election Poll exit poll. Code to be posted soon; data confidential.</p>
         <h3>Project Barnstorm</h3>
-        <h3>Project Upshot</h3>
+          <p>Evaluating campaign contact techniques with interactive maps. Code to be posted soon; data confidential.</p>
+        <h3><a href="https://github.com/UnlikelyVolcano/project-upshot" target="_blank">Project Upshot</a></h3>
+          <p>Evaluating NYTimes polling performance.</p>
     </div>
   </div>
   <footer id="footbar">
