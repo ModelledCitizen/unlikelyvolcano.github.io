@@ -1,32 +1,5 @@
 <head></head>
 <style>
-header {
-  font-family: monospace;
-  font-size: 1.5vw;
-  color: #00FF00;
-  white-space: pre;
-  text-align: center;
-  clear:both;
-}
-body {
-  background-color: black;
-  color: white;
-}
-footer {
-  font-family: monospace;
-  color: white;
-  white-space: pre;
-  text-align: center;
-  clear:both;
-}
-a {
-  background-color: #006600;
-  color: white;
-  text-decoration: none;
-}
-a:hover {
-  background-color: #FF0000;
-}
 .center {
   margin-left: auto;
   margin-right: auto;
@@ -53,6 +26,50 @@ a:hover {
   cursor: pointer;
 }
 .button:hover {
+  background-color: #FF0000;
+}
+.blinking{
+    animation:blinkingText 5s infinite;
+}
+@keyframes blinkingText{
+    0%{     color: FireBrick;   }
+    10%{    color: DarkOrange;}
+    20%{    color: Gold;}
+    30%{    color: LimeGreen; }
+    40%{    color: DodgerBlue;    }
+    50%{    color: RebeccaPurple;}
+    60%{    color: DodgerBlue;    }
+    70%{    color: LimeGreen; }
+    80%{    color: Gold;}
+    90%{    color: DarkOrange;}
+    100%{   color: FireBrick;   }
+}
+
+header {
+  font-family: monospace;
+  font-size: 1.5vw;
+  color: #00FF00;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+body {
+  background-color: black;
+  color: white;
+}
+footer {
+  font-family: monospace;
+  color: white;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+a {
+  background-color: #006600;
+  color: white;
+  text-decoration: none;
+}
+a:hover {
   background-color: #FF0000;
 }
 div.buttons {
@@ -104,7 +121,7 @@ ul {
   <meta name="author" content="David Azizi">
 </head>
 <body>
-  <header>
+  <header class="blinking">
     _   _      _ _ _       _    __   __   _                  
    | | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
    | |_| | ' \| | | / / -_) | || \ V / _ \ / _/ _` | ' \/ _ \
@@ -125,8 +142,10 @@ ul {
           <div class="left">
             <h2>Skills</h2>
               <ul>
-                <li>Statistical analysis in R</li>
-                <li>Programming in Python</li>
+                <li>Statistical analysis (R, Python)</li>
+                <li>Programming (Python)</li>
+                <li>Electronics repair</li>
+                <li>Technical support</li>
              </ul>
           </div>
         </div>
