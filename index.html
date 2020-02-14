@@ -1,32 +1,5 @@
 <head></head>
 <style>
-header {
-  font-family: monospace;
-  font-size: 1.5vw;
-  color: #00FF00;
-  white-space: pre;
-  text-align: center;
-  clear:both;
-}
-body {
-  background-color: black;
-  color: white;
-}
-footer {
-  font-family: monospace;
-  color: white;
-  white-space: pre;
-  text-align: center;
-  clear:both;
-}
-a {
-  background-color: #006600;
-  color: white;
-  text-decoration: none;
-}
-a:hover {
-  background-color: #FF0000;
-}
 .center {
   margin-left: auto;
   margin-right: auto;
@@ -53,6 +26,50 @@ a:hover {
   cursor: pointer;
 }
 .button:hover {
+  background-color: #FF0000;
+}
+.blinking{
+    animation:blinkingText 5s infinite;
+}
+@keyframes blinkingText{
+    0%{     color: FireBrick;   }
+    10%{    color: DarkOrange;}
+    20%{    color: Gold;}
+    30%{    color: LimeGreen; }
+    40%{    color: DodgerBlue;    }
+    50%{    color: RebeccaPurple;}
+    60%{    color: DodgerBlue;    }
+    70%{    color: LimeGreen; }
+    80%{    color: Gold;}
+    90%{    color: DarkOrange;}
+    100%{   color: FireBrick;   }
+}
+
+header {
+  font-family: monospace;
+  font-size: 1.5vw;
+  color: #00FF00;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+body {
+  background-color: black;
+  color: white;
+}
+footer {
+  font-family: monospace;
+  color: white;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+a {
+  background-color: #006600;
+  color: white;
+  text-decoration: none;
+}
+a:hover {
   background-color: #FF0000;
 }
 div.buttons {
@@ -104,7 +121,7 @@ ul {
   <meta name="author" content="David Azizi">
 </head>
 <body>
-  <header>
+  <header class="blinking">
     _   _      _ _ _       _    __   __   _                  
    | | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
    | |_| | ' \| | | / / -_) | || \ V / _ \ / _/ _` | ' \/ _ \
@@ -125,8 +142,11 @@ ul {
           <div class="left">
             <h2>Skills</h2>
               <ul>
-                <li>Statistical analysis in R</li>
-                <li>Programming in Python</li>
+                <li>Statistical analysis (R, Python)</li>
+                <li>Programming (Python)</li>
+                <li>Survey design</li>
+                <li>Electronics repair</li>
+                <li>Technical support</li>
              </ul>
           </div>
         </div>
@@ -136,7 +156,7 @@ ul {
       <h3>Researcher @ University of Pennsylvania</h3>
       <br>
       <h2>About Me</h2>
-        <p>David Azizi manages the Hopkins Research Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David received a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, NBC Elections, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Poll exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>, applying data science to political science research.
+        <p>David Azizi manages the Hopkins Research Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David received a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, the NBC Elections Unit, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Pool exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>, applying data science to political science research.
         </p>
       <br>
       <h2>Projects</h2>
@@ -145,7 +165,7 @@ ul {
         <h3><a href="https://github.com/UnlikelyVolcano/project-divisible" target="_blank">Project Divisible</a></h3>
           <p>Measuring nationalization with a corpus of state party platforms. Private repo, for now.</p>
         <h3><a href="https://github.com/UnlikelyVolcano/project-reweigh" target="_blank">Project Reweigh</a></h3>
-          <p>Identifying a new weighting scheme for the National Election Poll exit poll.</p>
+          <p>Identifying a new weighting scheme for the National Election Pool exit poll.</p>
         <h3><a href="https://github.com/UnlikelyVolcano/project-barnstorm" target="_blank">Project Barnstorm</a></h3>
           <p>Evaluating campaign contact techniques with interactive maps.</p>
         <h3><a href="https://github.com/UnlikelyVolcano/project-upshot" target="_blank">Project Upshot</a></h3>
