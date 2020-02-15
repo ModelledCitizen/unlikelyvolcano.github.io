@@ -76,7 +76,7 @@ h2 {
 }
 p {
   font-family: Arial, Helvetica, sans-serif;
-  padding: 0px 10px 0px 0px;
+  padding-right: 5%;
 }
 #container {
   #overflow: hidden;
@@ -85,6 +85,9 @@ p {
   width: 45%;
   float: left;
   text-align: left;
+}
+#sidebartext {
+  padding-left: 15%;
 }
 #main_content {
   width: 55%;
@@ -95,7 +98,19 @@ p {
   margin-left: auto;
   margin-right: auto;
   width: 70%;
+  max-width: 100%;
   border-radius: 25%;
+}
+@media screen and (max-width: 800px) {
+  #sidebar, #main_content {
+    width: 100%;
+  }
+  #sidebartext {
+    padding-left: 0%;
+  }
+  .button {
+    font-size: 12pt;
+  }
 }
 </style>
 <head>
@@ -104,6 +119,7 @@ p {
   <meta name="description" content="Personal website for David Azizi">
   <meta name="author" content="David Azizi">
   <meta name="keywords" content="R, Python, Machine Learning, Survey, Public Opinion, Research, Data Science, Political Science, Politics, Statistics">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <header>
@@ -124,7 +140,7 @@ p {
             <a class="button" href="https://twitter.com/UnlikelyVolcano" target="_blank">Twitter</a>
             <a class="button" href="resume.pdf" target ="_blank">R&eacute;sum&eacute;</a>
           </div>
-          <div style="margin: 0% 15%;">
+          <div id="sidebartext">
             <h2>Skills</h2>
               <ul>
                 <li>Statistical analysis (R, Python)</li>
