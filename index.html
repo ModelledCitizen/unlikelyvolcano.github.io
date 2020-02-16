@@ -11,10 +11,10 @@
   background-color: #006600;
   border: none;
   border-radius: 7.5px;
-  color: white;
+  color: black;
   padding: 1% 1% 1% 1%;
   text-align: center;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   font-size: 1.25vw;
   line-height: 125%;
   text-decoration: none;
@@ -22,6 +22,11 @@
 }
 .button:hover {
   background-color: OrangeRed;
+}
+.hidemobile {
+}
+.showmobile {
+  display: none;
 }
 .blinking{
     animation:blinkingText 2s infinite;
@@ -53,7 +58,7 @@ footer {
 }
 a {
   background-color: #006600;
-  color: white;
+  color: black;
   font-family: Arial, Helvetica, sans-serif;
   text-decoration: none;
 }
@@ -65,11 +70,11 @@ div.buttons {
   text-align: center;
 }
 h1 {
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   color: #00FF00;
 }
 h2 {
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Lucida Console", Monaco, monospace;
   color: #00FF00;
 }
 p {
@@ -112,6 +117,12 @@ p {
   header {
     font-size: 2vw;
   }
+  .hidemobile {
+    display: none;
+  }
+  .showmobile {
+    display: block;
+  }
 }
 </style>
 <head>
@@ -141,6 +152,10 @@ p {
             <a class="button" href="https://twitter.com/UnlikelyVolcano" target="_blank">Twitter</a>
             <a class="button" href="resume.pdf" target ="_blank">R&eacute;sum&eacute;</a>
           </div>
+          <div class="showmobile">
+            <h1>David Azizi</h1>
+            <h3>Researcher @ University of Pennsylvania</h3>
+          </div>
           <div id="sidebartext">
             <h2>Skills</h2>
               <ul>
@@ -167,8 +182,10 @@ p {
         </div>
     </div>
     <div id="main_content">
-      <h1>David deLacoste Azizi</h1>
-      <h3>Researcher @ University of Pennsylvania</h3>
+      <div class="hidemobile">
+        <h1>David deLacoste Azizi</h1>
+        <h3>Researcher @ University of Pennsylvania</h3>
+      </div>
       <br>
       <h2>About Me</h2>
         <p>David Azizi manages the Hopkins Research Lab and contributes to an array of research projects. He specializes in computational and statistical approaches to social science research. David holds a B.A. in Political Science from the University of Pennsylvania, where he minored in Survey Research and Data Analytics. He also attended the Fox School of Business at Temple University, where he studied Management Information Systems and Data Science. While a student at Penn, he worked with the <a href="https://www.pores.upenn.edu" target="_blank">Program on Opinion Research and Election Studies</a>, the NBC Elections Unit, and <a href="https://www.sas.upenn.edu/~marcmere/" target="_blank">Prof. Marc Meredith</a> on a project to update the process used to weight the National Election Pool exit poll. David now works alongside <a href="http://web.sas.upenn.edu/danhop/" target="_blank">Prof. Daniel Hopkins</a>, applying data science to political science research. Though his work has focused mainly on political science, David is comfortable applying statistical techniques and machine learning to any kind of data &mdash; <a href="https://github.com/UnlikelyVolcano/Stat-Clustering-mini-project" target="_blank">even bioinformatics</a>.
