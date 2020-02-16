@@ -1,11 +1,4 @@
-<head></head>
 <style>
-.center {
-  margin-left: auto;
-  margin-right: auto;
-  width = 100%;
-  text-align: center;
-}
 .button {
   display: inline-block;
   background-color: #006600;
@@ -15,26 +8,19 @@
   padding: 1% 1% 1% 1%;
   text-align: center;
   font-family: "Lucida Console", Monaco, monospace;
-  font-size: 1.25vw;
+  font-size: 1.5vw;
   line-height: 125%;
   text-decoration: none;
   cursor: pointer;
-}
-.button:hover {
-  background-color: OrangeRed;
 }
 .hidemobile {
 }
 .showmobile {
   display: none;
 }
-.blinking{
-    animation:blinkingText 2s infinite;
-}
-@keyframes blinkingText{
-    0%{     background-color: #00FF00; color: #00FF00;}
-    50%{    color: transparent; background-color: transparent;}
-    100%{   background-color: #00FF00; color: #00FF00;}
+div.buttons {
+  width = 100%;
+  text-align: center;
 }
 header {
   font-family: monospace;
@@ -53,8 +39,9 @@ footer {
   font-family: monospace;
   color: white;
   white-space: pre;
-  text-align: center;
   clear:both;
+  text-align: center;
+  animation:blinkingText 3s infinite;
 }
 a {
   background-color: #006600;
@@ -64,10 +51,6 @@ a {
 }
 a:hover {
   background-color: OrangeRed;
-}
-div.buttons {
-  width = 100%;
-  text-align: center;
 }
 h1 {
   font-family: "Lucida Console", Monaco, monospace;
@@ -87,7 +70,8 @@ p {
 #sidebar {
   width: 45%;
   float: left;
-  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
 }
 #sidebartext {
   padding-left: 15%;
@@ -111,18 +95,28 @@ p {
   #sidebartext {
     padding-left: 0%;
   }
-  .button {
-    font-size: 4vw;
-  }
   header {
     font-size: 2vw;
+  }
+  .button {
+    font-size: 4vw;
   }
   .hidemobile {
     display: none;
   }
   .showmobile {
-    display: block;
+    display: inline;
   }
+}
+@keyframes blinkingText{
+    0%{     color: black;}
+    49%{    color: black;}
+    50%{    color: #00FF00;}
+    51%{    color: black;}
+    54%{    color: black;}
+    55%{    color: #00FF00;}
+    90%{    color: #00FF00;}
+    100%{   color: black;}
 }
 </style>
 <head>
@@ -135,14 +129,14 @@ p {
 </head>
 <body>
   <header>
-    _   _      _ _ _       _    __   __   _                  
-   | | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
-   | |_| | ' \| | | / / -_) | || \ V / _ \ / _/ _` | ' \/ _ \
-    \___/|_||_|_|_|_\_\___|_|\_, |\_/\___/_\__\__,_|_||_\___/
-                             |__/                            
+ _   _      _ _ _       _    __   __   _                  
+| | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
+| |_| | ' \| | | / / -_) | || \ V / _ \ / _/ _` | ' \/ _ \
+ \___/|_||_|_|_|_\_\___|_|\_, |\_/\___/_\__\__,_|_||_\___/
+                           |__/                            
   </header>
   <div id="container">
-    <div id="sidebar" class = "center">
+    <div id="sidebar">
       <img src="headshot.jpg" alt="Headshot of David" id="headshot">
         <br>
         <div>
@@ -205,7 +199,30 @@ p {
           <p>Evaluating NYTimes polling performance.</p>
     </div>
   </div>
-  <footer id="footbar">
+  <footer>
 
-  </footer>
+
+
+
+                          .'  .               
+                         .'.'.' .             
+                        .`.'.`'.              
+                       ..'..'.`'              
+                       `,'....`               
+                      `' ..'`.                
+                     `'``''`.                 
+                     .'.``'`                  
+                  .'`..'''`.                  
+                    ````.'`                   
+                  xl""``""lx                  
+                 X8Xxx..xxX8X                 
+                 8X8bdX8bd8X8                 
+                dX8Xbd8XbdX8Xb                
+               dX8Xbd8X8XbdX8Xb               
+              dX8Xbd8X8X8XbdX8Xb              
+            .dX8Xbd8X8X8X8XbdX8Xb.            
+          .d8X8Xbd8X8X8X8X8XbdX8X8b.          
+      _.-dX8X8Xbd8X8X8X8X8X8XdbX8X8Xb-._      
+   .-d8X8X8X8bdX8X8X8X8X8X8X8X8db8X8X8X8b-.   
+.-d8X8X8X8X8bdX8X8X8X8X8X8X8X8X8db8X8X8-RG-b-.</footer>
 </body>
