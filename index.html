@@ -64,8 +64,17 @@ p {
   font-family: Arial, Helvetica, sans-serif;
   padding-right: 5%;
 }
-img {
+img.headshot {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
   max-width: 100%;
+  border-radius: 25%;
+}
+img.stats {
+  max-width: 100%;
+  filter: invert(1);
 }
 #container {
   #overflow: hidden;
@@ -82,14 +91,6 @@ img {
 #main_content {
   width: 55%;
   float: right;
-}
-#headshot {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-  max-width: 100%;
-  border-radius: 25%;
 }
 @media screen and (max-width: 650px) {
   #sidebar, #main_content {
@@ -140,7 +141,7 @@ img {
   </header>
   <div id="container">
     <div id="sidebar">
-      <img src="headshot.jpg" alt="Headshot of David" id="headshot">
+      <img src="headshot.jpg" alt="Headshot of David" class="headshot">
         <br>
         <div>
           <div class="buttons">
@@ -228,7 +229,8 @@ img {
       _.-dX8X8Xbd8X8X8X8X8X8XdbX8X8Xb-._      
    .-d8X8X8X8bdX8X8X8X8X8X8X8X8db8X8X8X8b-.   
 .-d8X8X8X8X8bdX8X8X8X8X8X8X8X8X8db8X8X8-RG-b-.
-<img src="https://boincstats.com/signature/-1/user/80942332628/sig.png"></footer>
+<img class="stats" src="https://boincstats.com/signature/-1/user/80942332628/sig.png">
+  </footer>
   <div>
     <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
     <script async src="//static.getclicky.com/js"></script>
