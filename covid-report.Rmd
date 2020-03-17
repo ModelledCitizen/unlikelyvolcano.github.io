@@ -13,7 +13,9 @@ dta <-
   )
 ```
 
-# United States {.tabset}
+This report was last updated on `r Sys.Date()`.
+
+## United States {.tabset}
 
 ```{r us}
 usa <- data.frame(date = as.Date(names(dta), format = "X%m.%e.%y")[-(1:4)],
@@ -21,19 +23,19 @@ usa <- data.frame(date = as.Date(names(dta), format = "X%m.%e.%y")[-(1:4)],
 
 ```
 
-## Total Cases in the United States
+### Total Cases
 
 ```{r us:total}
 plot(usa, main = "Cases of SARS-CoV-2 in the United States", pch = 20)
 ```
 
-## Exponential Fit of Cases in the United States
+### Exponential Fit
 
 ```{r us:logged}
 plot(
   usa$date,
   log(usa$cases),
-  main = "Logged Cases of SARS-CoV-2 in the United States",
+  main = "Log Cases of SARS-CoV-2 in the United States",
   pch = 20,
   xlab = "Date",
   ylab = "log(Cases)"
@@ -57,7 +59,7 @@ text(
 )
 ```
 
-## Growth Rate in the United States
+### Growth Rate
 
 ```{r us:growth}
 new_cases <- (usa$cases[-1] - usa$cases[-nrow(usa)])
@@ -68,5 +70,55 @@ out <- cbind(Date = paste(usa$date[usa$date > "2020-02-29"]),
              `∂ Cases` = by_day[(usa$date > "2020-02-29")[-1]],
              `New Cases` = new_cases[(usa$date > "2020-02-29")[-1]],
              `∂ New Cases` = growth_rate[(usa$date > "2020-02-29")[-(1:2)]])
+kable(out)
+```
+
+## Global {.tabset}
+
+```{r world}
+world <-
+  data.frame(date = as.Date(names(dta), format = "X%m.%e.%y")[-(1:4)],
+             cases = colSums(dta[, -(1:4)]))
+```
+
+
+### Total Cases
+
+```{r world:total}
+plot(world, main = "Cases of SARS-CoV-2", pch = 20)
+```
+
+### Exponential Fit
+
+```{r world:logged}
+plot(
+  world$date,
+  log(world$cases),
+  main = "Logged Cases of SARS-CoV-2",
+  pch = 20,
+  xlab = "Date",
+  ylab = "log(Cases)"
+)
+lm2 <- lm(log(cases) ~ date, data = world)
+abline(lm2$coefficients[1], lm2$coefficients[2])
+sm2 <- summary(lm2)
+text(
+  x = world$date[nrow(world) - 5],
+  y = 7,
+  labels = paste0("R^2 = ", sm1$r.squared)
+)
+```
+
+### Growth Rate
+
+```{r world:growth}
+new_cases <- (world$cases[-1] - world$cases[-nrow(usa)])
+by_day <- world$cases[-1] / world$cases[-nrow(world)]
+growth_rate <- new_cases[-1] / new_cases[-length(new_cases)]
+out <- cbind(Date = paste(world$date[world$date > "2020-02-29"]),
+             Cases = world$cases[world$date > "2020-02-29"],
+             `∂ Cases` = by_day[(world$date > "2020-02-29")[-1]],
+             `New Cases` = new_cases[(world$date > "2020-02-29")[-1]],
+             `∂ New Cases` = growth_rate[(world$date > "2020-02-29")[-(1:2)]])
 kable(out)
 ```
