@@ -105,7 +105,7 @@ sm2 <- summary(lm2)
 text(
   x = world$date[nrow(world) - 5],
   y = 7,
-  labels = paste0("R^2 = ", sm1$r.squared)
+  labels = paste0("R^2 = ", round(sm1$r.squared, 3))
 )
 ```
 
