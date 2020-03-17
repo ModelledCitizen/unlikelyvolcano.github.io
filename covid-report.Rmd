@@ -26,7 +26,7 @@ usa <- data.frame(date = as.Date(names(dta), format = "X%m.%e.%y")[-(1:4)],
 ### Total Cases
 
 ```{r us:total}
-plot(usa, main = "Cases of COVID-19 Report in the United States", pch = 20)
+plot(usa, main = "Cases of COVID-19 in the United States", pch = 20)
 ```
 
 ### Exponential Fit
@@ -35,7 +35,7 @@ plot(usa, main = "Cases of COVID-19 Report in the United States", pch = 20)
 plot(
   usa$date,
   log(usa$cases),
-  main = "Log Cases of COVID-19 Report in the United States",
+  main = "Log Cases of COVID-19 in the United States",
   pch = 20,
   xlab = "Date",
   ylab = "log(Cases)"
@@ -85,7 +85,7 @@ world <-
 ### Total Cases
 
 ```{r world:total}
-plot(world, main = "Cases of COVID-19 Report", pch = 20)
+plot(world, main = "Cases of COVID-19", pch = 20)
 ```
 
 ### Exponential Fit
@@ -94,7 +94,7 @@ plot(world, main = "Cases of COVID-19 Report", pch = 20)
 plot(
   world$date,
   log(world$cases),
-  main = "Logged Cases of COVID-19 Report",
+  main = "Log Cases of COVID-19",
   pch = 20,
   xlab = "Date",
   ylab = "log(Cases)"
