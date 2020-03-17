@@ -122,3 +122,5 @@ out <- cbind(Date = paste(world$date[world$date > "2020-02-29"]),
              `∂ New Cases` = growth_rate[(world$date > "2020-02-29")[-(1:2)]])
 kable(out)
 ```
+
+<p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p>
