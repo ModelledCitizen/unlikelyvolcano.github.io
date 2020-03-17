@@ -13,7 +13,7 @@ dta <-
   )
 ```
 
-This report was last updated on `r Sys.Date()`.
+This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/).
 
 ## United States {.tabset}
 
