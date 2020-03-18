@@ -67,9 +67,9 @@ by_day <- usa$cases[-1] / usa$cases[-nrow(usa)]
 growth_rate <- new_cases[-1] / new_cases[-length(new_cases)]
 out <- cbind(Date = paste(usa$date[usa$date > "2020-02-29"]),
              Cases = usa$cases[usa$date > "2020-02-29"],
-             `∂ Cases` = by_day[(usa$date > "2020-02-29")[-1]],
+             `∂ Cases` = round(by_day[(usa$date > "2020-02-29")[-1]], 3),
              `New Cases` = new_cases[(usa$date > "2020-02-29")[-1]],
-             `∂ New Cases` = growth_rate[(usa$date > "2020-02-29")[-(1:2)]])
+             `∂ New Cases` = round(growth_rate[(usa$date > "2020-02-29")[-(1:2)]], 3))
 kable(out)
 ```
 
@@ -117,10 +117,12 @@ by_day <- world$cases[-1] / world$cases[-nrow(world)]
 growth_rate <- new_cases[-1] / new_cases[-length(new_cases)]
 out <- cbind(Date = paste(world$date[world$date > "2020-02-29"]),
              Cases = world$cases[world$date > "2020-02-29"],
-             `∂ Cases` = by_day[(world$date > "2020-02-29")[-1]],
+             `∂ Cases` = round(by_day[(world$date > "2020-02-29")[-1]], 3),
              `New Cases` = new_cases[(world$date > "2020-02-29")[-1]],
-             `∂ New Cases` = growth_rate[(world$date > "2020-02-29")[-(1:2)]])
+             `∂ New Cases` = round(growth_rate[(world$date > "2020-02-29")[-(1:2)]], 3))
 kable(out)
 ```
 
-<p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p>
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
+<script async src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
