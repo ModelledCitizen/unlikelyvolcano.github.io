@@ -1,5 +1,5 @@
 ---
-title: "COVID-19 Situation Report"
+title: "[COVID-19 Situation Report](https://unlikelyvolcano.com/covid-report.html)"
 author:  "[UnlikelyVolcano (David Azizi)](https://unlikelyvolcano.com)"
 output: html_document
 ---

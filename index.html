@@ -22,6 +22,13 @@ div.buttons {
   width = 100%;
   text-align: center;
 }
+banner {
+  display: block;
+  font-size: 1.5vw;
+  background-color: #FF0000;
+  text-align: center;
+  clear:both;
+}
 header {
   font-family: monospace;
   font-size: 1.5vw;
@@ -47,10 +54,16 @@ a {
   background-color: #006600;
   color: black;
   font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  text-decoration: none;
+}
+a.alert {
+  background-color: #FF0000;
+  color: white;
   text-decoration: none;
 }
 a:hover {
-  background-color: OrangeRed;
+  background-color: Red;
 }
 h1 {
   font-family: "Lucida Console", Monaco, monospace;
@@ -132,6 +145,9 @@ img.stats {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+  <banner>
+<a class="alert" href="covid-report.html">COVID-19 ANALYSIS HERE</a>
+  </banner>
   <header>
  _   _      _ _ _       _    __   __   _                  
 | | | |_ _ | (_) |_____| |_  \ \ / /__| |__ __ _ _ _  ___ 
@@ -141,7 +157,7 @@ img.stats {
   </header>
   <div id="container">
     <div id="sidebar">
-      <img src="headshot.jpg" alt="Headshot of David" class="headshot">
+      <img src="profile.png" onmouseover="this.src='headshot.jpg';" onmouseout="this.src='profile.png';" alt="Headshot of David" class="headshot">
         <br>
         <div>
           <div class="buttons">
