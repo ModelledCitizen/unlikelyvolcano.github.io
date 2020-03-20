@@ -58,7 +58,8 @@ plot(
   main = "Cumulative Cases of COVID-19 in the US",
   pch = 20,
   xlab = "Date",
-  ylab = "Cases"
+  ylab = "Cases",
+  type = "o"
 )
 ```
 

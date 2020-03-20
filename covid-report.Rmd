@@ -35,13 +35,17 @@ acti_num <- conf_num - reco_num - deat_num
 # Recoveries: `r prettyNum(reco_num, big.mark = ",")`
 # Deaths: `r prettyNum(deat_num, big.mark = ",")`
 
-``` {r pie}
-pie(
-  c(acti_num, reco_num, deat_num),
-  labels = c("Active", "Recoveries", "Deaths"),
+``` {r bar}
+barplot(
+  matrix(c(acti_num, reco_num, deat_num), nrow = 3),
+  main = "Case Breakdown",
+  beside = F,
+  legend.text = c("Active", "Recoveries", "Deaths"),
+  args.legend = list(x = "right"),
   col = c("Orange", "Green", "Red"),
-  clockwise = T
+  xlim = c(0, conf_num*1.3),
+  horiz = T
 )
 ```
 
-# More details for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
+# Detlils & analysis for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
