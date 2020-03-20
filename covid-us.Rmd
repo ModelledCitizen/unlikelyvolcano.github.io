@@ -68,7 +68,7 @@ plot(
 ```
 
 
-An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we ccan model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line.
+An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line.
 
 ```{r us:logged}
 plot(
