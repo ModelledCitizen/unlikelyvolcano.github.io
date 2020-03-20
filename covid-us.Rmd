@@ -50,6 +50,21 @@ growth_data <- data.frame(
 
 ### Cumulative Cases
 
+The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next tab.
+
+```{r us:total}
+plot(
+  us_confirmed,
+  main = "Cumulative Cases of COVID-19 in the US",
+  pch = 20,
+  xlab = "Date",
+  ylab = "Cases"
+)
+```
+
+
+An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we ccan model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line.
+
 ```{r us:logged}
 plot(
   us_confirmed$date,
@@ -83,25 +98,29 @@ text(
 )
 ```
 
-```{r us:total}
-plot(
-  us_confirmed,
-  main = "Cumulative Cases of COVID-19 in the US",
-  pch = 20,
-  xlab = "Date",
-  ylab = "Cases"
-)
-```
-
 ### Growth Rate
+This is the famed curve that needs to be flattened so we don't overwhelm our medical capacity on the first wave of the pandemic. As you can see, we are still climbing. 
 
-```{r us:growth}
+```{r us:newcases}
 plot(
   growth_data$date,
   growth_data$new_cases,
   main = "New Cases by Day in the US",
   xlab = "Date",
   ylab = "New Cases",
+  pch = 20,
+  type = "o"
+)
+```
+
+Now, let's see the y-axis with the new cases as a multiple of the number of new cases the previous day. This is akin to the second derivative of the growth function. We want this to approach 0 as we flatten the curve.
+```{r us:growth}
+plot(
+  growth_data$date,
+  growth_data$change_new,
+  main = "Change in New Cases by Day in the US",
+  xlab = "Date",
+  ylab = "∂ New Cases",
   pch = 20,
   type = "o"
 )

@@ -31,7 +31,7 @@ This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](http
 world_confirmed <-
   data.frame(
     date = as.Date(names(confirmed), format = "X%m.%e.%y")[-(1:4)],
-    cases = colSums(confirmed[confirmed$Country.Region == "US" , -(1:4)], na.rm = T)
+    cases = colSums(confirmed[, -(1:4)], na.rm = T)
   )
 
 new_cases <-
@@ -78,13 +78,25 @@ plot(
 
 ### Growth Rate
 
-```{r world:growth}
+```{r us:newcases}
 plot(
   growth_data$date,
   growth_data$new_cases,
   main = "New Cases by Day",
   xlab = "Date",
   ylab = "New Cases",
+  pch = 20,
+  type = "o"
+)
+```
+
+```{r us:growth}
+plot(
+  growth_data$date,
+  growth_data$change_new,
+  main = "Change in New Cases by Day",
+  xlab = "Date",
+  ylab = "∂ New Cases",
   pch = 20,
   type = "o"
 )

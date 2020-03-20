@@ -10,23 +10,38 @@ confirmed <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
   )
-deaths <-
-  read.csv(
-    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
-  )
 recovered <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+  )
+deaths <-
+  read.csv(
+    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
   )
 ```
 
 This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/).
 
 
-# Total Cases: `r sum(confirmed[,ncol(confirmed)])`
-# Total Deaths: `r sum(deaths[,ncol(deaths)])`
-# Total Recoveries: `r sum(recovered[,ncol(recovered)])`
+``` {r numbers}
+conf_num <- sum(confirmed[, ncol(confirmed)])
+reco_num <- sum(recovered[, ncol(recovered)])
+deat_num <- sum(deaths[, ncol(deaths)])
+acti_num <- conf_num - reco_num - deat_num
+```
 
+# Cases: `r prettyNum(conf_num, big.mark = ",")`
+# Active: `r prettyNum(acti_num, big.mark = ",")`
+# Recoveries: `r prettyNum(reco_num, big.mark = ",")`
+# Deaths: `r prettyNum(deat_num, big.mark = ",")`
 
+``` {r pie}
+pie(
+  c(acti_num, reco_num, deat_num),
+  labels = c("Active", "Recoveries", "Deaths"),
+  col = c("Orange", "Green", "Red"),
+  clockwise = T
+)
+```
 
-# Breakdown for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
+# More details for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
