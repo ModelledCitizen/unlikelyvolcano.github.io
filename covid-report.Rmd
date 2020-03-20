@@ -30,10 +30,7 @@ deat_num <- sum(deaths[, ncol(deaths)])
 acti_num <- conf_num - reco_num - deat_num
 ```
 
-# Cases: `r prettyNum(conf_num, big.mark = ",")`
-# Active: `r prettyNum(acti_num, big.mark = ",")`
-# Recoveries: `r prettyNum(reco_num, big.mark = ",")`
-# Deaths: `r prettyNum(deat_num, big.mark = ",")`
+# Details & analysis for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
 
 ``` {r bar}
 barplot(
@@ -48,4 +45,7 @@ barplot(
 )
 ```
 
-# Detlils & analysis for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
+## Cases: `r prettyNum(conf_num, big.mark = ",")`
+## Active: `r prettyNum(acti_num, big.mark = ",")`
+## Recoveries: `r prettyNum(reco_num, big.mark = ",")`
+## Deaths: `r prettyNum(deat_num, big.mark = ",")`
