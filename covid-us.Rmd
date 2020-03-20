@@ -25,6 +25,10 @@ This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](http
 
 [Worldwide report here.](https://unlikelyvolcano.com/covid-world.html)
 
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
+<script async src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
+
 ## United States {.tabset}
 
 ```{r us}
