@@ -27,9 +27,9 @@ This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](http
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
 
 ``` {r numbers}
-conf_num <- sum(confirmed[, ncol(confirmed)])
-reco_num <- sum(recovered[, ncol(recovered)])
-deat_num <- sum(deaths[, ncol(deaths)])
+conf_num <- sum(confirmed[, ncol(confirmed)], na.rm = T)
+reco_num <- sum(recovered[, ncol(recovered)], na.rm = T)
+deat_num <- sum(deaths[, ncol(deaths)], na.rm = T)
 acti_num <- conf_num - reco_num - deat_num
 ```
 
