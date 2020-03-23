@@ -11,22 +11,26 @@ output:
 ```{r setup, include=FALSE}
 library(knitr)
 library(ggplot2)
+library(leaflet)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = "100%")
 confirmed <-
   read.csv(
-    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",
+    stringsAsFactors = F
   )
 recovered <-
   read.csv(
-    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv"
+    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv",
+    stringsAsFactors = F
   )
 deaths <-
   read.csv(
-    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
+    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",
+    stringsAsFactors = F
   )
 ```
 
-This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/).
+This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [Covid Tracking Project](https://covidtracking.com/).
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
 <script async src="//static.getclicky.com/js"></script>
@@ -92,6 +96,16 @@ us_confirmed <-
     cases = colSums(confirmed[confirmed$Country.Region == "US" , -(1:4)], na.rm = T)
   )
 
+us_mapping <-
+  data.frame(
+    state = confirmed[confirmed$Country.Region == "US" ,"Province.State"],
+    Latitude = confirmed[confirmed$Country.Region == "US" ,"Lat"],
+    Longitude = confirmed[confirmed$Country.Region == "US" ,"Long"],
+    cases = confirmed[confirmed$Country.Region == "US" , ncol(confirmed)],
+    stringsAsFactors = F
+  )
+us_mapping <- us_mapping[grep(",", us_mapping$state, invert = T), ]
+
 us_new_cases <-
   us_confirmed$cases[-1] - us_confirmed$cases[-nrow(us_confirmed)]
 us_by_day <-
@@ -117,6 +131,17 @@ world_confirmed <-
     cases = colSums(confirmed[, -(1:4)], na.rm = T)
   )
 
+wrld_mapping <-
+  data.frame(
+    Province = confirmed[, "Province.State"],
+    Country = confirmed[, "Country.Region"],
+    Latitude = confirmed[, "Lat"],
+    Longitude = confirmed[,"Long"],
+    cases = confirmed[, ncol(confirmed)],
+    stringsAsFactors = F
+  )
+wrld_mapping <- wrld_mapping[wrld_mapping$cases > 0, ]
+
 wrld_new_cases <-
   world_confirmed$cases[-1] - world_confirmed$cases[-nrow(world_confirmed)]
 wrld_by_day <-
@@ -133,6 +158,65 @@ wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 ```
 
+# Maps {.tabset .tabset-fade .tabset-pills}
+
+## United States
+
+```{r us:map}
+lab <- paste0("<strong>",
+              us_mapping$state,
+              "</strong><br>",
+              us_mapping$cases,
+              " cases") %>%
+  lapply(htmltools::HTML)
+
+leaflet(us_mapping) %>%
+  addProviderTiles(providers$Stamen.Toner) %>%
+  addCircleMarkers(
+    lng = us_mapping$Longitude,
+    lat = us_mapping$Latitude,
+    label = lab,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"
+    ),
+    radius = 2 * log(us_mapping$cases),
+    weight = 10,
+    fillColor = "red",
+    stroke = F
+  )
+```
+
+## Global
+
+```{r world:map}
+lab <- paste0("<strong>",
+              wrld_mapping$Country,
+              ifelse(wrld_mapping$Province == "", "", ": "),
+              wrld_mapping$Province,
+              "</strong><br>",
+              wrld_mapping$cases,
+              " cases") %>%
+  lapply(htmltools::HTML)
+
+leaflet(wrld_mapping) %>%
+  addProviderTiles(providers$Stamen.Toner) %>%
+  addCircleMarkers(
+    lng = wrld_mapping$Long,
+    lat = wrld_mapping$Lat,
+    label = lab,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"
+    ),
+    radius = 2 * log(wrld_mapping$cases),
+    weight = 10,
+    fillColor = "red",
+    stroke = F
+  )
+```
 
 # Cumulative Cases {.tabset .tabset-fade .tabset-pills}
 
