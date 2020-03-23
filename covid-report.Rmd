@@ -220,7 +220,7 @@ leaflet(us_mapping) %>%
       textsize = "15px",
       direction = "auto"
     ),
-    group = "Chloropleth"
+    group = "Choropleth"
   ) %>%
   setView(lat =  39.8333333,
           lng = -98.585522,
@@ -241,7 +241,7 @@ leaflet(us_mapping) %>%
   #   group = "Markers"
   # ) %>%
   # addLayersControl(
-  #   baseGroups = c("Chloropleth", "Markers"),
+  #   baseGroups = c("Choropleth", "Markers"),
   #   options = layersControlOptions(collapsed = F, autoZIndex = T)
   # )
 ```
