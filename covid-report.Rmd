@@ -166,7 +166,7 @@ wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 lab <- paste0("<strong>",
               us_mapping$state,
               "</strong><br>",
-              us_mapping$cases,
+              prettyNum(us_mapping$cases, big.mark = ","),
               " cases") %>%
   lapply(htmltools::HTML)
 
@@ -196,7 +196,7 @@ lab <- paste0("<strong>",
               ifelse(wrld_mapping$Province == "", "", ": "),
               wrld_mapping$Province,
               "</strong><br>",
-              wrld_mapping$cases,
+              prettyNum(wrld_mapping$cases, big.mark = ","),
               " cases") %>%
   lapply(htmltools::HTML)
 
