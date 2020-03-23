@@ -75,12 +75,12 @@ h2 {
   font-family: "Lucida Console", Monaco, monospace;
   color: #00FF00;
 }
-p {
-  line-height: 1;
-}
 p.main {
   font-family: Arial, Helvetica, sans-serif;
   padding-right: 5%;
+}
+p.noheight {
+  line-height: 1;
 }
 img.headshot {
   display: block;
