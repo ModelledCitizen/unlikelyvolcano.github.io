@@ -14,6 +14,7 @@ library(knitr)
 library(ggplot2)
 library(leaflet)
 library(rgdal)
+library(rgeos)
 library(kableExtra)
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -93,7 +94,14 @@ us_mapping <-
   )
 us_mapping <- us_mapping[grep(",", us_mapping$NAME, invert = T), ]
 us_mapping$NAME[us_mapping$NAME == "Virgin Islands"] <- "United States Virgin Islands"
-us_mapping <- merge(readOGR("tl_2019_us_state", stringsAsFactors = F), us_mapping, by = "NAME")
+us_mapping <-
+  merge(readOGR("tl_2019_us_state", stringsAsFactors = F),
+        us_mapping,
+        by = "NAME")
+us_map_data <- us_mapping@data
+rownames(us_map_data) <- sapply(us_mapping@polygons, function(x) x@ID)
+us_map_simple <- gSimplify(us_mapping, tol = 0.01, topologyPreserve = TRUE)
+us_map_new <- SpatialPolygonsDataFrame(us_map_simple, us_map_data)
 
 us_new_cases <-
   us_confirmed$cases[-1] - us_confirmed$cases[-nrow(us_confirmed)]
@@ -182,23 +190,22 @@ ggplot(data = cases, aes(x = type, y = cases, fill = type)) +
 ## United States
 
 ```{r us:map}
-pal <- colorNumeric(palette = "OrRd",
+pal <- colorNumeric(palette = "YlOrRd",
                     domain = c(
-                      min(us_mapping$LOGCASES, na.rm = T),
-                      max(us_mapping$LOGCASES, na.rm = T)
+                      min(us_map_new$LOGCASES, na.rm = T),
+                      max(us_map_new$LOGCASES, na.rm = T)
                     ),
                     na.color = "white")
 lab <- paste0(
   "<strong>",
-  us_mapping$NAME,
+  us_map_new$NAME,
   "</strong><br>",
-  prettyNum(us_mapping$CASES, big.mark = ","),
+  prettyNum(us_map_new$CASES, big.mark = ","),
   " cases"
 ) %>%
   lapply(htmltools::HTML)
 
-
-leaflet(us_mapping) %>%
+leaflet(us_map_new) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addPolygons(
     fillColor = ~ pal(LOGCASES),
