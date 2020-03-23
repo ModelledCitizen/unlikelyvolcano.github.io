@@ -13,8 +13,14 @@ output:
 library(knitr)
 library(ggplot2)
 library(leaflet)
+library(rgdal)
 library(kableExtra)
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = "100%")
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  out.width = "100%"
+)
 
 theme_dark <- theme(
     line = element_line(colour = "white"),
@@ -47,17 +53,10 @@ deaths <-
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",
     stringsAsFactors = F
   )
+
 ```
 
-This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [COVID Tracking Project](https://covidtracking.com/).
-
-<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
-<script async src="//static.getclicky.com/js"></script>
-<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
-
-# Overview
-
-``` {r numbers}
+``` {r numbers, include=FALSE}
 conf_num <- sum(confirmed[, ncol(confirmed)], na.rm = T)
 reco_num <- sum(recovered[, ncol(recovered)], na.rm = T)
 deat_num <- sum(deaths[, ncol(deaths)], na.rm = T)
@@ -76,24 +75,7 @@ cases <-
   )
 ```
 
-**Cases:** `r prettyNum(conf_num, big.mark = ",")`
-
-**Active:** `r prettyNum(acti_num, big.mark = ",")` (`r round(100 * acti_num/conf_num, 1)`%)
-
-**Recovered:** `r prettyNum(reco_num, big.mark = ",")` (`r round(100 * reco_num/conf_num, 1)`%)
-
-**Deaths:** `r prettyNum(deat_num, big.mark = ",")` (`r round(100 * deat_num/conf_num, 1)`%)
-
-``` {r bar}
-ggplot(data = cases, aes(x = type, y = cases, fill = type)) +
-  geom_bar(stat = "identity") +
-  scale_x_discrete(name = "", expand = c(0,0)) +
-  scale_y_continuous("Cases", n.breaks = 10, expand = c(0,0)) +
-  scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1")) +
-  theme_dark
-```
-
-```{r us}
+```{r us, include=FALSE}
 us_confirmed <-
   data.frame(
     date = as.Date(names(confirmed), format = "X%m.%e.%y")[-(1:4)],
@@ -102,13 +84,16 @@ us_confirmed <-
 
 us_mapping <-
   data.frame(
-    state = confirmed[confirmed$Country.Region == "US" ,"Province.State"],
-    Latitude = confirmed[confirmed$Country.Region == "US" ,"Lat"],
-    Longitude = confirmed[confirmed$Country.Region == "US" ,"Long"],
-    cases = confirmed[confirmed$Country.Region == "US" , ncol(confirmed)],
+    NAME = confirmed[confirmed$Country.Region == "US" ,"Province.State"],
+    CentroidLatitude = confirmed[confirmed$Country.Region == "US" ,"Lat"],
+    CentroidLongitude = confirmed[confirmed$Country.Region == "US" ,"Long"],
+    CASES = confirmed[confirmed$Country.Region == "US" , ncol(confirmed)],
+    LOGCASES = log(confirmed[confirmed$Country.Region == "US" , ncol(confirmed)]),
     stringsAsFactors = F
   )
-us_mapping <- us_mapping[grep(",", us_mapping$state, invert = T), ]
+us_mapping <- us_mapping[grep(",", us_mapping$NAME, invert = T), ]
+us_mapping$NAME[us_mapping$NAME == "Virgin Islands"] <- "United States Virgin Islands"
+us_mapping <- merge(readOGR("tl_2019_us_state", stringsAsFactors = F), us_mapping, by = "NAME")
 
 us_new_cases <-
   us_confirmed$cases[-1] - us_confirmed$cases[-nrow(us_confirmed)]
@@ -128,7 +113,7 @@ us_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 
 ```
 
-```{r world}
+```{r world, include=FALSE}
 world_confirmed <-
   data.frame(
     date = as.Date(names(confirmed), format = "X%m.%e.%y")[-(1:4)],
@@ -162,34 +147,97 @@ wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 ```
 
+This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [COVID Tracking Project](https://covidtracking.com/).
+
+<script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
+<script async src="//static.getclicky.com/js"></script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
+
+# Overview
+
+
+**Cases:** `r prettyNum(conf_num, big.mark = ",")`
+
+**Active:** `r prettyNum(acti_num, big.mark = ",")` (`r round(100 * acti_num/conf_num, 1)`%)
+
+**Recovered:** `r prettyNum(reco_num, big.mark = ",")` (`r round(100 * reco_num/conf_num, 1)`%)
+
+**Deaths:** `r prettyNum(deat_num, big.mark = ",")` (`r round(100 * deat_num/conf_num, 1)`%)
+
+``` {r bar}
+ggplot(data = cases, aes(x = type, y = cases, fill = type)) +
+  geom_bar(stat = "identity") +
+  scale_x_discrete(name = "", expand = c(0,0)) +
+  scale_y_continuous("Cases", n.breaks = 10, expand = c(0,0)) +
+  scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1")) +
+  theme_dark
+```
+
+
 # Case Map {.tabset .tabset-fade .tabset-pills}
 
 ## United States
 
 ```{r us:map}
-lab <- paste0("<strong>",
-              us_mapping$state,
-              "</strong><br>",
-              prettyNum(us_mapping$cases, big.mark = ","),
-              " cases") %>%
+pal <- colorNumeric(palette = "OrRd",
+                    domain = c(
+                      min(us_mapping$LOGCASES, na.rm = T),
+                      max(us_mapping$LOGCASES, na.rm = T)
+                    ),
+                    na.color = "white")
+lab <- paste0(
+  "<strong>",
+  us_mapping$NAME,
+  "</strong><br>",
+  prettyNum(us_mapping$CASES, big.mark = ","),
+  " cases"
+) %>%
   lapply(htmltools::HTML)
+
 
 leaflet(us_mapping) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
-  addCircleMarkers(
-    lng = us_mapping$Longitude,
-    lat = us_mapping$Latitude,
+  addPolygons(
+    fillColor = ~ pal(LOGCASES),
+    weight = 1,
+    opacity = 1,
+    color = "#000000",
+    fillOpacity = 1,
+    smoothFactor = 0.5,
+    highlight = highlightOptions(
+      weight = 3,
+      color = "white",
+      #fillOpacity = 0,
+      bringToFront = T,
+      sendToBack = T
+    ),
     label = lab,
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
       direction = "auto"
     ),
-    radius = 2.5 * log(us_mapping$cases),
-    weight = 10,
-    fillColor = "red",
-    stroke = F
-  )
+    group = "Chloropleth"
+  ) #%>%
+  # addCircleMarkers(
+  #   lng = us_mapping$CentroidLongitude,
+  #   lat = us_mapping$CentroidLatitude,
+  #   label = lab,
+  #   labelOptions = labelOptions(
+  #     style = list("font-weight" = "normal", padding = "3px 8px"),
+  #     textsize = "15px",
+  #     direction = "auto"
+  #   ),
+  #   radius = 2.5 * log(us_mapping$cases),
+  #   weight = 10,
+  #   fillColor = "red",
+  #   stroke = F,
+  #   group = "Markers"
+  # ) %>%
+  # addLayersControl(
+  #   baseGroups = c("Chloropleth", "Markers"),
+  #   options = layersControlOptions(collapsed = F, autoZIndex = T)
+  # )
 ```
 
 ## Global
