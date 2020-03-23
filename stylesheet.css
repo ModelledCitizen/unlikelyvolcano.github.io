@@ -1,0 +1,142 @@
+.button {
+  display: inline-block;
+  background-color: #006600;
+  border: none;
+  border-radius: 7.5px;
+  color: black;
+  padding: 1% 1% 1% 1%;
+  text-align: center;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 1.5vw;
+  line-height: 125%;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hidemobile {
+}
+.showmobile {
+  display: none;
+}
+div.buttons {
+  width = 100%;
+  text-align: center;
+}
+banner {
+  display: block;
+  font-size: 2vw;
+  font-weight: bold;
+  background-color: #FF0000;
+  text-align: center;
+  clear:both;
+}
+header {
+  font-family: monospace;
+  font-size: 1.5vw;
+  color: #00FF00;
+  white-space: pre;
+  text-align: center;
+  clear:both;
+}
+body {
+  background-color: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+footer {
+  font-family: monospace;
+  color: white;
+  clear:both;
+  text-align: center;
+}
+div.volcano {
+  white-space: pre;
+  animation:blinkingText 3s infinite;
+  line-height: 1;
+}
+a {
+  background-color: #006600;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+}
+a.alert {
+  background-color: #FF0000;
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  background-color: Red;
+}
+h1 {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #00FF00;
+}
+h2 {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: #00FF00;
+}
+p {
+  line-height: 1;
+}
+p.main {
+  font-family: Arial, Helvetica, sans-serif;
+  padding-right: 5%;
+}
+img.headshot {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+  max-width: 100%;
+  border-radius: 25%;
+}
+img.stats {
+  max-width: 100%;
+  filter: invert(1);
+}
+#container {
+  #overflow: hidden;
+}
+#sidebar {
+  width: 45%;
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+#sidebartext {
+  padding-left: 15%;
+}
+#main_content {
+  width: 55%;
+  float: right;
+}
+@media screen and (max-width: 650px) {
+  #sidebar, #main_content {
+    width: 100%;
+  }
+  #sidebartext {
+    padding-left: 0%;
+  }
+  header {
+    font-size: 2vw;
+  }
+  .button {
+    font-size: 4vw;
+  }
+  .hidemobile {
+    display: none;
+  }
+  .showmobile {
+    display: inline;
+  }
+}
+@keyframes blinkingText{
+    0%{ color: black;}
+    49%{    color: black;}
+    50%{    color: #00FF00;}
+    51%{    color: black;}
+    54%{    color: black;}
+    55%{    color: #00FF00;}
+    90%{    color: #00FF00;}
+    100%{   color: black;}
+}

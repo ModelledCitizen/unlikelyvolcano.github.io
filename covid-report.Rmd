@@ -1,11 +1,17 @@
 ---
 title: "[COVID-19 Situation Report](https://unlikelyvolcano.com/covid-report.html)"
 author:  "[UnlikelyVolcano (David Azizi)](https://unlikelyvolcano.com)"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: darkly
+    highlight: tango
 ---
 ```{r setup, include=FALSE}
 library(knitr)
-knitr::opts_chunk$set(echo = FALSE, out.width = "100%")
+library(ggplot2)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = "100%")
 confirmed <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
@@ -18,7 +24,6 @@ deaths <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv"
   )
-options(scipen = 999)
 ```
 
 This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/).
@@ -32,24 +37,355 @@ conf_num <- sum(confirmed[, ncol(confirmed)], na.rm = T)
 reco_num <- sum(recovered[, ncol(recovered)], na.rm = T)
 deat_num <- sum(deaths[, ncol(deaths)], na.rm = T)
 acti_num <- conf_num - reco_num - deat_num
+
+cases <-
+  data.frame(
+    id = rep("cases", 3),
+    cases = c(acti_num, reco_num, deat_num),
+    type = factor(
+      1:3,
+      levels = 1:3,
+      labels = c("active", "recovered", "deaths")
+    ),
+    stringsAsFactors = F
+  )
 ```
 
-# Details & analysis for [United States](https://unlikelyvolcano.com/covid-us.html) | [World](https://unlikelyvolcano.com/covid-world.html)
+# Overview
 
+## Case Breakdown
 ``` {r bar}
-barplot(
-  matrix(c(acti_num, reco_num, deat_num), nrow = 3),
-  main = "Case Breakdown",
-  beside = F,
-  legend.text = c("Active", "Recoveries", "Deaths"),
-  args.legend = list(x = "right"),
-  col = c("Orange", "Green", "Red"),
-  xlim = c(0, conf_num*1.4),
-  horiz = T
-)
+ggplot(data = cases, aes(x = id, y = cases, fill = type)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_x_discrete(name = "",
+                   breaks = c("active", "recovered", "deaths"),
+                   expand = c(0,0)) +
+  scale_y_continuous("Cases", n.breaks = 10, expand = c(0,0)) +
+  scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1")) +
+  theme(
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_blank(),
+    axis.text = element_text(color = "white")
+  )
 ```
 
-## Cases: `r prettyNum(conf_num, big.mark = ",")`
-## Active: `r prettyNum(acti_num, big.mark = ",")`
-## Recoveries: `r prettyNum(reco_num, big.mark = ",")`
-## Deaths: `r prettyNum(deat_num, big.mark = ",")`
+### Cases: `r prettyNum(conf_num, big.mark = ",")`
+### Active: `r prettyNum(acti_num, big.mark = ",")`
+### Recoveries: `r prettyNum(reco_num, big.mark = ",")`
+### Deaths: `r prettyNum(deat_num, big.mark = ",")`
+
+```{r us}
+us_confirmed <-
+  data.frame(
+    date = as.Date(names(confirmed), format = "X%m.%e.%y")[-(1:4)],
+    cases = colSums(confirmed[confirmed$Country.Region == "US" , -(1:4)], na.rm = T)
+  )
+
+us_new_cases <-
+  us_confirmed$cases[-1] - us_confirmed$cases[-nrow(us_confirmed)]
+us_by_day <-
+  us_confirmed$cases[-1] / us_confirmed$cases[-nrow(us_confirmed)]
+us_growth_rate <-
+  us_new_cases[-1] / us_new_cases[-length(us_new_cases)]
+us_growth_data <- data.frame(
+  date = us_confirmed$date[-(1:2)],
+  cases = us_confirmed$cases[-(1:2)],
+  change_cases = us_by_day[-1],
+  new_cases = us_new_cases[-1],
+  change_new = us_growth_rate
+)
+us_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
+us_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
+
+```
+
+```{r world}
+world_confirmed <-
+  data.frame(
+    date = as.Date(names(confirmed), format = "X%m.%e.%y")[-(1:4)],
+    cases = colSums(confirmed[, -(1:4)], na.rm = T)
+  )
+
+wrld_new_cases <-
+  world_confirmed$cases[-1] - world_confirmed$cases[-nrow(world_confirmed)]
+wrld_by_day <-
+  world_confirmed$cases[-1] / world_confirmed$cases[-nrow(world_confirmed)]
+wrld_growth_rate <- wrld_new_cases[-1] / wrld_new_cases[-length(wrld_new_cases)]
+wrld_growth_data <- data.frame(
+  date = world_confirmed$date[-(1:2)],
+  cases = world_confirmed$cases[-(1:2)],
+  change_cases = wrld_by_day[-1],
+  new_cases = wrld_new_cases[-1],
+  change_new = wrld_growth_rate
+)
+wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
+wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
+```
+
+
+# Cumulative Cases {.tabset .tabset-fade .tabset-pills}
+
+## United States
+
+The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next tab.
+
+```{r us:total}
+ggplot(us_confirmed, aes(x = date, y = cases)) +
+  geom_smooth(method = "loess", formula = y ~ x) + 
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("Cumulative Cases of COVID-19 in the US") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+
+An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line.
+
+```{r us:logged}
+ggplot(us_confirmed, aes(x = date, y = cases)) +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_smooth(
+    data = subset(us_confirmed, us_confirmed$date > "2020-02-29"),
+    aes(x = date, y = cases),
+    method = "lm",
+    formula = y ~ x,
+    color = "red",
+    fullrange = T
+  ) +
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_x_date("Date") +
+  scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
+  ggtitle("Cumulative Cases of COVID-19 in the US, Logged") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+## Global
+
+```{r world:total}
+ggplot(world_confirmed, aes(x = date, y = cases)) +
+  geom_smooth(method = "loess", formula = y ~ x) + 
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("Cumulative Cases of COVID-19 on Earth") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+```{r world:logged}
+ggplot(world_confirmed, aes(x = date, y = cases)) +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_x_date("Date") +
+  scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
+  ggtitle("Cumulative Cases of COVID-19 on Earth, Logged") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+# Growth Rate {.tabset .tabset-fade .tabset-pills}
+
+## United States
+
+This is the famed curve that needs to be flattened so we don't overwhelm our medical capacity on the first wave of the pandemic. As you can see, we are still climbing. 
+
+```{r us:newcases}
+ggplot(us_growth_data, aes(x = date, y = new_cases)) +
+  geom_smooth(method = "loess", formula = y ~ x) + 
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("New Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("New Cases by Day in the US") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+
+Now, let's see the y-axis with the new cases as a multiple of the number of new cases the previous day. This is akin to the second derivative of the growth function. We want this to approach 0 as we flatten the curve.
+
+```{r us:growth}
+ggplot(us_growth_data, aes(x = date, y = change_new)) +
+  geom_smooth(method = "loess", formula = y ~ x) +
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("∂ New Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("Change in New Cases by Day in the US") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+## Global
+
+```{r world:newcases}
+ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
+  geom_smooth(method = "loess", formula = y ~ x) + 
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("New Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("New Cases by Day on Earth") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+```{r world:growth}
+ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
+  geom_smooth(method = "loess", formula = y ~ x) +
+  geom_point(color = "white") +
+  geom_line(color = "white") +
+  scale_y_continuous("∂ New Cases", n.breaks = 10) +
+  scale_x_date("Date") +
+  ggtitle("Change in New Cases by Day on Earth") +
+  theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#222222"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#222222"),
+    panel.background = element_rect(fill = "#222222"),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#222222"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+```
+
+# Table {.tabset .tabset-fade .tabset-pills}
+
+## United States
+```{r us:table}
+out <- us_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)], ]
+out$cases <- prettyNum(out$cases, big.mark = ",")
+out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
+kable(out,
+      col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+      row.names = F,
+      align = "lllll",
+      digits = 3)
+```
+
+## Global
+
+```{r world:table}
+out <- wrld_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)], ]
+out$cases <- prettyNum(out$cases, big.mark = ",")
+out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
+kable(out,
+      col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+      row.names = F,
+      align = "lllll",
+      digits = 3)
+```
+
