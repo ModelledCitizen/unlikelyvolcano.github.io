@@ -237,7 +237,7 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
   geom_line(color = "white") +
   scale_y_continuous("Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("Cumulative Cases of COVID-19 in the US") +
+  #ggtitle("Cumulative Cases of COVID-19 in the US") +
   theme_dark
 ```
 
@@ -260,7 +260,7 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
   geom_line(color = "white") +
   scale_x_date("Date") +
   scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
-  ggtitle("Cumulative Cases of COVID-19 in the US, Logged") +
+  #ggtitle("Cumulative Cases of COVID-19 in the US, Logged") +
   theme_dark
 ```
 
@@ -275,7 +275,7 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
   geom_line(color = "white") +
   scale_y_continuous("Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("Cumulative Cases of COVID-19 on Earth") +
+  #ggtitle("Cumulative Cases of COVID-19 on Earth") +
   theme_dark
 ```
 
@@ -288,7 +288,7 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
   geom_line(color = "white") +
   scale_x_date("Date") +
   scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
-  ggtitle("Cumulative Cases of COVID-19 on Earth, Logged") +
+  #ggtitle("Cumulative Cases of COVID-19 on Earth, Logged") +
   theme_dark
 ```
 
