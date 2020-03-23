@@ -32,6 +32,8 @@ This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](http
 <script async src="//static.getclicky.com/js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
 
+# Overview
+
 ``` {r numbers}
 conf_num <- sum(confirmed[, ncol(confirmed)], na.rm = T)
 reco_num <- sum(recovered[, ncol(recovered)], na.rm = T)
@@ -51,9 +53,14 @@ cases <-
   )
 ```
 
-# Overview
+**Cases:** `r prettyNum(conf_num, big.mark = ",")`
 
-## Case Breakdown
+**Active:** `r prettyNum(acti_num, big.mark = ",")`
+
+**Recovered:** `r prettyNum(reco_num, big.mark = ",")`
+
+**Deaths:** `r prettyNum(deat_num, big.mark = ",")`
+
 ``` {r bar}
 ggplot(data = cases, aes(x = id, y = cases, fill = type)) +
   geom_bar(stat = "identity") +
@@ -77,11 +84,6 @@ ggplot(data = cases, aes(x = id, y = cases, fill = type)) +
     axis.text = element_text(color = "white")
   )
 ```
-
-### Cases: `r prettyNum(conf_num, big.mark = ",")`
-### Active: `r prettyNum(acti_num, big.mark = ",")`
-### Recoveries: `r prettyNum(reco_num, big.mark = ",")`
-### Deaths: `r prettyNum(deat_num, big.mark = ",")`
 
 ```{r us}
 us_confirmed <-
