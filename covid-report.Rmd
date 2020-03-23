@@ -1,11 +1,11 @@
 ---
-title: "[COVID-19 Situation Report](https://unlikelyvolcano.com/covid-report.html)"
+title: "COVID-19 Situation Report"
 author:  "[UnlikelyVolcano (David Azizi)](https://unlikelyvolcano.com)"
 output:
   html_document:
     toc: true
     toc_float: true
-    theme: darkly
+    css: bootstrap.css
     highlight: tango
 ---
 ```{r setup, include=FALSE}
@@ -13,6 +13,23 @@ library(knitr)
 library(ggplot2)
 library(leaflet)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = "100%")
+
+theme_dark <- theme(
+    line = element_line(colour = "white"),
+    rect = element_rect(fill = "#060606"),
+    text = element_text(color = "white"),
+    title = element_text(color = "white"),
+    plot.background = element_rect(fill = "#060606", color = NA),
+    panel.background = element_rect(fill = "#060606", color = NA),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    legend.background = element_rect(fill = "#060606"),
+    legend.title = element_blank(),
+    axis.ticks.x = element_line(colour = "white"),
+    axis.ticks.y = element_line(colour = "white"),
+    axis.text = element_text(color = "white")
+  )
+
 confirmed <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",
@@ -59,34 +76,19 @@ cases <-
 
 **Cases:** `r prettyNum(conf_num, big.mark = ",")`
 
-**Active:** `r prettyNum(acti_num, big.mark = ",")`
+**Active:** `r prettyNum(acti_num, big.mark = ",")` (`r round(100 * acti_num/conf_num, 1)`%)
 
-**Recovered:** `r prettyNum(reco_num, big.mark = ",")`
+**Recovered:** `r prettyNum(reco_num, big.mark = ",")` (`r round(100 * reco_num/conf_num, 1)`%)
 
-**Deaths:** `r prettyNum(deat_num, big.mark = ",")`
+**Deaths:** `r prettyNum(deat_num, big.mark = ",")` (`r round(100 * deat_num/conf_num, 1)`%)
 
 ``` {r bar}
-ggplot(data = cases, aes(x = id, y = cases, fill = type)) +
+ggplot(data = cases, aes(x = type, y = cases, fill = type)) +
   geom_bar(stat = "identity") +
-  coord_flip() +
-  scale_x_discrete(name = "",
-                   breaks = c("active", "recovered", "deaths"),
-                   expand = c(0,0)) +
+  scale_x_discrete(name = "", expand = c(0,0)) +
   scale_y_continuous("Cases", n.breaks = 10, expand = c(0,0)) +
   scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1")) +
-  theme(
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_blank(),
-    axis.text = element_text(color = "white")
-  )
+  theme_dark
 ```
 
 ```{r us}
@@ -222,7 +224,9 @@ leaflet(wrld_mapping) %>%
 
 ## United States
 
-The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next tab.
+### Standard Scale (US)
+
+The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next chart.
 
 ```{r us:total}
 ggplot(us_confirmed, aes(x = date, y = cases)) +
@@ -232,25 +236,12 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
   scale_y_continuous("Cases", n.breaks = 10) +
   scale_x_date("Date") +
   ggtitle("Cumulative Cases of COVID-19 in the US") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  theme_dark
 ```
 
+### Log Scale (US)
 
-An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line.
+An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line. The second line is fit only only to March, once testing ramped up in the US -- note the narrower confidence bands.
 
 ```{r us:logged}
 ggplot(us_confirmed, aes(x = date, y = cases)) +
@@ -268,24 +259,12 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
   scale_x_date("Date") +
   scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
   ggtitle("Cumulative Cases of COVID-19 in the US, Logged") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  theme_dark
 ```
 
 ## Global
+
+### Standard Scale (Global)
 
 ```{r world:total}
 ggplot(world_confirmed, aes(x = date, y = cases)) +
@@ -295,22 +274,10 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
   scale_y_continuous("Cases", n.breaks = 10) +
   scale_x_date("Date") +
   ggtitle("Cumulative Cases of COVID-19 on Earth") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  theme_dark
 ```
+
+### Log Scale (Global)
 
 ```{r world:logged}
 ggplot(world_confirmed, aes(x = date, y = cases)) +
@@ -320,26 +287,14 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
   scale_x_date("Date") +
   scale_y_continuous("Cases", n.breaks = 10, trans = "log10", limits = c(0.8, NA)) +
   ggtitle("Cumulative Cases of COVID-19 on Earth, Logged") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  theme_dark
 ```
 
 # Growth Rate {.tabset .tabset-fade .tabset-pills}
 
 ## United States
+
+### New Cases by Day (US)
 
 This is the famed curve that needs to be flattened so we don't overwhelm our medical capacity on the first wave of the pandemic. As you can see, we are still climbing. 
 
@@ -350,24 +305,11 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
   geom_line(color = "white") +
   scale_y_continuous("New Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("New Cases by Day in the US") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  #ggtitle("New Cases by Day in the US") +
+  theme_dark
 ```
 
+### Rate of Change in New Cases (US)
 
 Now, let's see the y-axis with the new cases as a multiple of the number of new cases the previous day. This is akin to the second derivative of the growth function. We want this to approach 0 as we flatten the curve.
 
@@ -378,25 +320,13 @@ ggplot(us_growth_data, aes(x = date, y = change_new)) +
   geom_line(color = "white") +
   scale_y_continuous("∂ New Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("Change in New Cases by Day in the US") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  #ggtitle("Change in New Cases by Day in the US") +
+  theme_dark
 ```
 
 ## Global
+
+### New Cases by Day (Global)
 
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
@@ -405,23 +335,11 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
   geom_line(color = "white") +
   scale_y_continuous("New Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("New Cases by Day on Earth") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  #ggtitle("New Cases by Day on Earth") +
+  theme_dark
 ```
+
+### Rate of Change in New Cases (Global)
 
 ```{r world:growth}
 ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
@@ -430,22 +348,8 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
   geom_line(color = "white") +
   scale_y_continuous("∂ New Cases", n.breaks = 10) +
   scale_x_date("Date") +
-  ggtitle("Change in New Cases by Day on Earth") +
-  theme(
-    line = element_line(colour = "white"),
-    rect = element_rect(fill = "#222222"),
-    text = element_text(color = "white"),
-    title = element_text(color = "white"),
-    plot.background = element_rect(fill = "#222222"),
-    panel.background = element_rect(fill = "#222222"),
-    panel.border = element_blank(),
-    panel.grid = element_blank(),
-    legend.background = element_rect(fill = "#222222"),
-    legend.title = element_blank(),
-    axis.ticks.x = element_line(colour = "white"),
-    axis.ticks.y = element_line(colour = "white"),
-    axis.text = element_text(color = "white")
-  )
+  #ggtitle("Change in New Cases by Day on Earth") +
+  theme_dark
 ```
 
 # Table {.tabset .tabset-fade .tabset-pills}
