@@ -13,6 +13,7 @@ output:
 library(knitr)
 library(ggplot2)
 library(leaflet)
+library(kableExtra)
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, out.width = "100%")
 
 theme_dark <- theme(
@@ -357,26 +358,36 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
 
 ## United States
 ```{r us:table}
-out <- us_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)], ]
+out <-
+  us_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)],]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
-kable(out,
-      col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
-      row.names = F,
-      align = "lllll",
-      digits = 3)
+kable(
+  out,
+  col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+  row.names = F,
+  align = "lllll",
+  digits = 3
+) %>%
+  kable_styling(bootstrap_options = c("hover")) %>%
+  column_spec(1, bold = T)
 ```
 
 ## Global
 
 ```{r world:table}
-out <- wrld_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)], ]
+out <-
+  wrld_growth_data[(world_confirmed$date > "2020-02-29")[-(1:2)],]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
-kable(out,
-      col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
-      row.names = F,
-      align = "lllll",
-      digits = 3)
+kable(
+  out,
+  col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+  row.names = F,
+  align = "lllll",
+  digits = 3
+) %>% 
+  kable_styling(bootstrap_options = c("hover")) %>%
+  column_spec(1, bold = T)
 ```
 

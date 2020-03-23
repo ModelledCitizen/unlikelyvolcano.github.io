@@ -6030,6 +6030,15 @@ function asArray(value) {
   this.layerManager.addLayer(L.tileLayer.provider(provider, options), "tile", layerId, group);
 };
 </script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
 
 
 
@@ -13084,13 +13093,13 @@ div.tocify {
 <h1 class="tabset tabset-fade tabset-pills">Case Map</h1>
 <div id="united-states" class="section level2">
 <h2>United States</h2>
-<div id="htmlwidget-291bdb6154693a3f98c3" style="width:100%;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-291bdb6154693a3f98c3">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Toner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[47.4009,42.1657,36.1162,42.2302,35.4437,37.6489,33.0406,39.0598,27.7663,40.2989,44.572,31.0545,40.3495,40.5908,42.0115,39.0639,35.6301,33.8569,35.7478,37.7693,33.7298,39.8494,37.6681,38.8974,38.3135,43.4525,45.6945,41.1254,40.3888,41.6809,44.2685,41.5978,21.0943,35.5653,40.15,38.5266,31.1695,38.4561,44.0459,61.3707,34.9697,39.3185,44.2405,44.6939,43.3266,32.7416,46.9219,34.8405,47.5289,44.2998,38.4912,42.756,32.3182,18.2208,13.4443,18.3358],[-121.4905,-74.9481,-119.6816,-71.5301,139.638,-122.6655,-83.6431,-105.3111,-81.6868,-74.521,-122.0709,-97.5635,-88.9861,-77.2098,-93.2105,-76.8021,-79.8064,-80.945,-86.6923,-78.17,-111.4312,-86.2583,-84.6701,-77.0268,-117.0554,-71.5639,-93.9002,-98.2681,-82.7649,-71.5118,-89.6165,-72.7554,-157.4983,-96.9289,-111.8624,-96.7265,-91.8678,-92.2884,-72.7107,-152.4044,-92.3731,-75.5071,-114.4788,-69.3819,-84.5361,-89.6787,-110.4544,-106.2485,-99.784,-99.4388,-80.9545,-107.3025,-86.9023,-66.5901,144.7937,-64.8963],[18.9972511421785,24.1683052071751,18.5091757250309,16.1769987594565,9.72955074527657,8.50299345415539,15.9923241380404,15.4135446355786,16.8035642519766,18.8923764300323,12.7035109124612,16.1023663515823,17.3889815209907,15.5811200413763,11.2495241758257,13.742920563233,14.2760675434372,13.1952866480763,15.5613960731884,13.4954067537944,12.5597013021157,13.2582622701477,11.4877996253365,11.5624320332107,13.1175601804012,10.4359681747391,12.8247467873077,9.82956408181081,14.6802944736885,11.0471015194915,14.8569984378168,13.5179294286503,9.67800252726973,10.5117315484774,12.9962425781646,10.3972077083992,16.8245601762237,11.5129254649702,9.87810929645357,7.61130609430856,12.7648636847515,9.62536900427515,9.34417404570842,11.2215909243303,17.3602180205738,13.3317969831634,8.58496801121287,10.1076281695864,8.33051127543801,7.61130609430856,6.21226662447,7.94513457586986,12.318134212893,7.83873553982287,8.23959216501082,2.74653072167027],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":10,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,["<strong>Washington<\/strong><br>1,996 cases","<strong>New York<\/strong><br>15,793 cases","<strong>California<\/strong><br>1,642 cases","<strong>Massachusetts<\/strong><br>646 cases","<strong>Diamond Princess<\/strong><br>49 cases","<strong>Grand Princess<\/strong><br>30 cases","<strong>Georgia<\/strong><br>600 cases","<strong>Colorado<\/strong><br>476 cases","<strong>Florida<\/strong><br>830 cases","<strong>New Jersey<\/strong><br>1,914 cases","<strong>Oregon<\/strong><br>161 cases","<strong>Texas<\/strong><br>627 cases","<strong>Illinois<\/strong><br>1,049 cases","<strong>Pennsylvania<\/strong><br>509 cases","<strong>Iowa<\/strong><br>90 cases","<strong>Maryland<\/strong><br>244 cases","<strong>North Carolina<\/strong><br>302 cases","<strong>South Carolina<\/strong><br>196 cases","<strong>Tennessee<\/strong><br>505 cases","<strong>Virginia<\/strong><br>221 cases","<strong>Arizona<\/strong><br>152 cases","<strong>Indiana<\/strong><br>201 cases","<strong>Kentucky<\/strong><br>99 cases","<strong>District of Columbia<\/strong><br>102 cases","<strong>Nevada<\/strong><br>190 cases","<strong>New Hampshire<\/strong><br>65 cases","<strong>Minnesota<\/strong><br>169 cases","<strong>Nebraska<\/strong><br>51 cases","<strong>Ohio<\/strong><br>355 cases","<strong>Rhode Island<\/strong><br>83 cases","<strong>Wisconsin<\/strong><br>381 cases","<strong>Connecticut<\/strong><br>223 cases","<strong>Hawaii<\/strong><br>48 cases","<strong>Oklahoma<\/strong><br>67 cases","<strong>Utah<\/strong><br>181 cases","<strong>Kansas<\/strong><br>64 cases","<strong>Louisiana<\/strong><br>837 cases","<strong>Missouri<\/strong><br>100 cases","<strong>Vermont<\/strong><br>52 cases","<strong>Alaska<\/strong><br>21 cases","<strong>Arkansas<\/strong><br>165 cases","<strong>Delaware<\/strong><br>47 cases","<strong>Idaho<\/strong><br>42 cases","<strong>Maine<\/strong><br>89 cases","<strong>Michigan<\/strong><br>1,037 cases","<strong>Mississippi<\/strong><br>207 cases","<strong>Montana<\/strong><br>31 cases","<strong>New Mexico<\/strong><br>57 cases","<strong>North Dakota<\/strong><br>28 cases","<strong>South Dakota<\/strong><br>21 cases","<strong>West Virginia<\/strong><br>12 cases","<strong>Wyoming<\/strong><br>24 cases","<strong>Alabama<\/strong><br>138 cases","<strong>Puerto Rico<\/strong><br>23 cases","<strong>Guam<\/strong><br>27 cases","<strong>Virgin Islands<\/strong><br>3 cases"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"15px","textOnly":false,"style":{"font-weight":"normal","padding":"3px 8px"},"className":"","sticky":true},null]}],"limits":{"lat":[13.4443,61.3707],"lng":[-157.4983,144.7937]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9baee820ea54f6d4b534" style="width:100%;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9baee820ea54f6d4b534">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Toner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[47.4009,42.1657,36.1162,42.2302,35.4437,37.6489,33.0406,39.0598,27.7663,40.2989,44.572,31.0545,40.3495,40.5908,42.0115,39.0639,35.6301,33.8569,35.7478,37.7693,33.7298,39.8494,37.6681,38.8974,38.3135,43.4525,45.6945,41.1254,40.3888,41.6809,44.2685,41.5978,21.0943,35.5653,40.15,38.5266,31.1695,38.4561,44.0459,61.3707,34.9697,39.3185,44.2405,44.6939,43.3266,32.7416,46.9219,34.8405,47.5289,44.2998,38.4912,42.756,32.3182,18.2208,13.4443,18.3358],[-121.4905,-74.9481,-119.6816,-71.5301,139.638,-122.6655,-83.6431,-105.3111,-81.6868,-74.521,-122.0709,-97.5635,-88.9861,-77.2098,-93.2105,-76.8021,-79.8064,-80.945,-86.6923,-78.17,-111.4312,-86.2583,-84.6701,-77.0268,-117.0554,-71.5639,-93.9002,-98.2681,-82.7649,-71.5118,-89.6165,-72.7554,-157.4983,-96.9289,-111.8624,-96.7265,-91.8678,-92.2884,-72.7107,-152.4044,-92.3731,-75.5071,-114.4788,-69.3819,-84.5361,-89.6787,-110.4544,-106.2485,-99.784,-99.4388,-80.9545,-107.3025,-86.9023,-66.5901,144.7937,-64.8963],[18.9972511421785,24.1683052071751,18.5091757250309,16.1769987594565,9.72955074527657,8.50299345415539,15.9923241380404,15.4135446355786,16.8035642519766,18.8923764300323,12.7035109124612,16.1023663515823,17.3889815209907,15.5811200413763,11.2495241758257,13.742920563233,14.2760675434372,13.1952866480763,15.5613960731884,13.4954067537944,12.5597013021157,13.2582622701477,11.4877996253365,11.5624320332107,13.1175601804012,10.4359681747391,12.8247467873077,9.82956408181081,14.6802944736885,11.0471015194915,14.8569984378168,13.5179294286503,9.67800252726973,10.5117315484774,12.9962425781646,10.3972077083992,16.8245601762237,11.5129254649702,9.87810929645357,7.61130609430856,12.7648636847515,9.62536900427515,9.34417404570842,11.2215909243303,17.3602180205738,13.3317969831634,8.58496801121287,10.1076281695864,8.33051127543801,7.61130609430856,6.21226662447,7.94513457586986,12.318134212893,7.83873553982287,8.23959216501082,2.74653072167027],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":10,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,["<strong>Washington<\/strong><br>1,996 cases","<strong>New York<\/strong><br>15,793 cases","<strong>California<\/strong><br>1,642 cases","<strong>Massachusetts<\/strong><br>646 cases","<strong>Diamond Princess<\/strong><br>49 cases","<strong>Grand Princess<\/strong><br>30 cases","<strong>Georgia<\/strong><br>600 cases","<strong>Colorado<\/strong><br>476 cases","<strong>Florida<\/strong><br>830 cases","<strong>New Jersey<\/strong><br>1,914 cases","<strong>Oregon<\/strong><br>161 cases","<strong>Texas<\/strong><br>627 cases","<strong>Illinois<\/strong><br>1,049 cases","<strong>Pennsylvania<\/strong><br>509 cases","<strong>Iowa<\/strong><br>90 cases","<strong>Maryland<\/strong><br>244 cases","<strong>North Carolina<\/strong><br>302 cases","<strong>South Carolina<\/strong><br>196 cases","<strong>Tennessee<\/strong><br>505 cases","<strong>Virginia<\/strong><br>221 cases","<strong>Arizona<\/strong><br>152 cases","<strong>Indiana<\/strong><br>201 cases","<strong>Kentucky<\/strong><br>99 cases","<strong>District of Columbia<\/strong><br>102 cases","<strong>Nevada<\/strong><br>190 cases","<strong>New Hampshire<\/strong><br>65 cases","<strong>Minnesota<\/strong><br>169 cases","<strong>Nebraska<\/strong><br>51 cases","<strong>Ohio<\/strong><br>355 cases","<strong>Rhode Island<\/strong><br>83 cases","<strong>Wisconsin<\/strong><br>381 cases","<strong>Connecticut<\/strong><br>223 cases","<strong>Hawaii<\/strong><br>48 cases","<strong>Oklahoma<\/strong><br>67 cases","<strong>Utah<\/strong><br>181 cases","<strong>Kansas<\/strong><br>64 cases","<strong>Louisiana<\/strong><br>837 cases","<strong>Missouri<\/strong><br>100 cases","<strong>Vermont<\/strong><br>52 cases","<strong>Alaska<\/strong><br>21 cases","<strong>Arkansas<\/strong><br>165 cases","<strong>Delaware<\/strong><br>47 cases","<strong>Idaho<\/strong><br>42 cases","<strong>Maine<\/strong><br>89 cases","<strong>Michigan<\/strong><br>1,037 cases","<strong>Mississippi<\/strong><br>207 cases","<strong>Montana<\/strong><br>31 cases","<strong>New Mexico<\/strong><br>57 cases","<strong>North Dakota<\/strong><br>28 cases","<strong>South Dakota<\/strong><br>21 cases","<strong>West Virginia<\/strong><br>12 cases","<strong>Wyoming<\/strong><br>24 cases","<strong>Alabama<\/strong><br>138 cases","<strong>Puerto Rico<\/strong><br>23 cases","<strong>Guam<\/strong><br>27 cases","<strong>Virgin Islands<\/strong><br>3 cases"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"15px","textOnly":false,"style":{"font-weight":"normal","padding":"3px 8px"},"className":"","sticky":true},null]}],"limits":{"lat":[13.4443,61.3707],"lng":[-157.4983,144.7937]}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="global" class="section level2">
 <h2>Global</h2>
-<div id="htmlwidget-cb3dc8d7e4ef94686d4e" style="width:100%;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cb3dc8d7e4ef94686d4e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Toner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[15,36,1.2833,28.1667,2.5,49.2827,-33.8688,-37.8136,-28.0167,11.55,7,51,64,24,13,21,43,63,40,-34.9285,50.8333,26,33.8547,33,21,33,26.0275,29.5,28.0339,45.1,46.8182,47.5162,31,30.3753,-14.235,42.3154,39.0742,41.6086,60.472,45.9432,58.5953,43.9424,53.7098,64.9631,55.1694,23.6345,-40.9006,9.082,-31.9505,53.1424,49.8153,43.7333,25.3548,-1.8312,40.1431,40.0691,18.7357,-0.7893,39.3999,42.5063,-41.4545,56.8796,31.7917,24,14.4974,-38.4161,-35.6751,31.24,48.3794,47.1625,-12.4634,47.14,51.9194,34,43.9159,46.1512,-30.5595,27.5142,3.848,4.5709,9.7489,-9.19,44.0165,48.669,8.6195,35.9375,14.6415,42.7339,3.2028,23.685,-23.4425,51.2538,53.9333,52.9399,41.1533,35.1264,4.5353,47.4009,42.1657,36.1162,42.2302,35.4437,37.6489,33.0406,39.0598,27.7663,40.2989,44.572,31.0545,40.3495,40.5908,42.0115,39.0639,35.6301,33.8569,35.7478,37.7693,33.7298,39.8494,37.6681,38.8974,38.3135,43.4525,45.6945,41.1254,40.3888,41.6809,44.2685,41.5978,21.0943,35.5653,40.15,12.2383,41.9029,46.8625,8.538,38.5266,31.1695,38.4561,44.0459,61.3707,34.9697,39.3185,44.2405,44.6939,43.3266,32.7416,46.9219,34.8405,47.5289,44.2998,38.4912,42.756,30.9756,32,36,46.2276,23.3417,33.882,29.1832,27.6104,31.8257,27.614,36.3427,35.4437,32.9711,30.0572,30.6171,47.862,56.2639,40.1824,31.202,39.549,26.0789,23.8298,35.1917,24.974,19.1959,26.8154,39.3054,37.5777,37.8099,22.3,41.2956,43.6661,49.8175,41.1129,44.0935,37.2692,23.7,16,60,35.7452,22.1667,47.4116,-16.2902,61.8926,18.0708,15.2,49.3723,46.5653,31.6927,-4.0383,7.54,17.9,18.1096,38.9637,36.1408,22,5,-35.4735,55.3781,48.0196,-17.6797,53.7609,52.9399,9.145,12.8628,9.9456,37.6489,-0.0236,17.0608,32.3182,-32.5228,7.9465,18.2208,-22.9576,-4.6796,10.6918,6.4238,-26.5225,-0.8037,15.7835,21.0079,-1.9403,13.9094,12.9843,3.9193,3.9339,13.4443,42.6026,53.1355,46.5107,6.6111,-4.0383,1.5,-12.8275,41.3775,52.1326,44.682,16.25,9.3077,6.4281,12.1696,5.1521,-6.369,18.3358,19.3133,-21.1351,13.1939,42.5,41.2044,-20.2,12.5186,-15.4167,11.8251,13.4432,16.7425,25.0343,71.7069,-20.9043,32.3078,15.4542,13.7942,-17.7134,12.8654,-18.7669,18.9712,-11.2027,16.5388,18.0425,17.6078,-6.315,54.2361,-20,64.8255,15.1111,-8.55,15.1794,1,15.415,12.1165,-18.6657,34.8021,-8.8742],[101,138,103.8333,84.25,112.5,-123.1207,151.2093,144.9631,153.4,104.9167,81,9,26,54,122,78,12,16,-4,138.6007,4,30,35.8623,44,57,65,50.55,47.75,1.6596,15.2,8.2275,14.5501,35,69.3451,-51.9253,43.3569,21.8243,21.7453,8.4689,24.9668,25.0136,12.4578,27.9534,-19.0208,23.8813,-102.5528,174.886,8.6753,115.8605,-7.6921,6.1296,7.4167,51.1839,-78.1834,47.5769,45.0382,-70.1627,113.9213,-8.2245,1.5218,145.9707,24.6032,-7.0926,45,-14.4524,-63.6167,-71.543,36.51,31.1656,19.5033,130.8456,9.55,19.1451,9,17.6791,14.9955,22.9375,90.4336,11.5021,-74.2973,-83.7534,-75.0152,21.0059,19.699,0.8248,14.3754,-61.0242,25.4858,73.2207,90.3563,-58.4438,-85.3232,-116.5765,-73.5491,20.1683,33.4299,114.7277,-121.4905,-74.9481,-119.6816,-71.5301,139.638,-122.6655,-83.6431,-105.3111,-81.6868,-74.521,-122.0709,-97.5635,-88.9861,-77.2098,-93.2105,-76.8021,-79.8064,-80.945,-86.6923,-78.17,-111.4312,-86.2583,-84.6701,-77.0268,-117.0554,-71.5639,-93.9002,-98.2681,-82.7649,-71.5118,-89.6165,-72.7554,-157.4983,-96.9289,-111.8624,-1.5616,12.4534,103.8467,-80.7821,-96.7265,-91.8678,-92.2884,-72.7107,-152.4044,-92.3731,-75.5071,-114.4788,-69.3819,-84.5361,-89.6787,-110.4544,-106.2485,-99.784,-99.4388,-80.9545,-107.3025,112.2707,53,128,2.2137,113.4244,113.614,120.0934,111.7088,117.2264,115.7221,118.1498,139.638,119.455,107.874,102.7103,127.7615,9.5018,116.4142,121.4491,116.1306,117.9874,108.7881,108.8701,101.487,109.7453,106.8748,117.323,112.2922,101.0583,114.2,122.6085,126.1923,15.473,85.2401,113.9448,106.1655,121,108,90,95.9956,113.55,28.3699,-63.5887,-6.9118,-63.0501,-86.2419,-2.3644,-66.4619,88.0924,21.7587,-5.5471,-62.8333,-77.2975,35.2433,-5.3536,-80,-58.75,149.0124,-3.436,66.9237,149.4068,-98.8139,-106.4509,40.4897,30.2176,-9.6966,-122.6655,37.9062,-61.7964,-86.9023,-55.7658,-1.0232,-66.5901,18.4904,55.492,-61.2225,-66.5897,31.4659,11.6094,-90.2308,10.9408,29.8739,-60.9789,-61.2872,-56.0278,-53.1258,144.7937,20.903,-57.6604,-63.4168,20.9394,21.7587,10,45.1662,64.5853,5.2913,-63.7443,-61.5833,2.3158,-9.4295,-68.99,46.1996,34.8888,-64.8963,-81.2546,55.2471,-59.5432,19.3,74.7661,57.5,-70.0358,28.2833,42.5903,-15.3101,-62.1874,-77.3963,-42.6043,165.618,-64.7505,18.7322,-88.8965,178.065,-85.2072,46.8691,-72.2852,17.8739,-23.0418,-63.0548,8.0817,143.9555,-4.5481,30,-124.8457,-23.6167,125.56,39.7823,32,-61.371,-61.679,35.5296,38.9968,125.7275],[15.9881539952886,17.4756412512347,15.3007435473774,1.73286795139986,17.9368107745909,15.1243336380799,15.6963035604146,14.2258986358102,13.4954067537944,11.0770419971083,11.0167981181606,25.3038453919608,16.0983759277502,12.5760948034811,14.8504281318011,14.9535355281362,27.4690724369395,18.9183641900331,25.6675473431784,11.5129254649702,20.329561962518,14.4749004272431,13.7835718654125,13.6275961339143,10.0183329630812,9.22219863528484,14.5128374222912,13.0911049070749,13.2582622701477,13.8433356675463,22.220167136887,20.2114060380883,17.4408701761194,16.635381300458,18.4334357747751,9.97246011641069,16.0903759209236,11.8404961209862,19.4402886927469,15.1768443200062,14.4672434534168,12.6879345380846,10.8268333507158,15.8553035468029,12.1879933080029,13.8136323478295,10.4741368550661,8.50299345415539,11.9687293569551,17.0225982651074,16.7052714936245,7.83873553982287,15.5063387929698,16.6769158021147,10.4359681747391,13.1696453976583,13.270669243503,15.6055581636379,18.4443972705697,11.8184695467809,7.72760613339579,12.3361848328267,11.8623303209081,15.5909239755093,10.5117315484774,13.5402510055111,16.1222234853671,11.7962471782377,10.726148602871,12.1879933080029,2.74653072167027,9.02729478161056,16.1301223860931,10.7937202838408,12.0907047673787,15.0646649345633,14.0328202659702,1.73286795139986,9.22219863528484,13.6060442763045,12.2445994998773,14.7360070856621,13.5066934546807,13.0508895626958,6.93147180559945,11.2495241758257,9.02729478161056,13.0777715421365,6.41237339365384,8.23959216501082,7.72760613339579,15.130222922311,13.8920701542488,13.4726793245413,11.2215909243303,11.3846922290014,11.1933420361955,18.9972511421785,24.1683052071751,18.5091757250309,16.1769987594565,9.72955074527657,8.50299345415539,15.9923241380404,15.4135446355786,16.8035642519766,18.8923764300323,12.7035109124612,16.1023663515823,17.3889815209907,15.5811200413763,11.2495241758257,13.742920563233,14.2760675434372,13.1952866480763,15.5613960731884,13.4954067537944,12.5597013021157,13.2582622701477,11.4877996253365,11.5624320332107,13.1175601804012,10.4359681747391,12.8247467873077,9.82956408181081,14.6802944736885,11.0471015194915,14.8569984378168,13.5179294286503,9.67800252726973,10.5117315484774,12.9962425781646,10.7937202838408,0,5.75646273248512,13.7531455263618,10.3972077083992,16.8245601762237,11.5129254649702,9.87810929645357,7.61130609430856,12.7648636847515,9.62536900427515,9.34417404570842,11.2215909243303,17.3602180205738,13.3317969831634,8.58496801121287,10.1076281695864,8.33051127543801,7.61130609430856,6.21226662447,7.94513457586986,27.8107936848212,24.9555157681188,22.7336735506119,24.2036709222091,18.123037642786,17.8728289963935,17.8011109309812,17.3139879927762,17.2442623578216,17.104038691194,16.6029554243515,16.4201947785299,16.1261760553604,15.8946056662702,15.7427732998348,15.4552122667916,18.1016242356387,15.6055581636379,14.9408772732448,14.4129777569621,14.317119368968,13.8433356675463,13.7835718654125,12.9262099875954,12.8099099485081,12.4590165542708,12.2999523145703,12.2258728205544,12.2816372143401,14.3972544346932,12.0907047673787,11.3314987328831,17.5527099107229,10.8268333507158,10.7937202838408,10.7937202838408,12.8247467873077,11.8184695467809,14.7634046201364,7.22592939474041,7.48933068388498,11.358236955675,7.94513457586986,11.8623303209081,3.46573590279973,8.14524134505371,8.66433975699932,7.08303336014054,0,8.50299345415539,6.59764332403815,2.74653072167027,6.93147180559945,17.7990890950441,6.77012550275553,8.88837015372353,4.86477537263828,7.3610974479161,21.6130863532428,10.2358614055553,6.77012550275553,7.3610974479161,9.87810929645357,5.99473818199593,1.73286795139986,1.73286795139986,6.41237339365384,6.77012550275553,0,12.318134212893,12.2631869460961,7.94513457586986,7.83873553982287,2.74653072167027,4.86477537263828,9.78005751357036,10.6212381051234,3.46573590279973,4.02359478108525,7.3610974479161,1.73286795139986,7.3610974479161,1.73286795139986,0,4.02359478108525,7.22592939474041,8.23959216501082,1.73286795139986,4.47939867307014,1.73286795139986,2.74653072167027,2.74653072167027,4.47939867307014,5.99473818199593,9.40300028923391,20.8594793299921,8.33051127543801,10.0633792268379,1.73286795139986,2.74653072167027,2.74653072167027,0,6.21226662447,2.74653072167027,2.74653072167027,9.62536900427515,6.59764332403815,7.61130609430856,6.59764332403815,7.22592939474041,5.19860385419959,2.74653072167027,0,0,0,3.46573590279973,3.46573590279973,3.46573590279973,1.73286795139986,0,2.74653072167027,1.73286795139986,1.73286795139986,2.74653072167027,1.73286795139986,1.73286795139986,2.74653072167027,0,1.73286795139986,0,4.02359478108525,2.74653072167027,0,0,0,0,0,0,0,0,0,0],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":10,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,["<strong>Thailand<\/strong><br>599 cases","<strong>Japan<\/strong><br>1,086 cases","<strong>Singapore<\/strong><br>455 cases","<strong>Nepal<\/strong><br>2 cases","<strong>Malaysia<\/strong><br>1,306 cases","<strong>Canada: British Columbia<\/strong><br>424 cases","<strong>Australia: New South Wales<\/strong><br>533 cases","<strong>Australia: Victoria<\/strong><br>296 cases","<strong>Australia: Queensland<\/strong><br>221 cases","<strong>Cambodia<\/strong><br>84 cases","<strong>Sri Lanka<\/strong><br>82 cases","<strong>Germany<\/strong><br>24,873 cases","<strong>Finland<\/strong><br>626 cases","<strong>United Arab Emirates<\/strong><br>153 cases","<strong>Philippines<\/strong><br>380 cases","<strong>India<\/strong><br>396 cases","<strong>Italy<\/strong><br>59,138 cases","<strong>Sweden<\/strong><br>1,934 cases","<strong>Spain<\/strong><br>28,768 cases","<strong>Australia: South Australia<\/strong><br>100 cases","<strong>Belgium<\/strong><br>3,401 cases","<strong>Egypt<\/strong><br>327 cases","<strong>Lebanon<\/strong><br>248 cases","<strong>Iraq<\/strong><br>233 cases","<strong>Oman<\/strong><br>55 cases","<strong>Afghanistan<\/strong><br>40 cases","<strong>Bahrain<\/strong><br>332 cases","<strong>Kuwait<\/strong><br>188 cases","<strong>Algeria<\/strong><br>201 cases","<strong>Croatia<\/strong><br>254 cases","<strong>Switzerland<\/strong><br>7,245 cases","<strong>Austria<\/strong><br>3,244 cases","<strong>Israel<\/strong><br>1,071 cases","<strong>Pakistan<\/strong><br>776 cases","<strong>Brazil<\/strong><br>1,593 cases","<strong>Georgia<\/strong><br>54 cases","<strong>Greece<\/strong><br>624 cases","<strong>North Macedonia<\/strong><br>114 cases","<strong>Norway<\/strong><br>2,383 cases","<strong>Romania<\/strong><br>433 cases","<strong>Estonia<\/strong><br>326 cases","<strong>San Marino<\/strong><br>160 cases","<strong>Belarus<\/strong><br>76 cases","<strong>Iceland<\/strong><br>568 cases","<strong>Lithuania<\/strong><br>131 cases","<strong>Mexico<\/strong><br>251 cases","<strong>New Zealand<\/strong><br>66 cases","<strong>Nigeria<\/strong><br>30 cases","<strong>Australia: Western Australia<\/strong><br>120 cases","<strong>Ireland<\/strong><br>906 cases","<strong>Luxembourg<\/strong><br>798 cases","<strong>Monaco<\/strong><br>23 cases","<strong>Qatar<\/strong><br>494 cases","<strong>Ecuador<\/strong><br>789 cases","<strong>Azerbaijan<\/strong><br>65 cases","<strong>Armenia<\/strong><br>194 cases","<strong>Dominican Republic<\/strong><br>202 cases","<strong>Indonesia<\/strong><br>514 cases","<strong>Portugal<\/strong><br>1,600 cases","<strong>Andorra<\/strong><br>113 cases","<strong>Australia: Tasmania<\/strong><br>22 cases","<strong>Latvia<\/strong><br>139 cases","<strong>Morocco<\/strong><br>115 cases","<strong>Saudi Arabia<\/strong><br>511 cases","<strong>Senegal<\/strong><br>67 cases","<strong>Argentina<\/strong><br>225 cases","<strong>Chile<\/strong><br>632 cases","<strong>Jordan<\/strong><br>112 cases","<strong>Ukraine<\/strong><br>73 cases","<strong>Hungary<\/strong><br>131 cases","<strong>Australia: Northern Territory<\/strong><br>3 cases","<strong>Liechtenstein<\/strong><br>37 cases","<strong>Poland<\/strong><br>634 cases","<strong>Tunisia<\/strong><br>75 cases","<strong>Bosnia and Herzegovina<\/strong><br>126 cases","<strong>Slovenia<\/strong><br>414 cases","<strong>South Africa<\/strong><br>274 cases","<strong>Bhutan<\/strong><br>2 cases","<strong>Cameroon<\/strong><br>40 cases","<strong>Colombia<\/strong><br>231 cases","<strong>Costa Rica<\/strong><br>134 cases","<strong>Peru<\/strong><br>363 cases","<strong>Serbia<\/strong><br>222 cases","<strong>Slovakia<\/strong><br>185 cases","<strong>Togo<\/strong><br>16 cases","<strong>Malta<\/strong><br>90 cases","<strong>Martinique<\/strong><br>37 cases","<strong>Bulgaria<\/strong><br>187 cases","<strong>Maldives<\/strong><br>13 cases","<strong>Bangladesh<\/strong><br>27 cases","<strong>Paraguay<\/strong><br>22 cases","<strong>Canada: Ontario<\/strong><br>425 cases","<strong>Canada: Alberta<\/strong><br>259 cases","<strong>Canada: Quebec<\/strong><br>219 cases","<strong>Albania<\/strong><br>89 cases","<strong>Cyprus<\/strong><br>95 cases","<strong>Brunei<\/strong><br>88 cases","<strong>US: Washington<\/strong><br>1,996 cases","<strong>US: New York<\/strong><br>15,793 cases","<strong>US: California<\/strong><br>1,642 cases","<strong>US: Massachusetts<\/strong><br>646 cases","<strong>US: Diamond Princess<\/strong><br>49 cases","<strong>US: Grand Princess<\/strong><br>30 cases","<strong>US: Georgia<\/strong><br>600 cases","<strong>US: Colorado<\/strong><br>476 cases","<strong>US: Florida<\/strong><br>830 cases","<strong>US: New Jersey<\/strong><br>1,914 cases","<strong>US: Oregon<\/strong><br>161 cases","<strong>US: Texas<\/strong><br>627 cases","<strong>US: Illinois<\/strong><br>1,049 cases","<strong>US: Pennsylvania<\/strong><br>509 cases","<strong>US: Iowa<\/strong><br>90 cases","<strong>US: Maryland<\/strong><br>244 cases","<strong>US: North Carolina<\/strong><br>302 cases","<strong>US: South Carolina<\/strong><br>196 cases","<strong>US: Tennessee<\/strong><br>505 cases","<strong>US: Virginia<\/strong><br>221 cases","<strong>US: Arizona<\/strong><br>152 cases","<strong>US: Indiana<\/strong><br>201 cases","<strong>US: Kentucky<\/strong><br>99 cases","<strong>US: District of Columbia<\/strong><br>102 cases","<strong>US: Nevada<\/strong><br>190 cases","<strong>US: New Hampshire<\/strong><br>65 cases","<strong>US: Minnesota<\/strong><br>169 cases","<strong>US: Nebraska<\/strong><br>51 cases","<strong>US: Ohio<\/strong><br>355 cases","<strong>US: Rhode Island<\/strong><br>83 cases","<strong>US: Wisconsin<\/strong><br>381 cases","<strong>US: Connecticut<\/strong><br>223 cases","<strong>US: Hawaii<\/strong><br>48 cases","<strong>US: Oklahoma<\/strong><br>67 cases","<strong>US: Utah<\/strong><br>181 cases","<strong>Burkina Faso<\/strong><br>75 cases","<strong>Holy See<\/strong><br>1 cases","<strong>Mongolia<\/strong><br>10 cases","<strong>Panama<\/strong><br>245 cases","<strong>US: Kansas<\/strong><br>64 cases","<strong>US: Louisiana<\/strong><br>837 cases","<strong>US: Missouri<\/strong><br>100 cases","<strong>US: Vermont<\/strong><br>52 cases","<strong>US: Alaska<\/strong><br>21 cases","<strong>US: Arkansas<\/strong><br>165 cases","<strong>US: Delaware<\/strong><br>47 cases","<strong>US: Idaho<\/strong><br>42 cases","<strong>US: Maine<\/strong><br>89 cases","<strong>US: Michigan<\/strong><br>1,037 cases","<strong>US: Mississippi<\/strong><br>207 cases","<strong>US: Montana<\/strong><br>31 cases","<strong>US: New Mexico<\/strong><br>57 cases","<strong>US: North Dakota<\/strong><br>28 cases","<strong>US: South Dakota<\/strong><br>21 cases","<strong>US: West Virginia<\/strong><br>12 cases","<strong>US: Wyoming<\/strong><br>24 cases","<strong>China: Hubei<\/strong><br>67,800 cases","<strong>Iran<\/strong><br>21,638 cases","<strong>Korea, South<\/strong><br>8,897 cases","<strong>France: France<\/strong><br>16,018 cases","<strong>China: Guangdong<\/strong><br>1,407 cases","<strong>China: Henan<\/strong><br>1,273 cases","<strong>China: Zhejiang<\/strong><br>1,237 cases","<strong>China: Hunan<\/strong><br>1,018 cases","<strong>China: Anhui<\/strong><br>990 cases","<strong>China: Jiangxi<\/strong><br>936 cases","<strong>China: Shandong<\/strong><br>766 cases","<strong>Cruise Ship: Diamond Princess<\/strong><br>712 cases","<strong>China: Jiangsu<\/strong><br>633 cases","<strong>China: Chongqing<\/strong><br>577 cases","<strong>China: Sichuan<\/strong><br>543 cases","<strong>China: Heilongjiang<\/strong><br>484 cases","<strong>Denmark: Denmark<\/strong><br>1,395 cases","<strong>China: Beijing<\/strong><br>514 cases","<strong>China: Shanghai<\/strong><br>394 cases","<strong>China: Hebei<\/strong><br>319 cases","<strong>China: Fujian<\/strong><br>307 cases","<strong>China: Guangxi<\/strong><br>254 cases","<strong>China: Shaanxi<\/strong><br>248 cases","<strong>China: Yunnan<\/strong><br>176 cases","<strong>China: Hainan<\/strong><br>168 cases","<strong>China: Guizhou<\/strong><br>146 cases","<strong>China: Tianjin<\/strong><br>137 cases","<strong>China: Shanxi<\/strong><br>133 cases","<strong>China: Gansu<\/strong><br>136 cases","<strong>China: Hong Kong<\/strong><br>317 cases","<strong>China: Liaoning<\/strong><br>126 cases","<strong>China: Jilin<\/strong><br>93 cases","<strong>Czechia<\/strong><br>1,120 cases","<strong>China: Xinjiang<\/strong><br>76 cases","<strong>China: Inner Mongolia<\/strong><br>75 cases","<strong>China: Ningxia<\/strong><br>75 cases","<strong>Taiwan*<\/strong><br>169 cases","<strong>Vietnam<\/strong><br>113 cases","<strong>Russia<\/strong><br>367 cases","<strong>China: Qinghai<\/strong><br>18 cases","<strong>China: Macau<\/strong><br>20 cases","<strong>Moldova<\/strong><br>94 cases","<strong>Bolivia<\/strong><br>24 cases","<strong>Denmark: Faroe Islands<\/strong><br>115 cases","<strong>France: St Martin<\/strong><br>4 cases","<strong>Honduras<\/strong><br>26 cases","<strong>United Kingdom: Channel Islands<\/strong><br>32 cases","<strong>Canada: New Brunswick<\/strong><br>17 cases","<strong>China: Tibet<\/strong><br>1 cases","<strong>Congo (Kinshasa)<\/strong><br>30 cases","<strong>Cote d'Ivoire<\/strong><br>14 cases","<strong>France: Saint Barthelemy<\/strong><br>3 cases","<strong>Jamaica<\/strong><br>16 cases","<strong>Turkey<\/strong><br>1,236 cases","<strong>United Kingdom: Gibraltar<\/strong><br>15 cases","<strong>Cuba<\/strong><br>35 cases","<strong>Guyana<\/strong><br>7 cases","<strong>Australia: Australian Capital Territory<\/strong><br>19 cases","<strong>United Kingdom: United Kingdom<\/strong><br>5,683 cases","<strong>Kazakhstan<\/strong><br>60 cases","<strong>France: French Polynesia<\/strong><br>15 cases","<strong>Canada: Manitoba<\/strong><br>19 cases","<strong>Canada: Saskatchewan<\/strong><br>52 cases","<strong>Ethiopia<\/strong><br>11 cases","<strong>Sudan<\/strong><br>2 cases","<strong>Guinea<\/strong><br>2 cases","<strong>Canada: Grand Princess<\/strong><br>13 cases","<strong>Kenya<\/strong><br>15 cases","<strong>Antigua and Barbuda<\/strong><br>1 cases","<strong>US: Alabama<\/strong><br>138 cases","<strong>Uruguay<\/strong><br>135 cases","<strong>Ghana<\/strong><br>24 cases","<strong>US: Puerto Rico<\/strong><br>23 cases","<strong>Namibia<\/strong><br>3 cases","<strong>Seychelles<\/strong><br>7 cases","<strong>Trinidad and Tobago<\/strong><br>50 cases","<strong>Venezuela<\/strong><br>70 cases","<strong>Eswatini<\/strong><br>4 cases","<strong>Gabon<\/strong><br>5 cases","<strong>Guatemala<\/strong><br>19 cases","<strong>Mauritania<\/strong><br>2 cases","<strong>Rwanda<\/strong><br>19 cases","<strong>Saint Lucia<\/strong><br>2 cases","<strong>Saint Vincent and the Grenadines<\/strong><br>1 cases","<strong>Suriname<\/strong><br>5 cases","<strong>France: French Guiana<\/strong><br>18 cases","<strong>US: Guam<\/strong><br>27 cases","<strong>Kosovo<\/strong><br>2 cases","<strong>Canada: Newfoundland and Labrador<\/strong><br>6 cases","<strong>Canada: Prince Edward Island<\/strong><br>2 cases","<strong>Central African Republic<\/strong><br>3 cases","<strong>Congo (Brazzaville)<\/strong><br>3 cases","<strong>Equatorial Guinea<\/strong><br>6 cases","<strong>France: Mayotte<\/strong><br>11 cases","<strong>Uzbekistan<\/strong><br>43 cases","<strong>Netherlands: Netherlands<\/strong><br>4,204 cases","<strong>Canada: Nova Scotia<\/strong><br>28 cases","<strong>France: Guadeloupe<\/strong><br>56 cases","<strong>Benin<\/strong><br>2 cases","<strong>Liberia<\/strong><br>3 cases","<strong>Netherlands: Curacao<\/strong><br>3 cases","<strong>Somalia<\/strong><br>1 cases","<strong>Tanzania<\/strong><br>12 cases","<strong>US: Virgin Islands<\/strong><br>3 cases","<strong>United Kingdom: Cayman Islands<\/strong><br>3 cases","<strong>France: Reunion<\/strong><br>47 cases","<strong>Barbados<\/strong><br>14 cases","<strong>Montenegro<\/strong><br>21 cases","<strong>Kyrgyzstan<\/strong><br>14 cases","<strong>Mauritius<\/strong><br>18 cases","<strong>Netherlands: Aruba<\/strong><br>8 cases","<strong>Zambia<\/strong><br>3 cases","<strong>Djibouti<\/strong><br>1 cases","<strong>Gambia, The<\/strong><br>1 cases","<strong>United Kingdom: Montserrat<\/strong><br>1 cases","<strong>Bahamas, The<\/strong><br>4 cases","<strong>Denmark: Greenland<\/strong><br>4 cases","<strong>France: New Caledonia<\/strong><br>4 cases","<strong>United Kingdom: Bermuda<\/strong><br>2 cases","<strong>Chad<\/strong><br>1 cases","<strong>El Salvador<\/strong><br>3 cases","<strong>Fiji<\/strong><br>2 cases","<strong>Nicaragua<\/strong><br>2 cases","<strong>Madagascar<\/strong><br>3 cases","<strong>Haiti<\/strong><br>2 cases","<strong>Angola<\/strong><br>2 cases","<strong>Cabo Verde<\/strong><br>3 cases","<strong>Netherlands: Sint Maarten<\/strong><br>1 cases","<strong>Niger<\/strong><br>2 cases","<strong>Papua New Guinea<\/strong><br>1 cases","<strong>United Kingdom: Isle of Man<\/strong><br>5 cases","<strong>Zimbabwe<\/strong><br>3 cases","<strong>Canada: Northwest Territories<\/strong><br>1 cases","<strong>Cape Verde<\/strong><br>1 cases","<strong>East Timor<\/strong><br>1 cases","<strong>Eritrea<\/strong><br>1 cases","<strong>Uganda<\/strong><br>1 cases","<strong>Dominica<\/strong><br>1 cases","<strong>Grenada<\/strong><br>1 cases","<strong>Mozambique<\/strong><br>1 cases","<strong>Syria<\/strong><br>1 cases","<strong>Timor-Leste<\/strong><br>1 cases"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"15px","textOnly":false,"style":{"font-weight":"normal","padding":"3px 8px"},"className":"","sticky":true},null]}],"limits":{"lat":[-41.4545,71.7069],"lng":[-157.4983,178.065]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c1ea2cb0cad6fa4d1f2d" style="width:100%;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c1ea2cb0cad6fa4d1f2d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Toner",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[15,36,1.2833,28.1667,2.5,49.2827,-33.8688,-37.8136,-28.0167,11.55,7,51,64,24,13,21,43,63,40,-34.9285,50.8333,26,33.8547,33,21,33,26.0275,29.5,28.0339,45.1,46.8182,47.5162,31,30.3753,-14.235,42.3154,39.0742,41.6086,60.472,45.9432,58.5953,43.9424,53.7098,64.9631,55.1694,23.6345,-40.9006,9.082,-31.9505,53.1424,49.8153,43.7333,25.3548,-1.8312,40.1431,40.0691,18.7357,-0.7893,39.3999,42.5063,-41.4545,56.8796,31.7917,24,14.4974,-38.4161,-35.6751,31.24,48.3794,47.1625,-12.4634,47.14,51.9194,34,43.9159,46.1512,-30.5595,27.5142,3.848,4.5709,9.7489,-9.19,44.0165,48.669,8.6195,35.9375,14.6415,42.7339,3.2028,23.685,-23.4425,51.2538,53.9333,52.9399,41.1533,35.1264,4.5353,47.4009,42.1657,36.1162,42.2302,35.4437,37.6489,33.0406,39.0598,27.7663,40.2989,44.572,31.0545,40.3495,40.5908,42.0115,39.0639,35.6301,33.8569,35.7478,37.7693,33.7298,39.8494,37.6681,38.8974,38.3135,43.4525,45.6945,41.1254,40.3888,41.6809,44.2685,41.5978,21.0943,35.5653,40.15,12.2383,41.9029,46.8625,8.538,38.5266,31.1695,38.4561,44.0459,61.3707,34.9697,39.3185,44.2405,44.6939,43.3266,32.7416,46.9219,34.8405,47.5289,44.2998,38.4912,42.756,30.9756,32,36,46.2276,23.3417,33.882,29.1832,27.6104,31.8257,27.614,36.3427,35.4437,32.9711,30.0572,30.6171,47.862,56.2639,40.1824,31.202,39.549,26.0789,23.8298,35.1917,24.974,19.1959,26.8154,39.3054,37.5777,37.8099,22.3,41.2956,43.6661,49.8175,41.1129,44.0935,37.2692,23.7,16,60,35.7452,22.1667,47.4116,-16.2902,61.8926,18.0708,15.2,49.3723,46.5653,31.6927,-4.0383,7.54,17.9,18.1096,38.9637,36.1408,22,5,-35.4735,55.3781,48.0196,-17.6797,53.7609,52.9399,9.145,12.8628,9.9456,37.6489,-0.0236,17.0608,32.3182,-32.5228,7.9465,18.2208,-22.9576,-4.6796,10.6918,6.4238,-26.5225,-0.8037,15.7835,21.0079,-1.9403,13.9094,12.9843,3.9193,3.9339,13.4443,42.6026,53.1355,46.5107,6.6111,-4.0383,1.5,-12.8275,41.3775,52.1326,44.682,16.25,9.3077,6.4281,12.1696,5.1521,-6.369,18.3358,19.3133,-21.1351,13.1939,42.5,41.2044,-20.2,12.5186,-15.4167,11.8251,13.4432,16.7425,25.0343,71.7069,-20.9043,32.3078,15.4542,13.7942,-17.7134,12.8654,-18.7669,18.9712,-11.2027,16.5388,18.0425,17.6078,-6.315,54.2361,-20,64.8255,15.1111,-8.55,15.1794,1,15.415,12.1165,-18.6657,34.8021,-8.8742],[101,138,103.8333,84.25,112.5,-123.1207,151.2093,144.9631,153.4,104.9167,81,9,26,54,122,78,12,16,-4,138.6007,4,30,35.8623,44,57,65,50.55,47.75,1.6596,15.2,8.2275,14.5501,35,69.3451,-51.9253,43.3569,21.8243,21.7453,8.4689,24.9668,25.0136,12.4578,27.9534,-19.0208,23.8813,-102.5528,174.886,8.6753,115.8605,-7.6921,6.1296,7.4167,51.1839,-78.1834,47.5769,45.0382,-70.1627,113.9213,-8.2245,1.5218,145.9707,24.6032,-7.0926,45,-14.4524,-63.6167,-71.543,36.51,31.1656,19.5033,130.8456,9.55,19.1451,9,17.6791,14.9955,22.9375,90.4336,11.5021,-74.2973,-83.7534,-75.0152,21.0059,19.699,0.8248,14.3754,-61.0242,25.4858,73.2207,90.3563,-58.4438,-85.3232,-116.5765,-73.5491,20.1683,33.4299,114.7277,-121.4905,-74.9481,-119.6816,-71.5301,139.638,-122.6655,-83.6431,-105.3111,-81.6868,-74.521,-122.0709,-97.5635,-88.9861,-77.2098,-93.2105,-76.8021,-79.8064,-80.945,-86.6923,-78.17,-111.4312,-86.2583,-84.6701,-77.0268,-117.0554,-71.5639,-93.9002,-98.2681,-82.7649,-71.5118,-89.6165,-72.7554,-157.4983,-96.9289,-111.8624,-1.5616,12.4534,103.8467,-80.7821,-96.7265,-91.8678,-92.2884,-72.7107,-152.4044,-92.3731,-75.5071,-114.4788,-69.3819,-84.5361,-89.6787,-110.4544,-106.2485,-99.784,-99.4388,-80.9545,-107.3025,112.2707,53,128,2.2137,113.4244,113.614,120.0934,111.7088,117.2264,115.7221,118.1498,139.638,119.455,107.874,102.7103,127.7615,9.5018,116.4142,121.4491,116.1306,117.9874,108.7881,108.8701,101.487,109.7453,106.8748,117.323,112.2922,101.0583,114.2,122.6085,126.1923,15.473,85.2401,113.9448,106.1655,121,108,90,95.9956,113.55,28.3699,-63.5887,-6.9118,-63.0501,-86.2419,-2.3644,-66.4619,88.0924,21.7587,-5.5471,-62.8333,-77.2975,35.2433,-5.3536,-80,-58.75,149.0124,-3.436,66.9237,149.4068,-98.8139,-106.4509,40.4897,30.2176,-9.6966,-122.6655,37.9062,-61.7964,-86.9023,-55.7658,-1.0232,-66.5901,18.4904,55.492,-61.2225,-66.5897,31.4659,11.6094,-90.2308,10.9408,29.8739,-60.9789,-61.2872,-56.0278,-53.1258,144.7937,20.903,-57.6604,-63.4168,20.9394,21.7587,10,45.1662,64.5853,5.2913,-63.7443,-61.5833,2.3158,-9.4295,-68.99,46.1996,34.8888,-64.8963,-81.2546,55.2471,-59.5432,19.3,74.7661,57.5,-70.0358,28.2833,42.5903,-15.3101,-62.1874,-77.3963,-42.6043,165.618,-64.7505,18.7322,-88.8965,178.065,-85.2072,46.8691,-72.2852,17.8739,-23.0418,-63.0548,8.0817,143.9555,-4.5481,30,-124.8457,-23.6167,125.56,39.7823,32,-61.371,-61.679,35.5296,38.9968,125.7275],[15.9881539952886,17.4756412512347,15.3007435473774,1.73286795139986,17.9368107745909,15.1243336380799,15.6963035604146,14.2258986358102,13.4954067537944,11.0770419971083,11.0167981181606,25.3038453919608,16.0983759277502,12.5760948034811,14.8504281318011,14.9535355281362,27.4690724369395,18.9183641900331,25.6675473431784,11.5129254649702,20.329561962518,14.4749004272431,13.7835718654125,13.6275961339143,10.0183329630812,9.22219863528484,14.5128374222912,13.0911049070749,13.2582622701477,13.8433356675463,22.220167136887,20.2114060380883,17.4408701761194,16.635381300458,18.4334357747751,9.97246011641069,16.0903759209236,11.8404961209862,19.4402886927469,15.1768443200062,14.4672434534168,12.6879345380846,10.8268333507158,15.8553035468029,12.1879933080029,13.8136323478295,10.4741368550661,8.50299345415539,11.9687293569551,17.0225982651074,16.7052714936245,7.83873553982287,15.5063387929698,16.6769158021147,10.4359681747391,13.1696453976583,13.270669243503,15.6055581636379,18.4443972705697,11.8184695467809,7.72760613339579,12.3361848328267,11.8623303209081,15.5909239755093,10.5117315484774,13.5402510055111,16.1222234853671,11.7962471782377,10.726148602871,12.1879933080029,2.74653072167027,9.02729478161056,16.1301223860931,10.7937202838408,12.0907047673787,15.0646649345633,14.0328202659702,1.73286795139986,9.22219863528484,13.6060442763045,12.2445994998773,14.7360070856621,13.5066934546807,13.0508895626958,6.93147180559945,11.2495241758257,9.02729478161056,13.0777715421365,6.41237339365384,8.23959216501082,7.72760613339579,15.130222922311,13.8920701542488,13.4726793245413,11.2215909243303,11.3846922290014,11.1933420361955,18.9972511421785,24.1683052071751,18.5091757250309,16.1769987594565,9.72955074527657,8.50299345415539,15.9923241380404,15.4135446355786,16.8035642519766,18.8923764300323,12.7035109124612,16.1023663515823,17.3889815209907,15.5811200413763,11.2495241758257,13.742920563233,14.2760675434372,13.1952866480763,15.5613960731884,13.4954067537944,12.5597013021157,13.2582622701477,11.4877996253365,11.5624320332107,13.1175601804012,10.4359681747391,12.8247467873077,9.82956408181081,14.6802944736885,11.0471015194915,14.8569984378168,13.5179294286503,9.67800252726973,10.5117315484774,12.9962425781646,10.7937202838408,0,5.75646273248512,13.7531455263618,10.3972077083992,16.8245601762237,11.5129254649702,9.87810929645357,7.61130609430856,12.7648636847515,9.62536900427515,9.34417404570842,11.2215909243303,17.3602180205738,13.3317969831634,8.58496801121287,10.1076281695864,8.33051127543801,7.61130609430856,6.21226662447,7.94513457586986,27.8107936848212,24.9555157681188,22.7336735506119,24.2036709222091,18.123037642786,17.8728289963935,17.8011109309812,17.3139879927762,17.2442623578216,17.104038691194,16.6029554243515,16.4201947785299,16.1261760553604,15.8946056662702,15.7427732998348,15.4552122667916,18.1016242356387,15.6055581636379,14.9408772732448,14.4129777569621,14.317119368968,13.8433356675463,13.7835718654125,12.9262099875954,12.8099099485081,12.4590165542708,12.2999523145703,12.2258728205544,12.2816372143401,14.3972544346932,12.0907047673787,11.3314987328831,17.5527099107229,10.8268333507158,10.7937202838408,10.7937202838408,12.8247467873077,11.8184695467809,14.7634046201364,7.22592939474041,7.48933068388498,11.358236955675,7.94513457586986,11.8623303209081,3.46573590279973,8.14524134505371,8.66433975699932,7.08303336014054,0,8.50299345415539,6.59764332403815,2.74653072167027,6.93147180559945,17.7990890950441,6.77012550275553,8.88837015372353,4.86477537263828,7.3610974479161,21.6130863532428,10.2358614055553,6.77012550275553,7.3610974479161,9.87810929645357,5.99473818199593,1.73286795139986,1.73286795139986,6.41237339365384,6.77012550275553,0,12.318134212893,12.2631869460961,7.94513457586986,7.83873553982287,2.74653072167027,4.86477537263828,9.78005751357036,10.6212381051234,3.46573590279973,4.02359478108525,7.3610974479161,1.73286795139986,7.3610974479161,1.73286795139986,0,4.02359478108525,7.22592939474041,8.23959216501082,1.73286795139986,4.47939867307014,1.73286795139986,2.74653072167027,2.74653072167027,4.47939867307014,5.99473818199593,9.40300028923391,20.8594793299921,8.33051127543801,10.0633792268379,1.73286795139986,2.74653072167027,2.74653072167027,0,6.21226662447,2.74653072167027,2.74653072167027,9.62536900427515,6.59764332403815,7.61130609430856,6.59764332403815,7.22592939474041,5.19860385419959,2.74653072167027,0,0,0,3.46573590279973,3.46573590279973,3.46573590279973,1.73286795139986,0,2.74653072167027,1.73286795139986,1.73286795139986,2.74653072167027,1.73286795139986,1.73286795139986,2.74653072167027,0,1.73286795139986,0,4.02359478108525,2.74653072167027,0,0,0,0,0,0,0,0,0,0],null,null,{"interactive":true,"className":"","stroke":false,"color":"#03F","weight":10,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.2},null,null,null,null,["<strong>Thailand<\/strong><br>599 cases","<strong>Japan<\/strong><br>1,086 cases","<strong>Singapore<\/strong><br>455 cases","<strong>Nepal<\/strong><br>2 cases","<strong>Malaysia<\/strong><br>1,306 cases","<strong>Canada: British Columbia<\/strong><br>424 cases","<strong>Australia: New South Wales<\/strong><br>533 cases","<strong>Australia: Victoria<\/strong><br>296 cases","<strong>Australia: Queensland<\/strong><br>221 cases","<strong>Cambodia<\/strong><br>84 cases","<strong>Sri Lanka<\/strong><br>82 cases","<strong>Germany<\/strong><br>24,873 cases","<strong>Finland<\/strong><br>626 cases","<strong>United Arab Emirates<\/strong><br>153 cases","<strong>Philippines<\/strong><br>380 cases","<strong>India<\/strong><br>396 cases","<strong>Italy<\/strong><br>59,138 cases","<strong>Sweden<\/strong><br>1,934 cases","<strong>Spain<\/strong><br>28,768 cases","<strong>Australia: South Australia<\/strong><br>100 cases","<strong>Belgium<\/strong><br>3,401 cases","<strong>Egypt<\/strong><br>327 cases","<strong>Lebanon<\/strong><br>248 cases","<strong>Iraq<\/strong><br>233 cases","<strong>Oman<\/strong><br>55 cases","<strong>Afghanistan<\/strong><br>40 cases","<strong>Bahrain<\/strong><br>332 cases","<strong>Kuwait<\/strong><br>188 cases","<strong>Algeria<\/strong><br>201 cases","<strong>Croatia<\/strong><br>254 cases","<strong>Switzerland<\/strong><br>7,245 cases","<strong>Austria<\/strong><br>3,244 cases","<strong>Israel<\/strong><br>1,071 cases","<strong>Pakistan<\/strong><br>776 cases","<strong>Brazil<\/strong><br>1,593 cases","<strong>Georgia<\/strong><br>54 cases","<strong>Greece<\/strong><br>624 cases","<strong>North Macedonia<\/strong><br>114 cases","<strong>Norway<\/strong><br>2,383 cases","<strong>Romania<\/strong><br>433 cases","<strong>Estonia<\/strong><br>326 cases","<strong>San Marino<\/strong><br>160 cases","<strong>Belarus<\/strong><br>76 cases","<strong>Iceland<\/strong><br>568 cases","<strong>Lithuania<\/strong><br>131 cases","<strong>Mexico<\/strong><br>251 cases","<strong>New Zealand<\/strong><br>66 cases","<strong>Nigeria<\/strong><br>30 cases","<strong>Australia: Western Australia<\/strong><br>120 cases","<strong>Ireland<\/strong><br>906 cases","<strong>Luxembourg<\/strong><br>798 cases","<strong>Monaco<\/strong><br>23 cases","<strong>Qatar<\/strong><br>494 cases","<strong>Ecuador<\/strong><br>789 cases","<strong>Azerbaijan<\/strong><br>65 cases","<strong>Armenia<\/strong><br>194 cases","<strong>Dominican Republic<\/strong><br>202 cases","<strong>Indonesia<\/strong><br>514 cases","<strong>Portugal<\/strong><br>1,600 cases","<strong>Andorra<\/strong><br>113 cases","<strong>Australia: Tasmania<\/strong><br>22 cases","<strong>Latvia<\/strong><br>139 cases","<strong>Morocco<\/strong><br>115 cases","<strong>Saudi Arabia<\/strong><br>511 cases","<strong>Senegal<\/strong><br>67 cases","<strong>Argentina<\/strong><br>225 cases","<strong>Chile<\/strong><br>632 cases","<strong>Jordan<\/strong><br>112 cases","<strong>Ukraine<\/strong><br>73 cases","<strong>Hungary<\/strong><br>131 cases","<strong>Australia: Northern Territory<\/strong><br>3 cases","<strong>Liechtenstein<\/strong><br>37 cases","<strong>Poland<\/strong><br>634 cases","<strong>Tunisia<\/strong><br>75 cases","<strong>Bosnia and Herzegovina<\/strong><br>126 cases","<strong>Slovenia<\/strong><br>414 cases","<strong>South Africa<\/strong><br>274 cases","<strong>Bhutan<\/strong><br>2 cases","<strong>Cameroon<\/strong><br>40 cases","<strong>Colombia<\/strong><br>231 cases","<strong>Costa Rica<\/strong><br>134 cases","<strong>Peru<\/strong><br>363 cases","<strong>Serbia<\/strong><br>222 cases","<strong>Slovakia<\/strong><br>185 cases","<strong>Togo<\/strong><br>16 cases","<strong>Malta<\/strong><br>90 cases","<strong>Martinique<\/strong><br>37 cases","<strong>Bulgaria<\/strong><br>187 cases","<strong>Maldives<\/strong><br>13 cases","<strong>Bangladesh<\/strong><br>27 cases","<strong>Paraguay<\/strong><br>22 cases","<strong>Canada: Ontario<\/strong><br>425 cases","<strong>Canada: Alberta<\/strong><br>259 cases","<strong>Canada: Quebec<\/strong><br>219 cases","<strong>Albania<\/strong><br>89 cases","<strong>Cyprus<\/strong><br>95 cases","<strong>Brunei<\/strong><br>88 cases","<strong>US: Washington<\/strong><br>1,996 cases","<strong>US: New York<\/strong><br>15,793 cases","<strong>US: California<\/strong><br>1,642 cases","<strong>US: Massachusetts<\/strong><br>646 cases","<strong>US: Diamond Princess<\/strong><br>49 cases","<strong>US: Grand Princess<\/strong><br>30 cases","<strong>US: Georgia<\/strong><br>600 cases","<strong>US: Colorado<\/strong><br>476 cases","<strong>US: Florida<\/strong><br>830 cases","<strong>US: New Jersey<\/strong><br>1,914 cases","<strong>US: Oregon<\/strong><br>161 cases","<strong>US: Texas<\/strong><br>627 cases","<strong>US: Illinois<\/strong><br>1,049 cases","<strong>US: Pennsylvania<\/strong><br>509 cases","<strong>US: Iowa<\/strong><br>90 cases","<strong>US: Maryland<\/strong><br>244 cases","<strong>US: North Carolina<\/strong><br>302 cases","<strong>US: South Carolina<\/strong><br>196 cases","<strong>US: Tennessee<\/strong><br>505 cases","<strong>US: Virginia<\/strong><br>221 cases","<strong>US: Arizona<\/strong><br>152 cases","<strong>US: Indiana<\/strong><br>201 cases","<strong>US: Kentucky<\/strong><br>99 cases","<strong>US: District of Columbia<\/strong><br>102 cases","<strong>US: Nevada<\/strong><br>190 cases","<strong>US: New Hampshire<\/strong><br>65 cases","<strong>US: Minnesota<\/strong><br>169 cases","<strong>US: Nebraska<\/strong><br>51 cases","<strong>US: Ohio<\/strong><br>355 cases","<strong>US: Rhode Island<\/strong><br>83 cases","<strong>US: Wisconsin<\/strong><br>381 cases","<strong>US: Connecticut<\/strong><br>223 cases","<strong>US: Hawaii<\/strong><br>48 cases","<strong>US: Oklahoma<\/strong><br>67 cases","<strong>US: Utah<\/strong><br>181 cases","<strong>Burkina Faso<\/strong><br>75 cases","<strong>Holy See<\/strong><br>1 cases","<strong>Mongolia<\/strong><br>10 cases","<strong>Panama<\/strong><br>245 cases","<strong>US: Kansas<\/strong><br>64 cases","<strong>US: Louisiana<\/strong><br>837 cases","<strong>US: Missouri<\/strong><br>100 cases","<strong>US: Vermont<\/strong><br>52 cases","<strong>US: Alaska<\/strong><br>21 cases","<strong>US: Arkansas<\/strong><br>165 cases","<strong>US: Delaware<\/strong><br>47 cases","<strong>US: Idaho<\/strong><br>42 cases","<strong>US: Maine<\/strong><br>89 cases","<strong>US: Michigan<\/strong><br>1,037 cases","<strong>US: Mississippi<\/strong><br>207 cases","<strong>US: Montana<\/strong><br>31 cases","<strong>US: New Mexico<\/strong><br>57 cases","<strong>US: North Dakota<\/strong><br>28 cases","<strong>US: South Dakota<\/strong><br>21 cases","<strong>US: West Virginia<\/strong><br>12 cases","<strong>US: Wyoming<\/strong><br>24 cases","<strong>China: Hubei<\/strong><br>67,800 cases","<strong>Iran<\/strong><br>21,638 cases","<strong>Korea, South<\/strong><br>8,897 cases","<strong>France: France<\/strong><br>16,018 cases","<strong>China: Guangdong<\/strong><br>1,407 cases","<strong>China: Henan<\/strong><br>1,273 cases","<strong>China: Zhejiang<\/strong><br>1,237 cases","<strong>China: Hunan<\/strong><br>1,018 cases","<strong>China: Anhui<\/strong><br>990 cases","<strong>China: Jiangxi<\/strong><br>936 cases","<strong>China: Shandong<\/strong><br>766 cases","<strong>Cruise Ship: Diamond Princess<\/strong><br>712 cases","<strong>China: Jiangsu<\/strong><br>633 cases","<strong>China: Chongqing<\/strong><br>577 cases","<strong>China: Sichuan<\/strong><br>543 cases","<strong>China: Heilongjiang<\/strong><br>484 cases","<strong>Denmark: Denmark<\/strong><br>1,395 cases","<strong>China: Beijing<\/strong><br>514 cases","<strong>China: Shanghai<\/strong><br>394 cases","<strong>China: Hebei<\/strong><br>319 cases","<strong>China: Fujian<\/strong><br>307 cases","<strong>China: Guangxi<\/strong><br>254 cases","<strong>China: Shaanxi<\/strong><br>248 cases","<strong>China: Yunnan<\/strong><br>176 cases","<strong>China: Hainan<\/strong><br>168 cases","<strong>China: Guizhou<\/strong><br>146 cases","<strong>China: Tianjin<\/strong><br>137 cases","<strong>China: Shanxi<\/strong><br>133 cases","<strong>China: Gansu<\/strong><br>136 cases","<strong>China: Hong Kong<\/strong><br>317 cases","<strong>China: Liaoning<\/strong><br>126 cases","<strong>China: Jilin<\/strong><br>93 cases","<strong>Czechia<\/strong><br>1,120 cases","<strong>China: Xinjiang<\/strong><br>76 cases","<strong>China: Inner Mongolia<\/strong><br>75 cases","<strong>China: Ningxia<\/strong><br>75 cases","<strong>Taiwan*<\/strong><br>169 cases","<strong>Vietnam<\/strong><br>113 cases","<strong>Russia<\/strong><br>367 cases","<strong>China: Qinghai<\/strong><br>18 cases","<strong>China: Macau<\/strong><br>20 cases","<strong>Moldova<\/strong><br>94 cases","<strong>Bolivia<\/strong><br>24 cases","<strong>Denmark: Faroe Islands<\/strong><br>115 cases","<strong>France: St Martin<\/strong><br>4 cases","<strong>Honduras<\/strong><br>26 cases","<strong>United Kingdom: Channel Islands<\/strong><br>32 cases","<strong>Canada: New Brunswick<\/strong><br>17 cases","<strong>China: Tibet<\/strong><br>1 cases","<strong>Congo (Kinshasa)<\/strong><br>30 cases","<strong>Cote d'Ivoire<\/strong><br>14 cases","<strong>France: Saint Barthelemy<\/strong><br>3 cases","<strong>Jamaica<\/strong><br>16 cases","<strong>Turkey<\/strong><br>1,236 cases","<strong>United Kingdom: Gibraltar<\/strong><br>15 cases","<strong>Cuba<\/strong><br>35 cases","<strong>Guyana<\/strong><br>7 cases","<strong>Australia: Australian Capital Territory<\/strong><br>19 cases","<strong>United Kingdom: United Kingdom<\/strong><br>5,683 cases","<strong>Kazakhstan<\/strong><br>60 cases","<strong>France: French Polynesia<\/strong><br>15 cases","<strong>Canada: Manitoba<\/strong><br>19 cases","<strong>Canada: Saskatchewan<\/strong><br>52 cases","<strong>Ethiopia<\/strong><br>11 cases","<strong>Sudan<\/strong><br>2 cases","<strong>Guinea<\/strong><br>2 cases","<strong>Canada: Grand Princess<\/strong><br>13 cases","<strong>Kenya<\/strong><br>15 cases","<strong>Antigua and Barbuda<\/strong><br>1 cases","<strong>US: Alabama<\/strong><br>138 cases","<strong>Uruguay<\/strong><br>135 cases","<strong>Ghana<\/strong><br>24 cases","<strong>US: Puerto Rico<\/strong><br>23 cases","<strong>Namibia<\/strong><br>3 cases","<strong>Seychelles<\/strong><br>7 cases","<strong>Trinidad and Tobago<\/strong><br>50 cases","<strong>Venezuela<\/strong><br>70 cases","<strong>Eswatini<\/strong><br>4 cases","<strong>Gabon<\/strong><br>5 cases","<strong>Guatemala<\/strong><br>19 cases","<strong>Mauritania<\/strong><br>2 cases","<strong>Rwanda<\/strong><br>19 cases","<strong>Saint Lucia<\/strong><br>2 cases","<strong>Saint Vincent and the Grenadines<\/strong><br>1 cases","<strong>Suriname<\/strong><br>5 cases","<strong>France: French Guiana<\/strong><br>18 cases","<strong>US: Guam<\/strong><br>27 cases","<strong>Kosovo<\/strong><br>2 cases","<strong>Canada: Newfoundland and Labrador<\/strong><br>6 cases","<strong>Canada: Prince Edward Island<\/strong><br>2 cases","<strong>Central African Republic<\/strong><br>3 cases","<strong>Congo (Brazzaville)<\/strong><br>3 cases","<strong>Equatorial Guinea<\/strong><br>6 cases","<strong>France: Mayotte<\/strong><br>11 cases","<strong>Uzbekistan<\/strong><br>43 cases","<strong>Netherlands: Netherlands<\/strong><br>4,204 cases","<strong>Canada: Nova Scotia<\/strong><br>28 cases","<strong>France: Guadeloupe<\/strong><br>56 cases","<strong>Benin<\/strong><br>2 cases","<strong>Liberia<\/strong><br>3 cases","<strong>Netherlands: Curacao<\/strong><br>3 cases","<strong>Somalia<\/strong><br>1 cases","<strong>Tanzania<\/strong><br>12 cases","<strong>US: Virgin Islands<\/strong><br>3 cases","<strong>United Kingdom: Cayman Islands<\/strong><br>3 cases","<strong>France: Reunion<\/strong><br>47 cases","<strong>Barbados<\/strong><br>14 cases","<strong>Montenegro<\/strong><br>21 cases","<strong>Kyrgyzstan<\/strong><br>14 cases","<strong>Mauritius<\/strong><br>18 cases","<strong>Netherlands: Aruba<\/strong><br>8 cases","<strong>Zambia<\/strong><br>3 cases","<strong>Djibouti<\/strong><br>1 cases","<strong>Gambia, The<\/strong><br>1 cases","<strong>United Kingdom: Montserrat<\/strong><br>1 cases","<strong>Bahamas, The<\/strong><br>4 cases","<strong>Denmark: Greenland<\/strong><br>4 cases","<strong>France: New Caledonia<\/strong><br>4 cases","<strong>United Kingdom: Bermuda<\/strong><br>2 cases","<strong>Chad<\/strong><br>1 cases","<strong>El Salvador<\/strong><br>3 cases","<strong>Fiji<\/strong><br>2 cases","<strong>Nicaragua<\/strong><br>2 cases","<strong>Madagascar<\/strong><br>3 cases","<strong>Haiti<\/strong><br>2 cases","<strong>Angola<\/strong><br>2 cases","<strong>Cabo Verde<\/strong><br>3 cases","<strong>Netherlands: Sint Maarten<\/strong><br>1 cases","<strong>Niger<\/strong><br>2 cases","<strong>Papua New Guinea<\/strong><br>1 cases","<strong>United Kingdom: Isle of Man<\/strong><br>5 cases","<strong>Zimbabwe<\/strong><br>3 cases","<strong>Canada: Northwest Territories<\/strong><br>1 cases","<strong>Cape Verde<\/strong><br>1 cases","<strong>East Timor<\/strong><br>1 cases","<strong>Eritrea<\/strong><br>1 cases","<strong>Uganda<\/strong><br>1 cases","<strong>Dominica<\/strong><br>1 cases","<strong>Grenada<\/strong><br>1 cases","<strong>Mozambique<\/strong><br>1 cases","<strong>Syria<\/strong><br>1 cases","<strong>Timor-Leste<\/strong><br>1 cases"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"15px","textOnly":false,"style":{"font-weight":"normal","padding":"3px 8px"},"className":"","sticky":true},null]}],"limits":{"lat":[-41.4545,71.7069],"lng":[-157.4983,178.065]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="cumulative-cases" class="section level1 tabset tabset-fade tabset-pills">
@@ -13151,340 +13160,800 @@ div.tocify {
 <h1 class="tabset tabset-fade tabset-pills">Table</h1>
 <div id="united-states-3" class="section level2">
 <h2>United States</h2>
-<table>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Date</th>
-<th align="left">Cases</th>
-<th align="left">∂ Cases</th>
-<th align="left">New Cases</th>
-<th align="left">∂ New Cases</th>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Cases
+</th>
+<th style="text-align:left;">
+∂ Cases
+</th>
+<th style="text-align:left;">
+New Cases
+</th>
+<th style="text-align:left;">
+∂ New Cases
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2020-03-01</td>
-<td align="left">74</td>
-<td align="left">1.088</td>
-<td align="left">6</td>
-<td align="left">0.750</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-01
+</td>
+<td style="text-align:left;">
+74
+</td>
+<td style="text-align:left;">
+1.088
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:left;">
+0.750
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-02</td>
-<td align="left">98</td>
-<td align="left">1.324</td>
-<td align="left">24</td>
-<td align="left">4.000</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-02
+</td>
+<td style="text-align:left;">
+98
+</td>
+<td style="text-align:left;">
+1.324
+</td>
+<td style="text-align:left;">
+24
+</td>
+<td style="text-align:left;">
+4.000
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-03</td>
-<td align="left">118</td>
-<td align="left">1.204</td>
-<td align="left">20</td>
-<td align="left">0.833</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-03
+</td>
+<td style="text-align:left;">
+118
+</td>
+<td style="text-align:left;">
+1.204
+</td>
+<td style="text-align:left;">
+20
+</td>
+<td style="text-align:left;">
+0.833
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-04</td>
-<td align="left">149</td>
-<td align="left">1.263</td>
-<td align="left">31</td>
-<td align="left">1.550</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-04
+</td>
+<td style="text-align:left;">
+149
+</td>
+<td style="text-align:left;">
+1.263
+</td>
+<td style="text-align:left;">
+31
+</td>
+<td style="text-align:left;">
+1.550
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-05</td>
-<td align="left">217</td>
-<td align="left">1.456</td>
-<td align="left">68</td>
-<td align="left">2.194</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-05
+</td>
+<td style="text-align:left;">
+217
+</td>
+<td style="text-align:left;">
+1.456
+</td>
+<td style="text-align:left;">
+68
+</td>
+<td style="text-align:left;">
+2.194
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-06</td>
-<td align="left">262</td>
-<td align="left">1.207</td>
-<td align="left">45</td>
-<td align="left">0.662</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-06
+</td>
+<td style="text-align:left;">
+262
+</td>
+<td style="text-align:left;">
+1.207
+</td>
+<td style="text-align:left;">
+45
+</td>
+<td style="text-align:left;">
+0.662
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-07</td>
-<td align="left">402</td>
-<td align="left">1.534</td>
-<td align="left">140</td>
-<td align="left">3.111</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-07
+</td>
+<td style="text-align:left;">
+402
+</td>
+<td style="text-align:left;">
+1.534
+</td>
+<td style="text-align:left;">
+140
+</td>
+<td style="text-align:left;">
+3.111
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-08</td>
-<td align="left">518</td>
-<td align="left">1.289</td>
-<td align="left">116</td>
-<td align="left">0.829</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-08
+</td>
+<td style="text-align:left;">
+518
+</td>
+<td style="text-align:left;">
+1.289
+</td>
+<td style="text-align:left;">
+116
+</td>
+<td style="text-align:left;">
+0.829
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-09</td>
-<td align="left">583</td>
-<td align="left">1.125</td>
-<td align="left">65</td>
-<td align="left">0.560</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-09
+</td>
+<td style="text-align:left;">
+583
+</td>
+<td style="text-align:left;">
+1.125
+</td>
+<td style="text-align:left;">
+65
+</td>
+<td style="text-align:left;">
+0.560
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-10</td>
-<td align="left">959</td>
-<td align="left">1.645</td>
-<td align="left">376</td>
-<td align="left">5.785</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-10
+</td>
+<td style="text-align:left;">
+959
+</td>
+<td style="text-align:left;">
+1.645
+</td>
+<td style="text-align:left;">
+376
+</td>
+<td style="text-align:left;">
+5.785
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-11</td>
-<td align="left">1,281</td>
-<td align="left">1.336</td>
-<td align="left">322</td>
-<td align="left">0.856</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+1,281
+</td>
+<td style="text-align:left;">
+1.336
+</td>
+<td style="text-align:left;">
+322
+</td>
+<td style="text-align:left;">
+0.856
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-12</td>
-<td align="left">1,663</td>
-<td align="left">1.298</td>
-<td align="left">382</td>
-<td align="left">1.186</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-12
+</td>
+<td style="text-align:left;">
+1,663
+</td>
+<td style="text-align:left;">
+1.298
+</td>
+<td style="text-align:left;">
+382
+</td>
+<td style="text-align:left;">
+1.186
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-13</td>
-<td align="left">2,179</td>
-<td align="left">1.310</td>
-<td align="left">516</td>
-<td align="left">1.351</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-13
+</td>
+<td style="text-align:left;">
+2,179
+</td>
+<td style="text-align:left;">
+1.310
+</td>
+<td style="text-align:left;">
+516
+</td>
+<td style="text-align:left;">
+1.351
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-14</td>
-<td align="left">2,727</td>
-<td align="left">1.251</td>
-<td align="left">548</td>
-<td align="left">1.062</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-14
+</td>
+<td style="text-align:left;">
+2,727
+</td>
+<td style="text-align:left;">
+1.251
+</td>
+<td style="text-align:left;">
+548
+</td>
+<td style="text-align:left;">
+1.062
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-15</td>
-<td align="left">3,499</td>
-<td align="left">1.283</td>
-<td align="left">772</td>
-<td align="left">1.409</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-15
+</td>
+<td style="text-align:left;">
+3,499
+</td>
+<td style="text-align:left;">
+1.283
+</td>
+<td style="text-align:left;">
+772
+</td>
+<td style="text-align:left;">
+1.409
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-16</td>
-<td align="left">4,632</td>
-<td align="left">1.324</td>
-<td align="left">1,133</td>
-<td align="left">1.468</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-16
+</td>
+<td style="text-align:left;">
+4,632
+</td>
+<td style="text-align:left;">
+1.324
+</td>
+<td style="text-align:left;">
+1,133
+</td>
+<td style="text-align:left;">
+1.468
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-17</td>
-<td align="left">6,421</td>
-<td align="left">1.386</td>
-<td align="left">1,789</td>
-<td align="left">1.579</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-17
+</td>
+<td style="text-align:left;">
+6,421
+</td>
+<td style="text-align:left;">
+1.386
+</td>
+<td style="text-align:left;">
+1,789
+</td>
+<td style="text-align:left;">
+1.579
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-18</td>
-<td align="left">7,783</td>
-<td align="left">1.212</td>
-<td align="left">1,362</td>
-<td align="left">0.761</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+7,783
+</td>
+<td style="text-align:left;">
+1.212
+</td>
+<td style="text-align:left;">
+1,362
+</td>
+<td style="text-align:left;">
+0.761
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-19</td>
-<td align="left">13,677</td>
-<td align="left">1.757</td>
-<td align="left">5,894</td>
-<td align="left">4.327</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-19
+</td>
+<td style="text-align:left;">
+13,677
+</td>
+<td style="text-align:left;">
+1.757
+</td>
+<td style="text-align:left;">
+5,894
+</td>
+<td style="text-align:left;">
+4.327
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-20</td>
-<td align="left">19,100</td>
-<td align="left">1.397</td>
-<td align="left">5,423</td>
-<td align="left">0.920</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-20
+</td>
+<td style="text-align:left;">
+19,100
+</td>
+<td style="text-align:left;">
+1.397
+</td>
+<td style="text-align:left;">
+5,423
+</td>
+<td style="text-align:left;">
+0.920
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-21</td>
-<td align="left">25,489</td>
-<td align="left">1.335</td>
-<td align="left">6,389</td>
-<td align="left">1.178</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-21
+</td>
+<td style="text-align:left;">
+25,489
+</td>
+<td style="text-align:left;">
+1.335
+</td>
+<td style="text-align:left;">
+6,389
+</td>
+<td style="text-align:left;">
+1.178
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-22</td>
-<td align="left">33,272</td>
-<td align="left">1.305</td>
-<td align="left">7,783</td>
-<td align="left">1.218</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-22
+</td>
+<td style="text-align:left;">
+33,272
+</td>
+<td style="text-align:left;">
+1.305
+</td>
+<td style="text-align:left;">
+7,783
+</td>
+<td style="text-align:left;">
+1.218
+</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="global-3" class="section level2">
 <h2>Global</h2>
-<table>
+<table class="table table-hover" style="margin-left: auto; margin-right: auto;">
 <thead>
-<tr class="header">
-<th align="left">Date</th>
-<th align="left">Cases</th>
-<th align="left">∂ Cases</th>
-<th align="left">New Cases</th>
-<th align="left">∂ New Cases</th>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Cases
+</th>
+<th style="text-align:left;">
+∂ Cases
+</th>
+<th style="text-align:left;">
+New Cases
+</th>
+<th style="text-align:left;">
+∂ New Cases
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">2020-03-01</td>
-<td align="left">88,369</td>
-<td align="left">1.027</td>
-<td align="left">2,358</td>
-<td align="left">1.247</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-01
+</td>
+<td style="text-align:left;">
+88,369
+</td>
+<td style="text-align:left;">
+1.027
+</td>
+<td style="text-align:left;">
+2,358
+</td>
+<td style="text-align:left;">
+1.247
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-02</td>
-<td align="left">90,306</td>
-<td align="left">1.022</td>
-<td align="left">1,937</td>
-<td align="left">0.821</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-02
+</td>
+<td style="text-align:left;">
+90,306
+</td>
+<td style="text-align:left;">
+1.022
+</td>
+<td style="text-align:left;">
+1,937
+</td>
+<td style="text-align:left;">
+0.821
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-03</td>
-<td align="left">92,840</td>
-<td align="left">1.028</td>
-<td align="left">2,534</td>
-<td align="left">1.308</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-03
+</td>
+<td style="text-align:left;">
+92,840
+</td>
+<td style="text-align:left;">
+1.028
+</td>
+<td style="text-align:left;">
+2,534
+</td>
+<td style="text-align:left;">
+1.308
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-04</td>
-<td align="left">95,120</td>
-<td align="left">1.025</td>
-<td align="left">2,280</td>
-<td align="left">0.900</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-04
+</td>
+<td style="text-align:left;">
+95,120
+</td>
+<td style="text-align:left;">
+1.025
+</td>
+<td style="text-align:left;">
+2,280
+</td>
+<td style="text-align:left;">
+0.900
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-05</td>
-<td align="left">97,882</td>
-<td align="left">1.029</td>
-<td align="left">2,762</td>
-<td align="left">1.211</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-05
+</td>
+<td style="text-align:left;">
+97,882
+</td>
+<td style="text-align:left;">
+1.029
+</td>
+<td style="text-align:left;">
+2,762
+</td>
+<td style="text-align:left;">
+1.211
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-06</td>
-<td align="left">101,784</td>
-<td align="left">1.040</td>
-<td align="left">3,902</td>
-<td align="left">1.413</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-06
+</td>
+<td style="text-align:left;">
+101,784
+</td>
+<td style="text-align:left;">
+1.040
+</td>
+<td style="text-align:left;">
+3,902
+</td>
+<td style="text-align:left;">
+1.413
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-07</td>
-<td align="left">105,821</td>
-<td align="left">1.040</td>
-<td align="left">4,037</td>
-<td align="left">1.035</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-07
+</td>
+<td style="text-align:left;">
+105,821
+</td>
+<td style="text-align:left;">
+1.040
+</td>
+<td style="text-align:left;">
+4,037
+</td>
+<td style="text-align:left;">
+1.035
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-08</td>
-<td align="left">109,795</td>
-<td align="left">1.038</td>
-<td align="left">3,974</td>
-<td align="left">0.984</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-08
+</td>
+<td style="text-align:left;">
+109,795
+</td>
+<td style="text-align:left;">
+1.038
+</td>
+<td style="text-align:left;">
+3,974
+</td>
+<td style="text-align:left;">
+0.984
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-09</td>
-<td align="left">113,561</td>
-<td align="left">1.034</td>
-<td align="left">3,766</td>
-<td align="left">0.948</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-09
+</td>
+<td style="text-align:left;">
+113,561
+</td>
+<td style="text-align:left;">
+1.034
+</td>
+<td style="text-align:left;">
+3,766
+</td>
+<td style="text-align:left;">
+0.948
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-10</td>
-<td align="left">118,592</td>
-<td align="left">1.044</td>
-<td align="left">5,031</td>
-<td align="left">1.336</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-10
+</td>
+<td style="text-align:left;">
+118,592
+</td>
+<td style="text-align:left;">
+1.044
+</td>
+<td style="text-align:left;">
+5,031
+</td>
+<td style="text-align:left;">
+1.336
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-11</td>
-<td align="left">125,865</td>
-<td align="left">1.061</td>
-<td align="left">7,273</td>
-<td align="left">1.446</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-11
+</td>
+<td style="text-align:left;">
+125,865
+</td>
+<td style="text-align:left;">
+1.061
+</td>
+<td style="text-align:left;">
+7,273
+</td>
+<td style="text-align:left;">
+1.446
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-12</td>
-<td align="left">128,343</td>
-<td align="left">1.020</td>
-<td align="left">2,478</td>
-<td align="left">0.341</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-12
+</td>
+<td style="text-align:left;">
+128,343
+</td>
+<td style="text-align:left;">
+1.020
+</td>
+<td style="text-align:left;">
+2,478
+</td>
+<td style="text-align:left;">
+0.341
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-13</td>
-<td align="left">145,193</td>
-<td align="left">1.131</td>
-<td align="left">16,850</td>
-<td align="left">6.800</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-13
+</td>
+<td style="text-align:left;">
+145,193
+</td>
+<td style="text-align:left;">
+1.131
+</td>
+<td style="text-align:left;">
+16,850
+</td>
+<td style="text-align:left;">
+6.800
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-14</td>
-<td align="left">156,094</td>
-<td align="left">1.075</td>
-<td align="left">10,901</td>
-<td align="left">0.647</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-14
+</td>
+<td style="text-align:left;">
+156,094
+</td>
+<td style="text-align:left;">
+1.075
+</td>
+<td style="text-align:left;">
+10,901
+</td>
+<td style="text-align:left;">
+0.647
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-15</td>
-<td align="left">167,446</td>
-<td align="left">1.073</td>
-<td align="left">11,352</td>
-<td align="left">1.041</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-15
+</td>
+<td style="text-align:left;">
+167,446
+</td>
+<td style="text-align:left;">
+1.073
+</td>
+<td style="text-align:left;">
+11,352
+</td>
+<td style="text-align:left;">
+1.041
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-16</td>
-<td align="left">181,527</td>
-<td align="left">1.084</td>
-<td align="left">14,081</td>
-<td align="left">1.240</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-16
+</td>
+<td style="text-align:left;">
+181,527
+</td>
+<td style="text-align:left;">
+1.084
+</td>
+<td style="text-align:left;">
+14,081
+</td>
+<td style="text-align:left;">
+1.240
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-17</td>
-<td align="left">197,142</td>
-<td align="left">1.086</td>
-<td align="left">15,615</td>
-<td align="left">1.109</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-17
+</td>
+<td style="text-align:left;">
+197,142
+</td>
+<td style="text-align:left;">
+1.086
+</td>
+<td style="text-align:left;">
+15,615
+</td>
+<td style="text-align:left;">
+1.109
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-18</td>
-<td align="left">214,910</td>
-<td align="left">1.090</td>
-<td align="left">17,768</td>
-<td align="left">1.138</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-18
+</td>
+<td style="text-align:left;">
+214,910
+</td>
+<td style="text-align:left;">
+1.090
+</td>
+<td style="text-align:left;">
+17,768
+</td>
+<td style="text-align:left;">
+1.138
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-19</td>
-<td align="left">242,708</td>
-<td align="left">1.129</td>
-<td align="left">27,798</td>
-<td align="left">1.564</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-19
+</td>
+<td style="text-align:left;">
+242,708
+</td>
+<td style="text-align:left;">
+1.129
+</td>
+<td style="text-align:left;">
+27,798
+</td>
+<td style="text-align:left;">
+1.564
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-20</td>
-<td align="left">272,166</td>
-<td align="left">1.121</td>
-<td align="left">29,458</td>
-<td align="left">1.060</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-20
+</td>
+<td style="text-align:left;">
+272,166
+</td>
+<td style="text-align:left;">
+1.121
+</td>
+<td style="text-align:left;">
+29,458
+</td>
+<td style="text-align:left;">
+1.060
+</td>
 </tr>
-<tr class="odd">
-<td align="left">2020-03-21</td>
-<td align="left">304,524</td>
-<td align="left">1.119</td>
-<td align="left">32,358</td>
-<td align="left">1.098</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-21
+</td>
+<td style="text-align:left;">
+304,524
+</td>
+<td style="text-align:left;">
+1.119
+</td>
+<td style="text-align:left;">
+32,358
+</td>
+<td style="text-align:left;">
+1.098
+</td>
 </tr>
-<tr class="even">
-<td align="left">2020-03-22</td>
-<td align="left">335,955</td>
-<td align="left">1.103</td>
-<td align="left">31,431</td>
-<td align="left">0.971</td>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+2020-03-22
+</td>
+<td style="text-align:left;">
+335,955
+</td>
+<td style="text-align:left;">
+1.103
+</td>
+<td style="text-align:left;">
+31,431
+</td>
+<td style="text-align:left;">
+0.971
+</td>
 </tr>
 </tbody>
 </table>
