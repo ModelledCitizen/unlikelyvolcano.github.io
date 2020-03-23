@@ -5,6 +5,7 @@ output:
   html_document:
     toc: true
     toc_float: true
+    toc_depth: 2
     css: bootstrap.css
     highlight: tango
 ---
@@ -47,7 +48,7 @@ deaths <-
   )
 ```
 
-This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [Covid Tracking Project](https://covidtracking.com/).
+This report was last updated on `r Sys.Date()`. Data courtesy of [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [COVID Tracking Project](https://covidtracking.com/).
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
 <script async src="//static.getclicky.com/js"></script>
@@ -160,7 +161,7 @@ wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 ```
 
-# Maps {.tabset .tabset-fade .tabset-pills}
+# Case Map {.tabset .tabset-fade .tabset-pills}
 
 ## United States
 
@@ -183,7 +184,7 @@ leaflet(us_mapping) %>%
       textsize = "15px",
       direction = "auto"
     ),
-    radius = 2 * log(us_mapping$cases),
+    radius = 2.5 * log(us_mapping$cases),
     weight = 10,
     fillColor = "red",
     stroke = F
@@ -213,7 +214,7 @@ leaflet(wrld_mapping) %>%
       textsize = "15px",
       direction = "auto"
     ),
-    radius = 2 * log(wrld_mapping$cases),
+    radius = 2.5 * log(wrld_mapping$cases),
     weight = 10,
     fillColor = "red",
     stroke = F
@@ -224,7 +225,7 @@ leaflet(wrld_mapping) %>%
 
 ## United States
 
-### Standard Scale (US)
+### Linear Scale
 
 The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next chart.
 
@@ -239,7 +240,7 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
   theme_dark
 ```
 
-### Log Scale (US)
+### Log Scale
 
 An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line. The second line is fit only only to March, once testing ramped up in the US -- note the narrower confidence bands.
 
@@ -264,7 +265,7 @@ ggplot(us_confirmed, aes(x = date, y = cases)) +
 
 ## Global
 
-### Standard Scale (Global)
+### Linear Scale
 
 ```{r world:total}
 ggplot(world_confirmed, aes(x = date, y = cases)) +
@@ -277,7 +278,7 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
   theme_dark
 ```
 
-### Log Scale (Global)
+### Log Scale
 
 ```{r world:logged}
 ggplot(world_confirmed, aes(x = date, y = cases)) +
@@ -294,7 +295,7 @@ ggplot(world_confirmed, aes(x = date, y = cases)) +
 
 ## United States
 
-### New Cases by Day (US)
+### New Cases by Day
 
 This is the famed curve that needs to be flattened so we don't overwhelm our medical capacity on the first wave of the pandemic. As you can see, we are still climbing. 
 
@@ -309,7 +310,7 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
   theme_dark
 ```
 
-### Rate of Change in New Cases (US)
+### Rate of Change in New Cases
 
 Now, let's see the y-axis with the new cases as a multiple of the number of new cases the previous day. This is akin to the second derivative of the growth function. We want this to approach 0 as we flatten the curve.
 
@@ -326,7 +327,7 @@ ggplot(us_growth_data, aes(x = date, y = change_new)) +
 
 ## Global
 
-### New Cases by Day (Global)
+### New Cases by Day
 
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
@@ -339,7 +340,7 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
   theme_dark
 ```
 
-### Rate of Change in New Cases (Global)
+### Rate of Change in New Cases
 
 ```{r world:growth}
 ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
