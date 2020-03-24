@@ -8,6 +8,7 @@ output:
     #toc_depth: 3
     css: bootstrap.css
     highlight: tango
+    fig_height: 7
 ---
 ```{r setup, include=FALSE}
 library(knitr)
@@ -96,16 +97,21 @@ state_map <- readRDS("us_states.RDS")
 state_map_testing <- merge(state_map, state_testing, by.x = "STUSPS", by.y = "state")
 
 us_new_cases <- us_ts$cases[-1] - us_ts$cases[-nrow(us_ts)]
+us_new_deaths <- us_ts$deaths[-1] - us_ts$deaths[-nrow(us_ts)]
 us_by_day <- us_ts$cases[-1] / us_ts$cases[-nrow(us_ts)]
+us_by_day_d <- us_ts$deaths[-1] / us_ts$deaths[-nrow(us_ts)]
 us_growth_rate <- us_new_cases[-1] / us_new_cases[-length(us_new_cases)]
 us_growth_data <- data.frame(
   date = us_ts$date[-(1:2)],
   cases = us_ts$cases[-(1:2)],
+  deaths = us_ts$deaths[-(1:2)],
   change_cases = us_by_day[-1],
+  change_deaths = us_by_day_d[-1],
   new_cases = us_new_cases[-1],
+  new_deaths = us_new_deaths[-1],
   change_new = us_growth_rate
 )
-rm(us_new_cases, us_by_day, us_growth_rate)
+rm(us_new_cases, us_new_deaths, us_by_day, us_by_day_d, us_growth_rate)
 us_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 us_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 
@@ -137,17 +143,24 @@ world_ts <-
 
 wrld_new_cases <-
   world_ts$cases[-1] - world_ts$cases[-nrow(world_ts)]
+wrld_new_deaths <-
+  world_ts$deaths[-1] - world_ts$deaths[-nrow(world_ts)]
 wrld_by_day <-
   world_ts$cases[-1] / world_ts$cases[-nrow(world_ts)]
+wrld_by_day_d <-
+  world_ts$deaths[-1] / world_ts$deaths[-nrow(world_ts)]
 wrld_growth_rate <- wrld_new_cases[-1] / wrld_new_cases[-length(wrld_new_cases)]
 wrld_growth_data <- data.frame(
   date = world_ts$date[-(1:2)],
   cases = world_ts$cases[-(1:2)],
+  deaths = world_ts$deaths[-(1:2)],
   change_cases = wrld_by_day[-1],
+  change_deaths = wrld_by_day_d[-1],
   new_cases = wrld_new_cases[-1],
+  new_deaths = wrld_new_deaths[-1],
   change_new = wrld_growth_rate
 )
-rm(wrld_new_cases, wrld_by_day, wrld_growth_rate)
+rm(wrld_new_cases, wrld_new_deaths, wrld_by_day, wrld_growth_rate)
 wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 
@@ -406,12 +419,12 @@ leaflet(daily_update) %>%
 ## United States
 ```{r us:testing}
 ggplot(us_testing, aes(x = date, y = total)) +
-  geom_point(color = "firebrick", aes(y = positive)) +
-  geom_line(color = "firebrick", aes(y = positive)) +
-  geom_point(color = "goldenrod", aes(y = negative)) +
-  geom_line(color = "goldenrod", aes(y = negative)) +
-  geom_point(color = "dodgerblue") +
-  geom_line(color = "dodgerblue") +
+  geom_point(color = "darkorange", aes(y = positive)) +
+  geom_line(color = "darkorange", aes(y = positive)) +
+  geom_point(color = "seagreen", aes(y = negative)) +
+  geom_line(color = "seagreen", aes(y = negative)) +
+  geom_point(color = "royalblue") +
+  geom_line(color = "royalblue") +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
@@ -429,11 +442,11 @@ The cumulative number of cases doesn't tell us much -- it's not possible for thi
 
 ```{r us:total}
 ggplot(us_ts, aes(x = date, y = cases)) +
-  geom_point(color = "red", aes(y = 20 * deaths)) +
-  geom_line(color = "red", aes(y = 20 * deaths)) +
-  geom_smooth(method = "loess", formula = y ~ x) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
+  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
@@ -449,11 +462,11 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 
 ```{r world:total}
 ggplot(world_ts, aes(x = date, y = cases)) +
-  geom_smooth(method = "loess", formula = y ~ x) +
-  geom_point(color = "red", aes(y = 20 * deaths)) +
-  geom_line(color = "red", aes(y = 20 * deaths)) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
+  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
@@ -474,17 +487,17 @@ An OLS fit to the logged values shows how closely the pandemic mimics an exponen
 
 ```{r us:logged}
 ggplot(us_ts, aes(x = date, y = cases)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
   geom_smooth(
     data = subset(us_ts, us_ts$date > "2020-02-29"),
     aes(x = date, y = cases),
     method = "lm",
     formula = y ~ x,
-    color = "darkorange",
+    color = "darkgrey",
     fullrange = T
   ) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
@@ -492,7 +505,7 @@ ggplot(us_ts, aes(x = date, y = cases)) +
     name = "Cases",
     n.breaks = 10,
     trans = "log10",
-    limits = c(0.8, NA)
+    limits = c(0.3, NA)
   ) +
   theme_dark
 ```
@@ -501,9 +514,9 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 
 ```{r world:logged}
 ggplot(world_ts, aes(x = date, y = cases)) +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
@@ -525,9 +538,9 @@ This is the famed curve that needs to be flattened so we don't overwhelm our med
 
 ```{r us:newcases}
 ggplot(us_growth_data, aes(x = date, y = new_cases)) +
-  geom_smooth(method = "loess", formula = y ~ x) + 
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
   scale_y_continuous("New Cases", n.breaks = 10) +
   theme_dark
@@ -537,9 +550,9 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
 
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
-  geom_smooth(method = "loess", formula = y ~ x) + 
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
   scale_y_continuous("New Cases", n.breaks = 10) +
   #ggtitle("New Cases by Day on Earth") +
@@ -580,12 +593,21 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
 
 ## United States
 ```{r us:table}
-out <- us_growth_data[us_growth_data$date > "2020-02-29",]
+out <- us_growth_data[us_growth_data$date > "2020-02-29", ]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
 kable(
   out,
-  col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+  col.names = c(
+    "Date",
+    "Cases",
+    "Deaths",
+    "∂ Cases",
+    "∂ Deaths",
+    "New Cases",
+    "New Deaths",
+    "∂ New Cases"
+  ),
   row.names = F,
   align = "lllll",
   digits = 3
@@ -597,16 +619,25 @@ kable(
 ## Global
 
 ```{r world:table}
-out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29",]
+out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29", ]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
 kable(
   out,
-  col.names = c("Date", "Cases", "∂ Cases", "New Cases", "∂ New Cases"),
+  col.names = c(
+    "Date",
+    "Cases",
+    "Deaths",
+    "∂ Cases",
+    "∂ Deaths",
+    "New Cases",
+    "New Deaths",
+    "∂ New Cases"
+  ),
   row.names = F,
   align = "lllll",
   digits = 3
-) %>% 
+) %>%
   kable_styling(bootstrap_options = c("hover")) %>%
   column_spec(1, bold = T)
 ```
