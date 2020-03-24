@@ -55,6 +55,7 @@ ts_deaths <-
   )
 
 
+update_date <- format.Date(Sys.Date(), "%d %B %Y")
 daily_url <-
   sprintf(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
@@ -66,6 +67,7 @@ if (!RCurl::url.exists(daily_url)) {
       "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
       format.Date(Sys.Date() - 1, "%m-%d-%Y")
     )
+  update_date <- format.Date(Sys.Date() - 1, "%d %B %Y")
 }
 
 daily_update <- read.csv(daily_url, stringsAsFactors = F)
@@ -160,7 +162,7 @@ wrld_cases <-
   )
 ```
 
-This report was last updated on `r Sys.Date()`.
+This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r update_date`.
 
 Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [COVID Tracking Project](https://covidtracking.com/).
 
@@ -170,31 +172,6 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 
-## United States
-
-**Recovery data is not currently available for the United States.**
-
-**Cases:** `r prettyNum(us_confirmed, big.mark = ",")`
-
-**Active:** `r prettyNum(us_active, big.mark = ",")` (`r round(100 * us_active/us_confirmed, 1)`%)
-
-**Recovered:** `r prettyNum(us_recovered, big.mark = ",")` (`r round(100 * us_recovered/us_confirmed, 1)`%)
-
-**Deaths:** `r prettyNum(us_deaths, big.mark = ",")` (`r round(100 * us_deaths/us_confirmed, 1)`%)
-
-``` {r us:bar}
-ggplot(data = us_cases, aes(x = type, y = cases, fill = type)) +
-  geom_bar(stat = "identity") +
-  scale_x_discrete(name = "", expand = c(0, 0)) +
-  scale_y_continuous("Cases", n.breaks = 10, expand = c(0, 0)) +
-  scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1"),
-                    guide = FALSE) +
-  theme_dark
-```
-
-
-## Global
-
 **Cases:** `r prettyNum(wrld_confirmed, big.mark = ",")`
 
 **Active:** `r prettyNum(wrld_active, big.mark = ",")` (`r round(100 * wrld_active/wrld_confirmed, 1)`%)
@@ -202,6 +179,10 @@ ggplot(data = us_cases, aes(x = type, y = cases, fill = type)) +
 **Recovered:** `r prettyNum(wrld_recovered, big.mark = ",")` (`r round(100 * wrld_recovered/wrld_confirmed, 1)`%)
 
 **Deaths:** `r prettyNum(wrld_deaths, big.mark = ",")` (`r round(100 * wrld_deaths/wrld_confirmed, 1)`%)
+
+**US Cases:** `r prettyNum(us_confirmed, big.mark = ",")`
+
+**US Deaths:** `r prettyNum(us_deaths, big.mark = ",")`
 
 ``` {r wrld:bar}
 ggplot(data = wrld_cases, aes(x = type, y = cases, fill = type)) +
