@@ -285,7 +285,7 @@ leaflet(us_map) %>%
     group = "Markers"
   ) %>%
   addLayersControl(
-    baseGroups = c("Choropleth", "Markers"),
+    baseGroups = c("Markers", "Choropleth"),
     options = layersControlOptions(collapsed = F, autoZIndex = T)
   )  %>%
   setView(lat =  39.8333333,
