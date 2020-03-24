@@ -71,21 +71,29 @@ if (!RCurl::url.exists(daily_url)) {
 }
 
 daily_update <- read.csv(daily_url, stringsAsFactors = F)
+
+us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
+state_testing <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
 ```
 
 ```{r us, include=FALSE}
 us_ts <-
   data.frame(
     date = as.Date(names(ts_confirmed)[-(1:4)], format = "X%m.%e.%y"),
-    cases = colSums(ts_confirmed[ts_confirmed$Country.Region == "US" , -(1:4)], na.rm = T),
-    deaths = colSums(ts_deaths[ts_deaths$Country.Region == "US" , -(1:4)], na.rm = T)
+    cases = colSums(ts_confirmed[ts_confirmed$Country.Region %in% "US" , -(1:4)], na.rm = T),
+    deaths = colSums(ts_deaths[ts_deaths$Country.Region %in% "US" , -(1:4)], na.rm = T)
   )
-us_daily <- daily_update[daily_update$Country_Region == "US",]
+us_daily <- daily_update[daily_update$Country_Region %in% "US",]
+us_testing$date <- as.Date(strptime(us_testing$date, format = "%Y%m%d"))
 
 us_mappable <- us_daily[!duplicated(us_daily$FIPS),]
-us_map <- readRDS("smallercounties.RDS")
+us_mappable$FIPS <- sprintf("%05d", us_mappable$FIPS)
+us_map <- readRDS("us_counties.RDS")
 us_map <- merge(us_map, us_mappable, by.x = "GEOID", by.y = "FIPS")
 rm(us_mappable)
+
+state_map <- readRDS("us_states.RDS")
+state_map_testing <- merge(state_map, state_testing, by.x = "STUSPS", by.y = "state")
 
 us_new_cases <- us_ts$cases[-1] - us_ts$cases[-nrow(us_ts)]
 us_by_day <- us_ts$cases[-1] / us_ts$cases[-nrow(us_ts)]
@@ -164,7 +172,7 @@ wrld_cases <-
 
 This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r update_date`.
 
-Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/). See also the [COVID Tracking Project](https://covidtracking.com/).
+Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and the [COVID Tracking Project](https://covidtracking.com/).
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
 <script async src="//static.getclicky.com/js"></script>
@@ -200,15 +208,32 @@ ggplot(data = wrld_cases, aes(x = type, y = cases, fill = type)) +
 ## United States
 
 ```{r us:map}
-dmn <- c(min(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T), 
-            max(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T))
-
-pal <-
+dmn_confirmed <-
+  c(min(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T),
+    max(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T))
+pal_confirmed <-
   colorNumeric(palette = "YlOrRd",
-               domain = dmn,
+               domain = dmn_confirmed,
                na.color = "white")
 
-lab_choro <- paste0(
+dmn_positive <-
+  c(min(log(state_map_testing$positive[state_map_testing$positive > 0]), na.rm = T),
+    max(log(state_map_testing$positive[state_map_testing$positive > 0]), na.rm = T))
+pal_positive <-
+  colorNumeric(palette = "YlOrRd",
+               domain = dmn_positive,
+               na.color = "white")
+
+dmn_total <-
+  c(min(log(state_map_testing$total[state_map_testing$total > 0]), na.rm = T),
+    max(log(state_map_testing$total[state_map_testing$total > 0]), na.rm = T))
+pal_total <-
+  colorNumeric(palette = "YlOrRd",
+               domain = dmn_total,
+               na.color = "white")
+
+
+lab_counties <- paste0(
   "<strong>",
   us_map$Admin2,
   ifelse(us_map$Admin2 == "", "", ", "),
@@ -218,6 +243,19 @@ lab_choro <- paste0(
   " cases<br>",
   prettyNum(us_map$Deaths, big.mark = ","),
   " deaths"
+) %>%
+  lapply(htmltools::HTML)
+
+lab_states <- paste0(
+  "<strong>",
+  state_map_testing$NAME,
+  "</strong><br>",
+  prettyNum(state_map_testing$total, big.mark = ","),
+  " tests<br>",
+    prettyNum(state_map_testing$positive, big.mark = ","),
+  " positive<br>",
+  prettyNum(state_map_testing$negative, big.mark = ","),
+  " negative"
 ) %>%
   lapply(htmltools::HTML)
 
@@ -237,25 +275,69 @@ lab_circle <- paste0(
 leaflet(us_map) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addPolygons(
-    fillColor = ~ pal(log(Confirmed)),
-    weight = 1,
+    fillColor = ~ pal_confirmed(log(Confirmed)),
+    weight = 0.5,
     opacity = 1,
-    color = "#000000",
+    color = "black",
     fillOpacity = 1,
     smoothFactor = 0.5,
     highlight = highlightOptions(
       weight = 3,
-      color = "white",
+      color = "black",
       bringToFront = T,
       sendToBack = T
     ),
-    label = lab_choro,
+    label = lab_counties,
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
       direction = "auto"
     ),
-    group = "Choropleth"
+    group = "Counties"
+  ) %>%
+  addPolygons(
+    data = state_map_testing,
+    fillColor = ~ pal_positive(log(positive)),
+    weight = 0.5,
+    opacity = 1,
+    color = "black",
+    fillOpacity = 1,
+    smoothFactor = 0.5,
+    highlight = highlightOptions(
+      weight = 3,
+      color = "black",
+      bringToFront = T,
+      sendToBack = T
+    ),
+    label = lab_states,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"
+    ),
+    group = "States: Cases"
+  ) %>%
+  addPolygons(
+    data = state_map_testing,
+    fillColor = ~ pal_total(log(total)),
+    weight = 0.5,
+    opacity = 1,
+    color = "black",
+    fillOpacity = 1,
+    smoothFactor = 0.5,
+    highlight = highlightOptions(
+      weight = 3,
+      color = "black",
+      bringToFront = T,
+      sendToBack = T
+    ),
+    label = lab_states,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"
+    ),
+    group = "States: Tests"
   ) %>%
   addCircleMarkers(
     lng = us_daily$Long_,
@@ -273,7 +355,7 @@ leaflet(us_map) %>%
     group = "Markers"
   ) %>%
   addLayersControl(
-    baseGroups = c("Markers", "Choropleth"),
+    baseGroups = c("Counties", "States: Cases", "States: Tests", "Markers"),
     position = "bottomleft",
     options = layersControlOptions(collapsed = F, autoZIndex = T)
   )  %>%
@@ -316,6 +398,25 @@ leaflet(daily_update) %>%
     fillColor = "red",
     stroke = F
   )
+```
+
+
+# Cumulative Tests {.tabset .tabset-fade .tabset-pills}
+
+## United States
+```{r us:testing}
+ggplot(us_testing, aes(x = date, y = total)) +
+  geom_point(color = "firebrick", aes(y = positive)) +
+  geom_line(color = "firebrick", aes(y = positive)) +
+  geom_point(color = "goldenrod", aes(y = negative)) +
+  geom_line(color = "goldenrod", aes(y = negative)) +
+  geom_point(color = "dodgerblue") +
+  geom_line(color = "dodgerblue") +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(name = "Tests", n.breaks = 11) +
+  theme_dark
 ```
 
 # Cumulative Cases 
