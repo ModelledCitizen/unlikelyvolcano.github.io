@@ -434,7 +434,7 @@ ggplot(us_testing, aes(x = date, y = total)) +
   scale_x_date(name = "Date",
                date_breaks = "1 week",
                date_labels = "%b %e") +
-  scale_y_continuous(name = "Tests", n.breaks = 11) +
+  scale_y_continuous(name = "Tests", n.breaks = 11, trans = "log10") +
   theme_dark
 ```
 
