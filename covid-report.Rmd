@@ -12,6 +12,7 @@ output:
 ---
 ```{r setup, include=FALSE}
 library(knitr)
+library(purrr)
 library(ggplot2)
 library(leaflet)
 library(rgdal)
@@ -25,7 +26,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 
-options(sciepen = 20)
+options(scipen = 20)
 
 theme_dark <- theme(
     line = element_line(colour = "white"),
@@ -75,7 +76,8 @@ daily_update <- read.csv(daily_url, stringsAsFactors = F)
 
 us_current <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
 us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
-state_testing <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
+state_current <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
+state_testing <- read.csv("https://covidtracking.com/api/states/daily.csv", stringsAsFactors = F)
 ```
 
 ```{r us, include=FALSE}
@@ -87,6 +89,7 @@ us_ts <-
   )
 us_daily <- daily_update[daily_update$Country_Region %in% "US",]
 us_testing$date <- as.Date(strptime(us_testing$date, format = "%Y%m%d"))
+state_testing$date <- as.Date(strptime(state_testing$date, format = "%Y%m%d"))
 
 us_mappable <- us_daily[!duplicated(us_daily$FIPS),]
 us_mappable$FIPS <- sprintf("%05d", us_mappable$FIPS)
@@ -95,7 +98,15 @@ us_map <- merge(us_map, us_mappable, by.x = "GEOID", by.y = "FIPS")
 rm(us_mappable)
 
 state_map <- readRDS("us_states.RDS")
-state_map_testing <- merge(state_map, state_testing, by.x = "STUSPS", by.y = "state")
+state_map_testing <- merge(state_map, state_current, by.x = "STUSPS", by.y = "state")
+state_testing <-
+  merge(
+    state_testing,
+    state_map@data,
+    by.x = "state",
+    by.y = "STUSPS",
+    all.x = T
+  )
 
 us_new_cases <- us_ts$cases[-1] - us_ts$cases[-nrow(us_ts)]
 us_new_deaths <- us_ts$deaths[-1] - us_ts$deaths[-nrow(us_ts)]
@@ -438,6 +449,44 @@ ggplot(us_testing, aes(x = date, y = total)) +
   theme_dark
 ```
 
+## By State
+```{r state:testing, fig.show="animate", ffmpeg.format="gif"}
+state_ts <- list()
+state_names <- c()
+for (i in unique(state_testing$state)) {
+  state_ts[[i]] <- state_testing[state_testing$state == i, ]
+  state_names <-
+    c(state_names, unique(state_testing[state_testing$state == i, "NAME"]))
+}
+plots <- map2(
+  state_ts,
+  state_names,
+  ~ ggplot(.x, aes(x = date, y = total)) +
+    geom_point(color = "darkorange", aes(y = positive)) +
+    geom_line(color = "darkorange", aes(y = positive)) +
+    geom_point(color = "seagreen", aes(y = negative)) +
+    geom_line(color = "seagreen", aes(y = negative)) +
+    geom_point(color = "royalblue") +
+    geom_line(color = "royalblue") +
+    ggtitle(.y) +
+    scale_x_date(
+      name = "Date",
+      date_breaks = "1 week",
+      date_labels = "%b %e",
+      limits = c(min(state_testing$date), NA)
+    ) +
+    scale_y_continuous(
+      name = "Tests",
+      n.breaks = 11,
+      trans = "log10",
+      limits = c(1, max(state_testing$total))
+    ) +
+    theme_dark
+)
+walk(plots, print)
+```
+
+
 # Cumulative Cases 
 
 ## Linear Scale {.tabset .tabset-fade .tabset-pills}
@@ -458,7 +507,7 @@ ggplot(us_ts, aes(x = date, y = cases)) +
                date_labels = "%b %e") +
   scale_y_continuous(
     name = "Cases",
-    n.breaks = 10,
+    n.breaks = 11,
     sec.axis = sec_axis(~ . / 20, name = "Deaths")
   ) +
   theme_dark
@@ -478,7 +527,7 @@ ggplot(world_ts, aes(x = date, y = cases)) +
                date_labels = "%b %e") +
   scale_y_continuous(
     name = "Cases",
-    n.breaks = 10,
+    n.breaks = 11,
     sec.axis = sec_axis( ~ . / 20, name = "Deaths")
   ) +
   theme_dark
@@ -509,7 +558,7 @@ ggplot(us_ts, aes(x = date, y = cases)) +
                date_labels = "%b %e") +
   scale_y_continuous(
     name = "Cases",
-    n.breaks = 10,
+    n.breaks = 11,
     trans = "log10",
     limits = c(0.3, NA)
   ) +
@@ -527,8 +576,8 @@ ggplot(world_ts, aes(x = date, y = cases)) +
                date_breaks = "1 week",
                date_labels = "%b %e") +
   scale_y_continuous(
-    "Cases",
-    n.breaks = 10,
+    name = "Cases",
+    n.breaks = 11,
     trans = "log10"
   ) +
   theme_dark
@@ -548,7 +597,7 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("New Cases", n.breaks = 10) +
+  scale_y_continuous("New Cases", n.breaks = 11) +
   theme_dark
 ```
 
@@ -560,7 +609,7 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("New Cases", n.breaks = 10) +
+  scale_y_continuous("New Cases", n.breaks = 11) +
   #ggtitle("New Cases by Day on Earth") +
   theme_dark
 ```
@@ -577,7 +626,7 @@ ggplot(us_growth_data, aes(x = date, y = change_new)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("∂ New Cases", n.breaks = 10) +
+  scale_y_continuous("∂ New Cases", n.breaks = 11) +
   theme_dark
 ```
 
@@ -589,7 +638,7 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("∂ New Cases", n.breaks = 10) +
+  scale_y_continuous("∂ New Cases", n.breaks = 11) +
   theme_dark
 ```
 
@@ -600,6 +649,8 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
 out <- us_growth_data[us_growth_data$date > "2020-02-29", ]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
+out$deaths <- prettyNum(out$deaths, big.mark = ",")
+out$new_deaths <- prettyNum(out$new_deaths, big.mark = ",")
 kable(
   out,
   col.names = c(
@@ -626,6 +677,8 @@ kable(
 out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29", ]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
+out$deaths <- prettyNum(out$deaths, big.mark = ",")
+out$new_deaths <- prettyNum(out$new_deaths, big.mark = ",")
 kable(
   out,
   col.names = c(
