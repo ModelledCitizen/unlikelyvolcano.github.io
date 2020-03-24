@@ -1,6 +1,6 @@
 ---
 title: "COVID-19 Situation Report"
-author:  "[UnlikelyVolcano (David Azizi)](https://unlikelyvolcano.com)"
+author:  "[David Azizi](https://unlikelyvolcano.com)"
 output:
   html_document:
     toc: true
@@ -73,6 +73,7 @@ if (!RCurl::url.exists(daily_url)) {
 
 daily_update <- read.csv(daily_url, stringsAsFactors = F)
 
+us_current <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
 us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
 state_testing <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
 ```
@@ -114,23 +115,6 @@ us_growth_data <- data.frame(
 rm(us_new_cases, us_new_deaths, us_by_day, us_by_day_d, us_growth_rate)
 us_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 us_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
-
-us_confirmed <- sum(us_daily$Confirmed)
-us_recovered <- sum(us_daily$Recovered)
-us_deaths <- sum(us_daily$Deaths)
-us_active <- us_confirmed - us_recovered - us_deaths
-
-us_cases <-
-  data.frame(
-    id = rep("cases", 3),
-    cases = c(us_active, us_recovered, us_deaths),
-    type = factor(
-      1:3,
-      levels = 1:3,
-      labels = c("active", "recovered", "deaths")
-    ),
-    stringsAsFactors = F
-  )
 ```
 
 ```{r world, include=FALSE}
@@ -185,7 +169,7 @@ wrld_cases <-
 
 This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r update_date`.
 
-Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and the [COVID Tracking Project](https://covidtracking.com/).
+Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/).
 
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
 <script async src="//static.getclicky.com/js"></script>
@@ -193,26 +177,46 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 
-**Cases:** `r prettyNum(wrld_confirmed, big.mark = ",")`
+## United States
 
-**Active:** `r prettyNum(wrld_active, big.mark = ",")` (`r round(100 * wrld_active/wrld_confirmed, 1)`%)
+```{r us:overview}
+us_over <-
+  us_current[, c("positive", "negative", "total", "hospitalized", "death")]
+us_over[1,] <- vapply(us_over[1,], prettyNum, "chr", big.mark = ",")
+kable(
+  us_over,
+  col.names = c("Cases", "Negative Tests", "Total Tests", "Hospitalized", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "seagreen") %>%
+  column_spec(3, color = "royalblue") %>%
+  column_spec(5, color = "firebrick")
 
-**Recovered:** `r prettyNum(wrld_recovered, big.mark = ",")` (`r round(100 * wrld_recovered/wrld_confirmed, 1)`%)
+```
 
-**Deaths:** `r prettyNum(wrld_deaths, big.mark = ",")` (`r round(100 * wrld_deaths/wrld_confirmed, 1)`%)
+## Global
 
-**US Cases:** `r prettyNum(us_confirmed, big.mark = ",")`
+```{r world:overview}
 
-**US Deaths:** `r prettyNum(us_deaths, big.mark = ",")`
+world_over <- t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
+world_over[1,] <- vapply(world_over[1,], prettyNum, "chr", big.mark = ",")
+kable(
+  world_over,
+  col.names = c("Cases", "Active", "Recovered", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(4, color = "firebrick")
 
-``` {r wrld:bar}
-ggplot(data = wrld_cases, aes(x = type, y = cases, fill = type)) +
-  geom_bar(stat = "identity") +
-  scale_x_discrete(name = "", expand = c(0, 0)) +
-  scale_y_continuous("Cases", n.breaks = 10, expand = c(0, 0)) +
-  scale_fill_manual(values = c("darkorange", "forestgreen", "firebrick1"),
-                    guide = FALSE) +
-  theme_dark
 ```
 
 
@@ -220,7 +224,7 @@ ggplot(data = wrld_cases, aes(x = type, y = cases, fill = type)) +
 
 ## United States
 
-```{r us:map}
+```{r us:map, fig.height=4}
 dmn_confirmed <-
   c(min(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T),
     max(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T))
@@ -377,9 +381,11 @@ leaflet(us_map) %>%
           zoom = 4)
 ```
 
+<script>document.getElementsByClassName( 'leaflet-control-attribution' )[0].style.display = 'none';</script>
+
 ## Global
 
-```{r world:map}
+```{r world:map, fig.height=4}
 lab <- paste0(
   "<strong>",
   daily_update$Country_Region,
@@ -567,12 +573,11 @@ Now, let's see the y-axis with the new cases as a multiple of the number of new 
 
 ```{r us:growth}
 ggplot(us_growth_data, aes(x = date, y = change_new)) +
-  geom_smooth(method = "loess", formula = y ~ x) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
   scale_y_continuous("∂ New Cases", n.breaks = 10) +
-  #ggtitle("Change in New Cases by Day in the US") +
   theme_dark
 ```
 
@@ -580,12 +585,11 @@ ggplot(us_growth_data, aes(x = date, y = change_new)) +
 
 ```{r world:growth}
 ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
-  geom_smooth(method = "loess", formula = y ~ x) +
-  geom_point(color = "white") +
-  geom_line(color = "white") +
+  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
   scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
   scale_y_continuous("∂ New Cases", n.breaks = 10) +
-  #ggtitle("Change in New Cases by Day on Earth") +
   theme_dark
 ```
 
