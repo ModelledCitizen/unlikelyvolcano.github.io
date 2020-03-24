@@ -54,14 +54,21 @@ ts_deaths <-
     stringsAsFactors = F
   )
 
-daily_update <-
-  read.csv(
+
+daily_url <-
+  sprintf(
+    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
+    format.Date(Sys.Date(), "%m-%d-%Y")
+  )
+if (!RCurl::url.exists(daily_url)) {
+  daily_url <-
     sprintf(
       "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
-      format.Date(Sys.Date(), "%m-%d-%Y")
-    ),
-    stringsAsFactors = F
-  )
+      format.Date(Sys.Date() - 1, "%m-%d-%Y")
+    )
+}
+
+daily_update <- read.csv(daily_url, stringsAsFactors = F)
 ```
 
 ```{r us, include=FALSE}
@@ -286,6 +293,7 @@ leaflet(us_map) %>%
   ) %>%
   addLayersControl(
     baseGroups = c("Markers", "Choropleth"),
+    position = "bottomleft",
     options = layersControlOptions(collapsed = F, autoZIndex = T)
   )  %>%
   setView(lat =  39.8333333,
