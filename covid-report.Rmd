@@ -187,9 +187,7 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
 
 # Overview {.tabset .tabset-fade .tabset-pills}
-
 ## United States
-
 ```{r us:overview}
 us_over <-
   us_current[, c("positive", "negative", "total", "hospitalized", "death")]
@@ -211,7 +209,6 @@ kable(
 ```
 
 ## Global
-
 ```{r world:overview}
 
 world_over <- t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
@@ -230,11 +227,8 @@ kable(
 
 ```
 
-
 # Case Map {.tabset .tabset-fade .tabset-pills}
-
 ## United States
-
 ```{r us:map, fig.height=4}
 dmn_confirmed <-
   c(min(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T),
@@ -392,10 +386,7 @@ leaflet(us_map) %>%
           zoom = 4)
 ```
 
-<script>document.getElementsByClassName( 'leaflet-control-attribution' )[0].style.display = 'none';</script>
-
 ## Global
-
 ```{r world:map, fig.height=4}
 lab <- paste0(
   "<strong>",
@@ -430,9 +421,7 @@ leaflet(daily_update) %>%
   )
 ```
 
-
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
-
 ## United States
 ```{r us:testing}
 ggplot(us_testing, aes(x = date, y = total)) +
@@ -486,15 +475,9 @@ plots <- map2(
 walk(plots, print)
 ```
 
-
 # Cumulative Cases 
-
 ## Linear Scale {.tabset .tabset-fade .tabset-pills}
-
 ### United States
-
-The cumulative number of cases doesn't tell us much -- it's not possible for this number to go down. We can see that the growth seems to be accelerating, but we will look closer in the next chart.
-
 ```{r us:total}
 ggplot(us_ts, aes(x = date, y = cases)) +
   #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
@@ -514,7 +497,6 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 ```
 
 ### Global
-
 ```{r world:total}
 ggplot(world_ts, aes(x = date, y = cases)) +
   #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
@@ -533,13 +515,9 @@ ggplot(world_ts, aes(x = date, y = cases)) +
   theme_dark
 ```
 
-
 ## Log Scale {.tabset .tabset-fade .tabset-pills}
 
 ### United States
-
-An OLS fit to the logged values shows how closely the pandemic mimics an exponential curve. (All pandemics are modeled as a logistic function since there is a ceiling to the number of infected individuals, but in the growth phase, we can model them as exponential.) If the rate of growth were slowing, points would begin to appear below the fit line. The second line (orange) is fit only only to March, once testing ramped up in the US -- note the narrower confidence bands.
-
 ```{r us:logged}
 ggplot(us_ts, aes(x = date, y = cases)) +
   geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
@@ -566,7 +544,6 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 ```
 
 ### Global
-
 ```{r world:logged}
 ggplot(world_ts, aes(x = date, y = cases)) +
   geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
@@ -584,13 +561,8 @@ ggplot(world_ts, aes(x = date, y = cases)) +
 ```
 
 # Growth Rate
-
 ## New Cases by Day {.tabset .tabset-fade .tabset-pills}
-
 ### United States
-
-This is the famed curve that needs to be flattened so we don't overwhelm our medical capacity on the first wave of the pandemic. As you can see, we are still climbing. 
-
 ```{r us:newcases}
 ggplot(us_growth_data, aes(x = date, y = new_cases)) +
   geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
@@ -602,7 +574,6 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
 ```
 
 ### Global
-
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
   geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
@@ -615,11 +586,7 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
 ```
 
 ## Rate of Change in New Cases {.tabset .tabset-fade .tabset-pills}
-
 ### United States
-
-Now, let's see the y-axis with the new cases as a multiple of the number of new cases the previous day. This is akin to the second derivative of the growth function. We want this to approach 0 as we flatten the curve.
-
 ```{r us:growth}
 ggplot(us_growth_data, aes(x = date, y = change_new)) +
   geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
@@ -631,7 +598,6 @@ ggplot(us_growth_data, aes(x = date, y = change_new)) +
 ```
 
 ### Global
-
 ```{r world:growth}
 ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
   geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
@@ -643,7 +609,6 @@ ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
 ```
 
 # Table {.tabset .tabset-fade .tabset-pills}
-
 ## United States
 ```{r us:table}
 out <- us_growth_data[us_growth_data$date > "2020-02-29", ]
@@ -672,7 +637,6 @@ kable(
 ```
 
 ## Global
-
 ```{r world:table}
 out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29", ]
 out$cases <- prettyNum(out$cases, big.mark = ",")
