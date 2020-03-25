@@ -17,6 +17,7 @@ library(leaflet)
 library(rgdal)
 library(rgeos)
 library(kableExtra)
+library(rvest)
 
 knitr::opts_chunk$set(
   echo = FALSE,
@@ -42,6 +43,14 @@ theme_dark <- theme(
     axis.ticks.y = element_line(colour = "white"),
     axis.text = element_text(color = "white")
   )
+
+
+worldometers <-
+  read_html("https://www.worldometers.info/coronavirus/") %>% 
+  html_nodes("#main_table_countries_today") %>% 
+  html_table() %>%
+  (function(x) {x[[1]]})
+
 
 ts_confirmed <-
   read.csv(
@@ -179,7 +188,7 @@ wrld_cases <-
 
 This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r update_date`.
 
-Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/).
+Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/), and [Worldometers](https://www.worldometers.info/coronavirus/).
 
 ``` {=html}
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
@@ -189,6 +198,7 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 ## United States
+[The COVID Tracking Project](https://covidtracking.com/)
 ```{r us:overview}
 us_over <-
   us_current[, c("positive", "negative", "total", "hospitalized", "death")]
@@ -209,7 +219,25 @@ kable(
 
 ```
 
+[Worldometers](https://www.worldometers.info/coronavirus/)
+```{r us:worldometers}
+kable(
+  worldometers[worldometers$`Country,Other` == "USA", c(2, 4, 8, 9, 10)],
+  col.names = c(
+    "Total Cases",
+    "Total Deaths",
+    "Critical Cases",
+    "Cases / 1M Pop.",
+    "Deaths / 1M Pop."
+  ),
+  row.names = F,
+  align = "ccccc"
+) %>%
+  kable_styling()
+```
+
 ## Global
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/)
 ```{r world:overview}
 
 world_over <- t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
@@ -225,8 +253,25 @@ kable(
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
   column_spec(4, color = "firebrick")
-
 ```
+
+[Worldometers](https://www.worldometers.info/coronavirus/)
+```{r world:worldometers}
+kable(
+  worldometers[worldometers$`Country,Other` == "Total:", c(2, 4, 8, 9, 10)],
+  col.names = c(
+    "Total Cases",
+    "Total Deaths",
+    "Critical Cases",
+    "Cases / 1M Pop.",
+    "Deaths / 1M Pop."
+  ),
+  row.names = F,
+  align = "ccccc"
+) %>%
+  kable_styling()
+```
+
 
 # Case Map {.tabset .tabset-fade .tabset-pills}
 ## United States
