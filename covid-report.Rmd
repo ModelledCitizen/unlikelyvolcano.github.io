@@ -529,6 +529,8 @@ ggplot(us_ts, aes(x = date, y = cases)) +
     color = "darkgrey",
     fullrange = T
   ) +
+  geom_point(color = "firebrick", aes(y = deaths)) +
+  geom_line(color = "firebrick", aes(y = deaths)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
@@ -538,7 +540,8 @@ ggplot(us_ts, aes(x = date, y = cases)) +
     name = "Cases",
     n.breaks = 11,
     trans = "log10",
-    limits = c(0.3, NA)
+    limits = c(0.3, NA),
+    sec.axis = dup_axis( ~ ., name = "Deaths")
   ) +
   theme_dark
 ```
@@ -547,6 +550,8 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 ```{r world:logged}
 ggplot(world_ts, aes(x = date, y = cases)) +
   geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+  geom_point(color = "firebrick", aes(y = deaths)) +
+  geom_line(color = "firebrick", aes(y = deaths)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
   scale_x_date(name = "Date",
@@ -555,7 +560,8 @@ ggplot(world_ts, aes(x = date, y = cases)) +
   scale_y_continuous(
     name = "Cases",
     n.breaks = 11,
-    trans = "log10"
+    trans = "log10",
+    sec.axis = dup_axis( ~ ., name = "Deaths")
   ) +
   theme_dark
 ```
@@ -565,22 +571,44 @@ ggplot(world_ts, aes(x = date, y = cases)) +
 ### United States
 ```{r us:newcases}
 ggplot(us_growth_data, aes(x = date, y = new_cases)) +
-  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
+  geom_smooth(method = "loess",
+              formula = y ~ x,
+              color = "darkgray") +
+  geom_point(color = "firebrick", aes(y = new_deaths)) +
+  geom_line(color = "firebrick", aes(y = new_deaths)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
-  scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("New Cases", n.breaks = 11) +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(
+    "New Cases",
+    n.breaks = 11,
+    trans = "log10",
+    sec.axis = dup_axis(name = "Deaths")
+  ) +
   theme_dark
 ```
 
 ### Global
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
-  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") + 
+  geom_smooth(method = "loess",
+              formula = y ~ x,
+              color = "darkgray") +
+  geom_point(color = "firebrick", aes(y = new_deaths)) +
+  geom_line(color = "firebrick", aes(y = new_deaths)) +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
-  scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("New Cases", n.breaks = 11) +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(
+    "New Cases",
+    n.breaks = 11,
+    trans = "log10",
+    sec.axis = dup_axis(name = "Deaths")
+  ) +
   #ggtitle("New Cases by Day on Earth") +
   theme_dark
 ```
@@ -589,29 +617,43 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
 ### United States
 ```{r us:growth}
 ggplot(us_growth_data, aes(x = date, y = change_new)) +
-  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
+  geom_hline(yintercept = 1,
+             color = "white",
+             linetype = "dashed") +
+  geom_smooth(method = "loess",
+              formula = y ~ x,
+              color = "darkgray") +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
-  scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("∂ New Cases", n.breaks = 11) +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous("∂ New Cases", n.breaks = 11, limits = c(-1, 5)) +
   theme_dark
 ```
 
 ### Global
 ```{r world:growth}
 ggplot(wrld_growth_data, aes(x = date, y = change_new)) +
-  geom_smooth(method = "loess", formula = y ~ x, color = "darkgray") +
+  geom_hline(yintercept = 1,
+             color = "white",
+             linetype = "dashed") +
+  geom_smooth(method = "loess",
+              formula = y ~ x,
+              color = "darkgray") +
   geom_point(color = "darkorange") +
   geom_line(color = "darkorange") +
-  scale_x_date(name = "Date", date_breaks = "1 week", date_labels = "%b %e") +
-  scale_y_continuous("∂ New Cases", n.breaks = 11) +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous("∂ New Cases", n.breaks = 11, limits = c(-1, 6)) +
   theme_dark
 ```
 
 # Table {.tabset .tabset-fade .tabset-pills}
 ## United States
 ```{r us:table}
-out <- us_growth_data[us_growth_data$date > "2020-02-29", ]
+out <- us_growth_data[us_growth_data$date > "2020-02-29",]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
 out$deaths <- prettyNum(out$deaths, big.mark = ",")
@@ -638,7 +680,7 @@ kable(
 
 ## Global
 ```{r world:table}
-out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29", ]
+out <- wrld_growth_data[wrld_growth_data$date > "2020-02-29",]
 out$cases <- prettyNum(out$cases, big.mark = ",")
 out$new_cases <- prettyNum(out$new_cases, big.mark = ",")
 out$deaths <- prettyNum(out$deaths, big.mark = ",")
