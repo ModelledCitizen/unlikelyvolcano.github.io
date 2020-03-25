@@ -1,11 +1,10 @@
 ---
 title: "COVID-19 Situation Report"
-author:  "[David Azizi](https://unlikelyvolcano.com)"
+author: "[David Azizi](https://unlikelyvolcano.com)"
 output:
   html_document:
     toc: true
     toc_float: true
-    #toc_depth: 3
     css: bootstrap.css
     highlight: tango
     fig_height: 7
@@ -182,9 +181,11 @@ This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with
 
 Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/).
 
+``` {=html}
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
 <script async src="//static.getclicky.com/js"></script>
 <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101237072ns.gif" /></p></noscript>
+```
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 ## United States
@@ -422,6 +423,7 @@ leaflet(daily_update) %>%
 ```
 
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
+
 ## United States
 ```{r us:testing}
 ggplot(us_testing, aes(x = date, y = total)) +
@@ -475,52 +477,20 @@ plots <- map2(
 walk(plots, print)
 ```
 
-# Cumulative Cases 
-## Linear Scale {.tabset .tabset-fade .tabset-pills}
-### United States
-```{r us:total}
-ggplot(us_ts, aes(x = date, y = cases)) +
-  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
-  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
-  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
-  geom_point(color = "darkorange") +
-  geom_line(color = "darkorange") +
-  scale_x_date(name = "Date",
-               date_breaks = "1 week",
-               date_labels = "%b %e") +
-  scale_y_continuous(
-    name = "Cases",
-    n.breaks = 11,
-    sec.axis = sec_axis(~ . / 20, name = "Deaths")
-  ) +
-  theme_dark
-```
-
-### Global
-```{r world:total}
-ggplot(world_ts, aes(x = date, y = cases)) +
-  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
-  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
-  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
-  geom_point(color = "darkorange") +
-  geom_line(color = "darkorange") +
-  scale_x_date(name = "Date",
-               date_breaks = "1 week",
-               date_labels = "%b %e") +
-  scale_y_continuous(
-    name = "Cases",
-    n.breaks = 11,
-    sec.axis = sec_axis( ~ . / 20, name = "Deaths")
-  ) +
-  theme_dark
-```
-
-## Log Scale {.tabset .tabset-fade .tabset-pills}
-
-### United States
+# Cumulative Cases {.tabset .tabset-fade .tabset-pills}
+## United States {.tabset .tabset-fade .tabset-pills}
+### Logarithmic
 ```{r us:logged}
 ggplot(us_ts, aes(x = date, y = cases)) +
-  geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+  #geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+  geom_smooth(
+    data = subset(us_ts, us_ts$date > "2020-02-29"),
+    aes(x = date, y = deaths),
+    method = "lm",
+    formula = y ~ x,
+    color = "darkgrey",
+    fullrange = T
+  ) +
   geom_smooth(
     data = subset(us_ts, us_ts$date > "2020-02-29"),
     aes(x = date, y = cases),
@@ -540,16 +510,44 @@ ggplot(us_ts, aes(x = date, y = cases)) +
     name = "Cases",
     n.breaks = 11,
     trans = "log10",
-    limits = c(0.3, NA),
+    limits = c(NA, NA),
     sec.axis = dup_axis( ~ ., name = "Deaths")
   ) +
   theme_dark
 ```
 
-### Global
+### Linear
+```{r us:total}
+ggplot(us_ts, aes(x = date, y = cases)) +
+  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
+  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(
+    name = "Cases",
+    n.breaks = 11,
+    sec.axis = sec_axis(~ . / 20, name = "Deaths")
+  ) +
+  theme_dark
+```
+
+## Global {.tabset .tabset-fade .tabset-pills}
+### Logarithmic
 ```{r world:logged}
 ggplot(world_ts, aes(x = date, y = cases)) +
-  geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+  geom_smooth(
+    aes(y = deaths),
+    method = "lm",
+    formula = y ~ x,
+    color =  "darkgray"
+  ) +
+  geom_smooth(method = "lm",
+              formula = y ~ x,
+              color =  "darkgray") +
   geom_point(color = "firebrick", aes(y = deaths)) +
   geom_line(color = "firebrick", aes(y = deaths)) +
   geom_point(color = "darkorange") +
@@ -561,7 +559,26 @@ ggplot(world_ts, aes(x = date, y = cases)) +
     name = "Cases",
     n.breaks = 11,
     trans = "log10",
-    sec.axis = dup_axis( ~ ., name = "Deaths")
+    sec.axis = dup_axis(~ ., name = "Deaths")
+  ) +
+  theme_dark
+```
+
+### Linear
+```{r world:total}
+ggplot(world_ts, aes(x = date, y = cases)) +
+  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
+  geom_point(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_line(color = "firebrick", aes(y = 20 * deaths)) +
+  geom_point(color = "darkorange") +
+  geom_line(color = "darkorange") +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(
+    name = "Cases",
+    n.breaks = 11,
+    sec.axis = sec_axis( ~ . / 20, name = "Deaths")
   ) +
   theme_dark
 ```
@@ -571,6 +588,12 @@ ggplot(world_ts, aes(x = date, y = cases)) +
 ### United States
 ```{r us:newcases}
 ggplot(us_growth_data, aes(x = date, y = new_cases)) +
+  geom_smooth(
+    aes(y = new_deaths),
+    method = "loess",
+    formula = y ~ x,
+    color = "darkgray"
+  ) +
   geom_smooth(method = "loess",
               formula = y ~ x,
               color = "darkgray") +
@@ -593,6 +616,12 @@ ggplot(us_growth_data, aes(x = date, y = new_cases)) +
 ### Global
 ```{r world:newcases}
 ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
+  geom_smooth(
+    aes(y = new_deaths),
+    method = "loess",
+    formula = y ~ x,
+    color = "darkgray"
+  ) +
   geom_smooth(method = "loess",
               formula = y ~ x,
               color = "darkgray") +
