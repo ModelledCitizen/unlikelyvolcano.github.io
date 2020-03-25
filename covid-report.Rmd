@@ -191,14 +191,21 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 ## United States
-[The COVID Tracking Project](https://covidtracking.com/)
+[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
 ```{r us:ctp}
 us_over <-
   us_current[, c("positive", "negative", "total", "hospitalized", "death")]
-us_over[1,] <- vapply(us_over[1,], prettyNum, "chr", big.mark = ",")
+us_over[1, ] <-
+  vapply(us_over[1, ], prettyNum, "chr", big.mark = ",")
 kable(
   us_over,
-  col.names = c("Cases", "Negative Tests", "Total Tests", "Hospitalized", "Deaths"),
+  col.names = c(
+    "Cases",
+    "Negative Tests",
+    "Total Tests",
+    "Hospitalized",
+    "Deaths"
+  ),
   row.names = F,
   align = "ccccc",
   digits = 3
@@ -212,12 +219,14 @@ kable(
 
 ```
 
-[Worldometers](https://www.worldometers.info/coronavirus/)
+[Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
 ```{r us:worldometers}
 kable(
-  worldometers[worldometers$`Country,Other` == "USA", c(2, 4, 8, 9, 10)],
+  worldometers[worldometers$`Country,Other` == "USA", c(2, 7, 6, 4, 8, 9, 10)],
   col.names = c(
     "Cases",
+    "Active",
+    "Recovered",
     "Deaths",
     "Critical",
     "Cases / 1M Pop.",
@@ -229,13 +238,16 @@ kable(
   kable_styling() %>%
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
-  column_spec(2, color = "firebrick")
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "limegreen") %>%
+  column_spec(4, color = "firebrick")
 ```
 
-[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/)
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r update_date`)
 ```{r us:jhu}
 us_over <- t(c(us_confirmed, us_active, us_recovered, us_deaths))
-us_over[1,] <- vapply(us_over[1,], prettyNum, "chr", big.mark = ",")
+us_over[1, ] <-
+  vapply(us_over[1, ], prettyNum, "chr", big.mark = ",")
 kable(
   us_over,
   col.names = c("Cases", "Active", "Recovered", "Deaths"),
@@ -246,16 +258,20 @@ kable(
   kable_styling() %>%
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "limegreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
 ## Global
-[Worldometers](https://www.worldometers.info/coronavirus/)
+[Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
 ```{r world:worldometers}
 kable(
-  worldometers[worldometers$`Country,Other` == "Total:", c(2, 4, 8, 9, 10)],
+  worldometers[worldometers$`Country,Other` == "Total:", c(2, 7, 6, 4, 8, 9, 10)],
   col.names = c(
     "Cases",
+    "Active",
+    "Recovered",
     "Deaths",
     "Critical",
     "Cases / 1M Pop.",
@@ -267,14 +283,17 @@ kable(
   kable_styling() %>%
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
-  column_spec(2, color = "firebrick")
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "limegreen") %>%
+  column_spec(4, color = "firebrick")
 ```
 
-[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/)
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r update_date`)
 ```{r world:jhu}
-
-world_over <- t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
-world_over[1,] <- vapply(world_over[1,], prettyNum, "chr", big.mark = ",")
+world_over <-
+  t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
+world_over[1, ] <-
+  vapply(world_over[1, ], prettyNum, "chr", big.mark = ",")
 kable(
   world_over,
   col.names = c("Cases", "Active", "Recovered", "Deaths"),
@@ -285,6 +304,8 @@ kable(
   kable_styling() %>%
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "limegreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
