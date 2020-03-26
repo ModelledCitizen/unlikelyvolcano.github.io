@@ -43,15 +43,24 @@ theme_dark <- theme(
     axis.ticks.y = element_line(colour = "white"),
     axis.text = element_text(color = "white")
   )
+```
 
+```{r ctp, include=FALSE}
+us_current <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
+us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
+state_current <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
+state_testing <- read.csv("https://covidtracking.com/api/states/daily.csv", stringsAsFactors = F)
+```
 
+```{r worldometers, include=FALSE}
 worldometers <-
   read_html("https://www.worldometers.info/coronavirus/") %>% 
   html_nodes("#main_table_countries_today") %>% 
   html_table() %>%
   (function(x) {x[[1]]})
+```
 
-
+```{r jhu, include=FALSE}
 ts_confirmed <-
   read.csv(
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",
@@ -63,7 +72,6 @@ ts_deaths <-
     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",
     stringsAsFactors = F
   )
-
 
 update_date <- format.Date(Sys.Date(), "%d %B %Y")
 daily_url <-
@@ -81,11 +89,31 @@ if (!RCurl::url.exists(daily_url)) {
 }
 
 daily_update <- read.csv(daily_url, stringsAsFactors = F)
+```
 
-us_current <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
-us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
-state_current <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
-state_testing <- read.csv("https://covidtracking.com/api/states/daily.csv", stringsAsFactors = F)
+```{r philly, include=FALSE}
+cop <-
+  read.csv(
+    "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/DE25D17513574BAF8F43A99AFFC27EC7-0:0/views/7713620505763405234_17874758422068147630?csv=true"
+  )
+cop$Result.Date <- as.Date(strptime(cop$Result.Date, format = "%m/%e/%Y"))
+
+cop2 <-
+  data.frame(
+    Date = as.Date(rownames(table(
+      cop$Result.Date, cop$Result
+    ))),
+    NEG = table(cop$Result.Date, cop$Result)[, 1],
+    POS = table(cop$Result.Date, cop$Result)[, 2],
+    row.names = NULL
+  )
+cop3 <- cop2
+for (i in 1:nrow(cop2)) {
+  cop3$NEG[i] <- sum(cop2$NEG[1:i])
+  cop3$POS[i] <- sum(cop2$POS[1:i])
+}
+cop3[["TOT"]] <- cop3$NEG + cop3$POS
+cop3 <- cop3[cop3$Date > "2020-02-29",]
 ```
 
 ```{r us, include=FALSE}
@@ -96,6 +124,7 @@ us_ts <-
     deaths = colSums(ts_deaths[ts_deaths$Country.Region %in% "US" , -(1:4)], na.rm = T)
   )
 us_daily <- daily_update[daily_update$Country_Region %in% "US",]
+
 us_testing$date <- as.Date(strptime(us_testing$date, format = "%Y%m%d"))
 state_testing$date <- as.Date(strptime(state_testing$date, format = "%Y%m%d"))
 
@@ -309,6 +338,26 @@ kable(
   column_spec(4, color = "firebrick")
 ```
 
+## Philadelphia
+[The City of Philadelphia](https://www.phila.gov/programs/coronavirus-disease-2019-covid-19/) (Updated: `r format(strptime(unique(cop$UpdatedDate), format = "%m/%e/%Y %I:%M:%S %p"), "%d %B %Y at %H:%M")`)
+```{r philly:overview}
+philly_over <- cop3[nrow(cop3), c("POS", "NEG", "TOT")]
+philly_over[1, ] <-
+  vapply(philly_over[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  philly_over,
+  col.names = c("Cases", "Negative Tests", "Total Tests"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "seagreen") %>%
+  column_spec(3, color = "royalblue")
+```
+
 # Case Map {.tabset .tabset-fade .tabset-pills}
 ## United States
 ```{r us:map, fig.height=4.5}
@@ -504,7 +553,6 @@ leaflet(daily_update) %>%
 ```
 
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
-
 ## United States
 ```{r us:testing}
 ggplot(us_testing, aes(x = date, y = total)) +
@@ -557,6 +605,23 @@ plots <- map2(
 )
 walk(plots, print)
 ```
+
+## Philadelphia
+```{r philly:testing}
+ggplot(cop3, aes(x = Date, y = TOT)) +
+  geom_line(aes(y = NEG), color = "seagreen") +
+  geom_line(aes(y = POS), color = "darkorange") +
+  geom_point(aes(y = NEG), color = "seagreen") +
+  geom_point(aes(y = POS), color = "darkorange") +
+  geom_point(color = "royalblue") +
+  geom_line(color = "royalblue") +
+  scale_x_date(name = "Date",
+               date_breaks = "1 week",
+               date_labels = "%b %e") +
+  scale_y_continuous(name = "Tests", n.breaks = 11, trans = "log10") +
+  theme_dark
+```
+
 
 # Cumulative Cases {.tabset .tabset-fade .tabset-pills}
 ## United States {.tabset .tabset-fade .tabset-pills}
