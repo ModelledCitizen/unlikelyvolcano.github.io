@@ -239,7 +239,7 @@ kable(
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
   column_spec(2, color = "goldenrod") %>%
-  column_spec(3, color = "limegreen") %>%
+  column_spec(3, color = "yellowgreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
@@ -259,7 +259,7 @@ kable(
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
   column_spec(2, color = "goldenrod") %>%
-  column_spec(3, color = "limegreen") %>%
+  column_spec(3, color = "yellowgreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
@@ -284,7 +284,7 @@ kable(
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
   column_spec(2, color = "goldenrod") %>%
-  column_spec(3, color = "limegreen") %>%
+  column_spec(3, color = "yellowgreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
@@ -305,7 +305,7 @@ kable(
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
   column_spec(2, color = "goldenrod") %>%
-  column_spec(3, color = "limegreen") %>%
+  column_spec(3, color = "yellowgreen") %>%
   column_spec(4, color = "firebrick")
 ```
 
