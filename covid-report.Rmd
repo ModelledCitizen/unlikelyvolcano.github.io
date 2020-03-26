@@ -96,10 +96,10 @@ tryCatch({
   cop <- read.csv(philly_url, stringsAsFactors = F)
 },
 error = function(cond) {
-  cop <<- read.csv("phila_data.csv", stringsAsFactors = F)
+  cop <<- read.csv("data/phila_data.csv", stringsAsFactors = F)
 },
 finally = {
-  write.csv(cop[, c("UpdatedDate", "Result.Group", "Result", "Result.Date")], "phila_data.csv", row.names = F)
+  write.csv(cop[, c("UpdatedDate", "Result.Group", "Result", "Result.Date")], "data/phila_data.csv", row.names = F)
 })
 cop$Result.Date <- as.Date(strptime(cop$Result.Date, format = "%m/%e/%Y"))
 
@@ -135,11 +135,11 @@ state_testing$date <- as.Date(strptime(state_testing$date, format = "%Y%m%d"))
 
 us_mappable <- us_daily[!duplicated(us_daily$FIPS),]
 us_mappable$FIPS <- sprintf("%05d", us_mappable$FIPS)
-us_map <- readRDS("us_counties.RDS")
+us_map <- readRDS("data/us_counties.RDS")
 us_map <- merge(us_map, us_mappable, by.x = "GEOID", by.y = "FIPS")
 rm(us_mappable)
 
-state_map <- readRDS("us_states.RDS")
+state_map <- readRDS("data/us_states.RDS")
 state_map_testing <- merge(state_map, state_current, by.x = "STUSPS", by.y = "state")
 state_testing <-
   merge(
