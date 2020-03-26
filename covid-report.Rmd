@@ -3,6 +3,7 @@ title: "COVID-19 Situation Report"
 author: "[David Azizi](https://unlikelyvolcano.com)"
 output:
   html_document:
+    self_contained: false
     toc: true
     toc_float: true
     css: bootstrap.css
@@ -10,6 +11,8 @@ output:
     fig_height: 7
 ---
 ```{r setup, include=FALSE}
+UnlikelyTools::set_wd("unlikelyvolcano.github.io")
+
 library(knitr)
 library(purrr)
 library(ggplot2)
@@ -73,29 +76,31 @@ ts_deaths <-
     stringsAsFactors = F
   )
 
-update_date <- format.Date(Sys.Date(), "%d %B %Y")
-daily_url <-
-  sprintf(
-    "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
-    format.Date(Sys.Date(), "%m-%d-%Y")
-  )
-if (!RCurl::url.exists(daily_url)) {
-  daily_url <-
-    sprintf(
-      "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/%s.csv",
-      format.Date(Sys.Date() - 1, "%m-%d-%Y")
-    )
-  update_date <- format.Date(Sys.Date() - 1, "%d %B %Y")
-}
-
-daily_update <- read.csv(daily_url, stringsAsFactors = F)
+jhu_url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/"
+jhu_url <- paste0(jhu_url, "csse_covid_19_daily_reports/%s.csv")
+tryCatch({
+  update_date <- format.Date(Sys.Date(), "%d %B %Y")
+  daily_url <- sprintf(jhu_url, format.Date(Sys.Date(), "%m-%d-%Y"))
+  daily_update <- read.csv(daily_url, stringsAsFactors = F)
+},
+error = function(cond) {
+  update_date <<- format.Date(Sys.Date() - 1, "%d %B %Y")
+  daily_url <<- sprintf(jhu_url, format.Date(Sys.Date() - 1, "%m-%d-%Y"))
+  daily_update <<- read.csv(daily_url, stringsAsFactors = F)
+})
 ```
 
 ```{r philly, include=FALSE}
-cop <-
-  read.csv(
-    "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/DE25D17513574BAF8F43A99AFFC27EC7-0:0/views/7713620505763405234_17874758422068147630?csv=true"
-  )
+philly_url <- "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/D3F0EAB37A3542519C3DDC9577839261-0:0/views/7713620505763405234_17874758422068147630?csv=true"
+tryCatch({
+  cop <- read.csv(philly_url, stringsAsFactors = F)
+},
+error = function(cond) {
+  cop <<- read.csv("phila_data.csv", stringsAsFactors = F)
+},
+finally = {
+  write.csv(cop[, c("UpdatedDate", "Result.Group", "Result", "Result.Date")], "phila_data.csv")
+})
 cop$Result.Date <- as.Date(strptime(cop$Result.Date, format = "%m/%e/%Y"))
 
 cop2 <-
