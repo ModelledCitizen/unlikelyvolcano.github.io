@@ -517,7 +517,7 @@ leaflet(us_map) %>%
     position = "bottomleft",
     options = layersControlOptions(collapsed = F, autoZIndex = T)
   )  %>%
-  setView(lat =  39.8333333,
+  setView(lat =  37.8333333,
           lng = -98.585522,
           zoom = 4)
 ```
