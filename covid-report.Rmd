@@ -91,7 +91,7 @@ error = function(cond) {
 ```
 
 ```{r philly, include=FALSE}
-philly_url <- "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/D3F0EAB37A3542519C3DDC9577839261-0:0/views/7713620505763405234_17874758422068147630?csv=true"
+philly_url <- "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/2CA5C80F549145EF815B6DEDEA141D87-0:0/views/7713620505763405234_17874758422068147630?csv=true"
 tryCatch({
   cop <- read.csv(philly_url, stringsAsFactors = F)
 },
