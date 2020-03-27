@@ -10,16 +10,18 @@ jhu_url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/css
 daily_base <- paste0(jhu_url, "csse_covid_19_daily_reports/%s.csv")
 
 td <- as.integer(Sys.Date() - as.Date("2020-03-21"))
+if (Sys.time() < paste(Sys.Date(), "21:00:00 EDT")) {
+  td <- td - 1
+}
 
 day <- c()
 daily <- list()
-for (i in 1:(td - 1)) {
+for (i in 1:(td)) {
   day[i] <- format.Date(Sys.Date() - td + i, "%m-%d-%Y")
   daily_url <- sprintf(daily_base, day[i])
   temp <- read.csv(daily_url, stringsAsFactors = F)
   temp <- temp[temp$Country_Region %in% "US", ]
   temp$FIPS <- sprintf("%05d", temp$FIPS)
-  #temp <- temp[!duplicated(temp$FIPS), c("FIPS", "Confirmed", "Deaths", "Recovered", "Active")]
   temp <- temp[!duplicated(temp$FIPS), c("FIPS", "Confirmed")]
   names(temp) <- c("FIPS", paste(names(temp)[-1], day[i], sep = "_"))
   daily[[day[i]]] <- temp
