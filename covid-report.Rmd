@@ -240,7 +240,7 @@ wrld_active <- wrld_confirmed - wrld_recovered - wrld_deaths
 
 This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r jhu_update_date`.
 
-Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/), and [Worldometers](https://www.worldometers.info/coronavirus/).
+Data collected by [Worldometers](https://www.worldometers.info/coronavirus/), [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/), [The COVID Tracking Project](https://covidtracking.com/), and [The New York Times](https://github.com/nytimes/covid-19-data).
 
 ``` {=html}
 <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101237072);</script>
@@ -645,7 +645,9 @@ leaflet(jhu_daily_update) %>%
     weight = 10,
     fillColor = "red",
     stroke = F
-  )
+  ) %>% setView(lat = 0,
+          lng = 0,
+          zoom = 2)
 ```
 
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
