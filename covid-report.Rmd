@@ -456,6 +456,7 @@ kable(
 
 # Case Map {.tabset .tabset-fade .tabset-pills}
 ## United States
+Find a GIF of of this map animated by day [here](https://unlikelyvolcano.com/spread.gif).
 ```{r map:us, fig.height=4.5}
 dmn_confirmed <-
   c(min(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T),

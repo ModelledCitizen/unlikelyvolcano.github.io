@@ -11,12 +11,14 @@ daily_base <- paste0(jhu_url, "csse_covid_19_daily_reports/%s.csv")
 
 td <- as.integer(Sys.Date() - as.Date("2020-03-21"))
 if (Sys.time() < paste(Sys.Date(), "21:00:00 EDT")) {
-  td <- td - 1
+  tx <- td - 1
+} else {
+  tx <- td
 }
 
 day <- c()
 daily <- list()
-for (i in 1:(td)) {
+for (i in 1:(tx)) {
   day[i] <- format.Date(Sys.Date() - td + i, "%m-%d-%Y")
   daily_url <- sprintf(daily_base, day[i])
   temp <- read.csv(daily_url, stringsAsFactors = F)
