@@ -42,7 +42,7 @@ brks <-
 
 combined[, -1] <-
   apply(combined[, -1], 2, function(x) {
-    cut(x, breaks = brks, labels = brewer.pal(4, "YlOrRd"))
+    cut(x, breaks = brks, labels = brewer.pal(4, "Reds"))
   })
 
 

@@ -462,7 +462,7 @@ dmn_confirmed <-
   c(min(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T),
     max(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T))
 pal_confirmed <-
-  colorNumeric(palette = "YlOrRd",
+  colorNumeric(palette = "Reds",
                domain = dmn_confirmed,
                na.color = "white")
 
@@ -470,7 +470,7 @@ dmn_positive <-
   c(min(log(ctp_st_map$positive[ctp_st_map$positive > 0]), na.rm = T),
     max(log(ctp_st_map$positive[ctp_st_map$positive > 0]), na.rm = T))
 pal_positive <-
-  colorNumeric(palette = "YlOrRd",
+  colorNumeric(palette = "Reds",
                domain = dmn_positive,
                na.color = "white")
 
@@ -478,7 +478,7 @@ dmn_total <-
   c(min(log(ctp_st_map$totalTestResults[ctp_st_map$totalTestResults > 0]), na.rm = T),
     max(log(ctp_st_map$totalTestResults[ctp_st_map$totalTestResults > 0]), na.rm = T))
 pal_total <-
-  colorNumeric(palette = "YlOrRd",
+  colorNumeric(palette = "Reds",
                domain = dmn_total,
                na.color = "white")
 
