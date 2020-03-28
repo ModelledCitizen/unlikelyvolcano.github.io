@@ -48,13 +48,6 @@ theme_dark <- theme(
   )
 ```
 
-```{r ctp, include=FALSE}
-us_current <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
-us_testing <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
-state_current <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
-state_testing <- read.csv("https://covidtracking.com/api/states/daily.csv", stringsAsFactors = F)
-```
-
 ```{r worldometers, include=FALSE}
 worldometers <-
   read_html("https://www.worldometers.info/coronavirus/") %>% 
@@ -63,37 +56,72 @@ worldometers <-
   (function(x) {x[[1]]})
 ```
 
-```{r jhu, include=FALSE}
+```{r covidtrackingproject, include=FALSE}
+ctp_us_live <- read.csv("https://covidtracking.com/api/us.csv", stringsAsFactors = F)
+ctp_us_time <- read.csv("https://covidtracking.com/api/us/daily.csv", stringsAsFactors = F)
+ctp_st_live <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
+ctp_st_time <- read.csv("https://covidtracking.com/api/states/daily.csv", stringsAsFactors = F)
+
+ctp_us_time$date <- as.Date(strptime(ctp_us_time$date, format = "%Y%m%d"))
+ctp_st_time$date <- as.Date(strptime(ctp_st_time$date, format = "%Y%m%d"))
+
+ctp_st_live$fips <- sprintf("%02d", ctp_st_live$fips)
+ctp_st_time$fips <- sprintf("%02d", ctp_st_time$fips)
+```
+
+```{r newyorktimes, include=FALSE}
+nyt_counties <-
+  read.csv(
+    "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv",
+    stringsAsFactors = F
+  )
+nyt_counties$fips <- sprintf("%05d", nyt_counties$fips)
+nyt_counties$date <- as.Date(nyt_counties$date)
+nyt_update_date <- sort(unique(nyt_counties$date), decreasing = T)[1]
+nyt_counties_live <- nyt_counties[nyt_counties$date == nyt_update_date,]
+
+nyt_states <-
+  read.csv(
+    "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv",
+    stringsAsFactors = F
+  )
+nyt_states$fips <- sprintf("%05d", nyt_states$fips)
+nyt_states$date <- as.Date(nyt_states$date)
+nyt_states_live <- nyt_states[nyt_states$date == nyt_update_date,]
+
+nyt_update_date <- format.Date(nyt_update_date, "%d %B %Y")
+```
+
+```{r jhucsse, include=FALSE}
 jhu_url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/"
-ts_confirmed <-
+jhu_ts_confi <-
   read.csv(
     paste0(jhu_url, "csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"),
     stringsAsFactors = F
   )
-
-ts_deaths <-
+jhu_ts_death <-
   read.csv(
     paste0(jhu_url, "csse_covid_19_time_series/time_series_covid19_deaths_global.csv"),
     stringsAsFactors = F
   )
-
-daily_base <- paste0(jhu_url, "csse_covid_19_daily_reports/%s.csv")
+jhu_daily_base <- paste0(jhu_url, "csse_covid_19_daily_reports/%s.csv")
 tryCatch({
-  update_date <- format.Date(Sys.Date(), "%d %B %Y")
-  daily_url <- sprintf(daily_base, format.Date(Sys.Date(), "%m-%d-%Y"))
-  daily_update <- read.csv(daily_url, stringsAsFactors = F)
+  jhu_update_date <- format.Date(Sys.Date(), "%d %B %Y")
+  jhu_daily_url <- sprintf(jhu_daily_base, format.Date(Sys.Date(), "%m-%d-%Y"))
+  jhu_daily_update <- read.csv(jhu_daily_url, stringsAsFactors = F)
 },
 error = function(cond) {
-  update_date <<- format.Date(Sys.Date() - 1, "%d %B %Y")
-  daily_url <<- sprintf(daily_base, format.Date(Sys.Date() - 1, "%m-%d-%Y"))
-  daily_update <<- read.csv(daily_url, stringsAsFactors = F)
+  jhu_update_date <<- format.Date(Sys.Date() - 1, "%d %B %Y")
+  jhu_daily_url <<- sprintf(jhu_daily_base, format.Date(Sys.Date() - 1, "%m-%d-%Y"))
+  jhu_daily_update <<- read.csv(jhu_daily_url, stringsAsFactors = F)
 }, finally = {})
 ```
 
-```{r philly, include=FALSE}
-philly_url <- "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/2CA5C80F549145EF815B6DEDEA141D87-0:0/views/7713620505763405234_17874758422068147630?csv=true"
+```{r data:ph, include=FALSE}
+ph_url <-
+  "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/2CA5C80F549145EF815B6DEDEA141D87-0:0/views/7713620505763405234_17874758422068147630?csv=true"
 tryCatch({
-  cop <- read.csv(philly_url, stringsAsFactors = F)
+  cop <- read.csv(ph_url, stringsAsFactors = F)
 },
 error = function(cond) {
   cop <<- read.csv("data/phila_data.csv", stringsAsFactors = F)
@@ -101,7 +129,8 @@ error = function(cond) {
 finally = {
   write.csv(cop[, c("UpdatedDate", "Result.Group", "Result", "Result.Date")], "data/phila_data.csv", row.names = F)
 })
-cop$Result.Date <- as.Date(strptime(cop$Result.Date, format = "%m/%e/%Y"))
+cop$Result.Date <-
+  as.Date(strptime(cop$Result.Date, format = "%m/%e/%Y"))
 
 cop2 <-
   data.frame(
@@ -118,47 +147,48 @@ for (i in 1:nrow(cop2)) {
   cop3$POS[i] <- sum(cop2$POS[1:i])
 }
 cop3[["TOT"]] <- cop3$NEG + cop3$POS
-cop3 <- cop3[cop3$Date > "2020-02-29",]
+cop3 <- cop3[cop3$Date > "2020-02-29", ]
 ```
 
-```{r us, include=FALSE}
-us_ts <-
+```{r data:us, include=FALSE}
+jhu_us_ts <-
   data.frame(
-    date = as.Date(names(ts_confirmed)[-(1:4)], format = "X%m.%e.%y"),
-    cases = colSums(ts_confirmed[ts_confirmed$Country.Region %in% "US" , -(1:4)], na.rm = T),
-    deaths = colSums(ts_deaths[ts_deaths$Country.Region %in% "US" , -(1:4)], na.rm = T)
+    date = as.Date(names(jhu_ts_confi)[-(1:4)], format = "X%m.%e.%y"),
+    cases = colSums(jhu_ts_confi[jhu_ts_confi$Country.Region %in% "US" , -(1:4)], na.rm = T),
+    deaths = colSums(jhu_ts_death[jhu_ts_death$Country.Region %in% "US" , -(1:4)], na.rm = T)
   )
-us_daily <- daily_update[daily_update$Country_Region %in% "US",]
+jhu_us_live <- jhu_daily_update[jhu_daily_update$Country_Region %in% "US",]
 
-us_testing$date <- as.Date(strptime(us_testing$date, format = "%Y%m%d"))
-state_testing$date <- as.Date(strptime(state_testing$date, format = "%Y%m%d"))
 
-us_mappable <- us_daily[!duplicated(us_daily$FIPS),]
-us_mappable$FIPS <- sprintf("%05d", us_mappable$FIPS)
-us_map <- readRDS("data/us_counties.RDS")
-us_map <- merge(us_map, us_mappable, by.x = "GEOID", by.y = "FIPS")
-rm(us_mappable)
 
-state_map <- readRDS("data/us_states.RDS")
-state_map_testing <- merge(state_map, state_current, by.x = "STUSPS", by.y = "state")
-state_testing <-
+jhu_us_mat <- jhu_us_live[!duplicated(jhu_us_live$FIPS), ]
+jhu_us_mat$FIPS <- sprintf("%05d", jhu_us_mat$FIPS)
+
+jhu_us_map <- readRDS("data/us_counties.RDS")
+jhu_us_map <- merge(jhu_us_map, jhu_us_mat, by.x = "GEOID", by.y = "FIPS")
+rm(jhu_us_mat)
+
+ctp_st_map <- readRDS("data/us_states.RDS")
+ctp_st_map <- merge(ctp_st_map, ctp_st_live, by.x = "STATEFP", by.y = "fips")
+
+ctp_st_time <-
   merge(
-    state_testing,
-    state_map@data,
+    ctp_st_time,
+    readRDS("data/us_states.RDS")@data,
     by.x = "state",
     by.y = "STUSPS",
     all.x = T
   )
 
-us_new_cases <- us_ts$cases[-1] - us_ts$cases[-nrow(us_ts)]
-us_new_deaths <- us_ts$deaths[-1] - us_ts$deaths[-nrow(us_ts)]
-us_by_day <- us_ts$cases[-1] / us_ts$cases[-nrow(us_ts)]
-us_by_day_d <- us_ts$deaths[-1] / us_ts$deaths[-nrow(us_ts)]
+us_new_cases <- jhu_us_ts$cases[-1] - jhu_us_ts$cases[-nrow(jhu_us_ts)]
+us_new_deaths <- jhu_us_ts$deaths[-1] - jhu_us_ts$deaths[-nrow(jhu_us_ts)]
+us_by_day <- jhu_us_ts$cases[-1] / jhu_us_ts$cases[-nrow(jhu_us_ts)]
+us_by_day_d <- jhu_us_ts$deaths[-1] / jhu_us_ts$deaths[-nrow(jhu_us_ts)]
 us_growth_rate <- us_new_cases[-1] / us_new_cases[-length(us_new_cases)]
 us_growth_data <- data.frame(
-  date = us_ts$date[-(1:2)],
-  cases = us_ts$cases[-(1:2)],
-  deaths = us_ts$deaths[-(1:2)],
+  date = jhu_us_ts$date[-(1:2)],
+  cases = jhu_us_ts$cases[-(1:2)],
+  deaths = jhu_us_ts$deaths[-(1:2)],
   change_cases = us_by_day[-1],
   change_deaths = us_by_day_d[-1],
   new_cases = us_new_cases[-1],
@@ -168,19 +198,14 @@ us_growth_data <- data.frame(
 rm(us_new_cases, us_new_deaths, us_by_day, us_by_day_d, us_growth_rate)
 us_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 us_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
-
-us_confirmed <- sum(daily_update$Confirmed[daily_update$Country_Region %in% "US"])
-us_recovered <- sum(daily_update$Recovered[daily_update$Country_Region %in% "US"])
-us_deaths <- sum(daily_update$Deaths[daily_update$Country_Region %in% "US"])
-us_active <- us_confirmed - us_recovered - us_deaths
 ```
 
-```{r world, include=FALSE}
+```{r data:world, include=FALSE}
 world_ts <-
   data.frame(
-    date = as.Date(names(ts_confirmed), format = "X%m.%e.%y")[-(1:4)],
-    cases = colSums(ts_confirmed[, -(1:4)], na.rm = T),
-    deaths = colSums(ts_deaths[, -(1:4)], na.rm = T)
+    date = as.Date(names(jhu_ts_confi), format = "X%m.%e.%y")[-(1:4)],
+    cases = colSums(jhu_ts_confi[, -(1:4)], na.rm = T),
+    deaths = colSums(jhu_ts_death[, -(1:4)], na.rm = T)
   )
 
 wrld_new_cases <-
@@ -207,13 +232,13 @@ wrld_growth_data$change_new[is.infinite(us_growth_data$change_new)] <- 0
 wrld_growth_data$change_new[is.nan(us_growth_data$change_new)] <- 0
 
 
-wrld_confirmed <- sum(daily_update$Confirmed)
-wrld_recovered <- sum(daily_update$Recovered)
-wrld_deaths <- sum(daily_update$Deaths)
+wrld_confirmed <- sum(jhu_daily_update$Confirmed)
+wrld_recovered <- sum(jhu_daily_update$Recovered)
+wrld_deaths <- sum(jhu_daily_update$Deaths)
 wrld_active <- wrld_confirmed - wrld_recovered - wrld_deaths
 ```
 
-This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r update_date`.
+This report was last updated on `r format(Sys.time(), "%d %B %Y at %H:%M")` with daily totals from `r jhu_update_date`.
 
 Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) and [The COVID Tracking Project](https://covidtracking.com/), and [Worldometers](https://www.worldometers.info/coronavirus/).
 
@@ -225,36 +250,8 @@ Data collected by [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov
 
 # Overview {.tabset .tabset-fade .tabset-pills}
 ## United States
-[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
-```{r us:ctp}
-us_over <-
-  us_current[, c("positive", "negative", "total", "hospitalized", "death")]
-us_over[1, ] <-
-  vapply(us_over[1, ], prettyNum, "chr", big.mark = ",")
-kable(
-  us_over,
-  col.names = c(
-    "Cases",
-    "Negative Tests",
-    "Total Tests",
-    "Hospitalized",
-    "Deaths"
-  ),
-  row.names = F,
-  align = "ccccc",
-  digits = 3
-) %>%
-  kable_styling() %>%
-  row_spec(1, bold = T) %>%
-  column_spec(1, color = "darkorange") %>%
-  column_spec(2, color = "seagreen") %>%
-  column_spec(3, color = "royalblue") %>%
-  column_spec(5, color = "firebrick")
-
-```
-
 [Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
-```{r us:worldometers}
+```{r wmt:us}
 kable(
   worldometers[worldometers$`Country,Other` == "USA", c(2, 7, 6, 4, 8, 9, 10)],
   col.names = c(
@@ -277,8 +274,40 @@ kable(
   column_spec(4, color = "firebrick")
 ```
 
-[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r update_date`)
-```{r us:jhu}
+[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
+```{r ctp:us}
+us_over <-
+  ctp_us_live[, c("positive", "negative", "totalTestResults", "hospitalized", "death")]
+us_over[1, ] <-
+  vapply(us_over[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  us_over,
+  col.names = c(
+    "Cases",
+    "Negative Tests",
+    "Total Tests",
+    "Hospitalized",
+    "Deaths"
+  ),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "seagreen") %>%
+  column_spec(3, color = "royalblue") %>%
+  column_spec(5, color = "firebrick")
+```
+
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r jhu_update_date`)
+```{r jhu:us}
+us_confirmed <- sum(jhu_daily_update$Confirmed[jhu_daily_update$Country_Region %in% "US"])
+us_recovered <- sum(jhu_daily_update$Recovered[jhu_daily_update$Country_Region %in% "US"])
+us_deaths <- sum(jhu_daily_update$Deaths[jhu_daily_update$Country_Region %in% "US"])
+us_active <- us_confirmed - us_recovered - us_deaths
+
 us_over <- t(c(us_confirmed, us_active, us_recovered, us_deaths))
 us_over[1, ] <-
   vapply(us_over[1, ], prettyNum, "chr", big.mark = ",")
@@ -297,9 +326,30 @@ kable(
   column_spec(4, color = "firebrick")
 ```
 
+[The New York Times](https://github.com/nytimes/covid-19-data) (Updated: `r nyt_update_date`)
+```{r nyt:us}
+nyt_us <-
+  data.frame(
+    cases = sum(nyt_counties_live$cases, na.rm = T),
+    deaths = sum(nyt_counties_live$deaths, na.rm = T)
+  )
+nyt_us[1, ] <- vapply(nyt_us[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  nyt_us,
+  col.names = c("Cases", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "firebrick")
+```
+
 ## Global
 [Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
-```{r world:worldometers}
+```{r wmt:world}
 kable(
   worldometers[worldometers$`Country,Other` == "Total:", c(2, 7, 6, 4, 8, 9, 10)],
   col.names = c(
@@ -322,8 +372,8 @@ kable(
   column_spec(4, color = "firebrick")
 ```
 
-[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r update_date`)
-```{r world:jhu}
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r jhu_update_date`)
+```{r jhu:world}
 world_over <-
   t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
 world_over[1, ] <-
@@ -345,12 +395,12 @@ kable(
 
 ## Philadelphia
 [The City of Philadelphia](https://www.phila.gov/programs/coronavirus-disease-2019-covid-19/) (Updated: `r format(strptime(unique(cop$UpdatedDate), format = "%m/%e/%Y %I:%M:%S %p"), "%d %B %Y at %H:%M")`)
-```{r philly:overview}
-philly_over <- cop3[nrow(cop3), c("POS", "NEG", "TOT")]
-philly_over[1, ] <-
-  vapply(philly_over[1, ], prettyNum, "chr", big.mark = ",")
+```{r ph:ph}
+ph_over <- cop3[nrow(cop3), c("POS", "NEG", "TOT")]
+ph_over[1, ] <-
+  vapply(ph_over[1, ], prettyNum, "chr", big.mark = ",")
 kable(
-  philly_over,
+  ph_over,
   col.names = c("Cases", "Negative Tests", "Total Tests"),
   row.names = F,
   align = "ccccc",
@@ -363,28 +413,69 @@ kable(
   column_spec(3, color = "royalblue")
 ```
 
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r jhu_update_date`)
+```{r jhu:ph}
+jhu_ph_confirmed <- sum(jhu_daily_update$Confirmed[jhu_daily_update$Admin2 %in% "Philadelphia"])
+jhu_ph_recovered <- sum(jhu_daily_update$Recovered[jhu_daily_update$Admin2 %in% "Philadelphia"])
+jhu_ph_deaths <- sum(jhu_daily_update$Deaths[jhu_daily_update$Admin2 %in% "Philadelphia"])
+jhu_ph_active <- jhu_ph_confirmed - jhu_ph_recovered - jhu_ph_deaths
+
+jhu_ph <- t(c(jhu_ph_confirmed, jhu_ph_active, jhu_ph_recovered, jhu_ph_deaths))
+jhu_ph[1, ] <- vapply(jhu_ph[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  jhu_ph,
+  col.names = c("Cases", "Active", "Recovered", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "yellowgreen") %>%
+  column_spec(4, color = "firebrick")
+```
+
+[The New York Times](https://github.com/nytimes/covid-19-data) (Updated: `r nyt_update_date`)
+```{r nyt:ph}
+nyt_ph <- nyt_counties_live[nyt_counties_live$county %in% "Philadelphia", c("cases", "deaths")]
+nyt_ph[1, ] <- vapply(nyt_ph[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  nyt_ph,
+  col.names = c("Cases", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "firebrick")
+```
+
 # Case Map {.tabset .tabset-fade .tabset-pills}
 ## United States
-```{r us:map, fig.height=4.5}
+```{r map:us, fig.height=4.5}
 dmn_confirmed <-
-  c(min(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T),
-    max(log(us_map$Confirmed[us_map$Confirmed > 0]), na.rm = T))
+  c(min(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T),
+    max(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T))
 pal_confirmed <-
   colorNumeric(palette = "YlOrRd",
                domain = dmn_confirmed,
                na.color = "white")
 
 dmn_positive <-
-  c(min(log(state_map_testing$positive[state_map_testing$positive > 0]), na.rm = T),
-    max(log(state_map_testing$positive[state_map_testing$positive > 0]), na.rm = T))
+  c(min(log(ctp_st_map$positive[ctp_st_map$positive > 0]), na.rm = T),
+    max(log(ctp_st_map$positive[ctp_st_map$positive > 0]), na.rm = T))
 pal_positive <-
   colorNumeric(palette = "YlOrRd",
                domain = dmn_positive,
                na.color = "white")
 
 dmn_total <-
-  c(min(log(state_map_testing$total[state_map_testing$total > 0]), na.rm = T),
-    max(log(state_map_testing$total[state_map_testing$total > 0]), na.rm = T))
+  c(min(log(ctp_st_map$totalTestResults[ctp_st_map$totalTestResults > 0]), na.rm = T),
+    max(log(ctp_st_map$totalTestResults[ctp_st_map$totalTestResults > 0]), na.rm = T))
 pal_total <-
   colorNumeric(palette = "YlOrRd",
                domain = dmn_total,
@@ -393,44 +484,44 @@ pal_total <-
 
 lab_counties <- paste0(
   "<strong>",
-  us_map$Admin2,
-  ifelse(us_map$Admin2 == "", "", ", "),
-  us_map$Province_State,
+  jhu_us_map$Admin2,
+  ifelse(jhu_us_map$Admin2 == "", "", ", "),
+  jhu_us_map$Province_State,
   "</strong><br>",
-  prettyNum(us_map$Confirmed , big.mark = ","),
+  prettyNum(jhu_us_map$Confirmed , big.mark = ","),
   " cases<br>",
-  prettyNum(us_map$Deaths, big.mark = ","),
+  prettyNum(jhu_us_map$Deaths, big.mark = ","),
   " deaths"
 ) %>%
   lapply(htmltools::HTML)
 
 lab_states <- paste0(
   "<strong>",
-  state_map_testing$NAME,
+  ctp_st_map$NAME,
   "</strong><br>",
-  prettyNum(state_map_testing$total, big.mark = ","),
+  prettyNum(ctp_st_map$totalTestResults, big.mark = ","),
   " tests<br>",
-    prettyNum(state_map_testing$positive, big.mark = ","),
+    prettyNum(ctp_st_map$positive, big.mark = ","),
   " positive<br>",
-  prettyNum(state_map_testing$negative, big.mark = ","),
+  prettyNum(ctp_st_map$negative, big.mark = ","),
   " negative"
 ) %>%
   lapply(htmltools::HTML)
 
 lab_circle <- paste0(
   "<strong>",
-  us_daily$Admin2,
-  ifelse(us_daily$Admin2 == "", "", ", "),
-  us_daily$Province_State,
+  jhu_us_map$Admin2,
+  ifelse(jhu_us_map$Admin2 == "", "", ", "),
+  jhu_us_map$Province_State,
   "</strong><br>",
-  prettyNum(us_daily$Confirmed , big.mark = ","),
+  prettyNum(jhu_us_map$Confirmed , big.mark = ","),
   " cases<br>",
-  prettyNum(us_daily$Deaths, big.mark = ","),
+  prettyNum(jhu_us_map$Deaths, big.mark = ","),
   " deaths"
 ) %>%
   lapply(htmltools::HTML)
 
-leaflet(us_map) %>%
+leaflet(jhu_us_map) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addPolygons(
     fillColor = ~ pal_confirmed(log(Confirmed)),
@@ -454,7 +545,7 @@ leaflet(us_map) %>%
     group = "Counties"
   ) %>%
   addPolygons(
-    data = state_map_testing,
+    data = ctp_st_map,
     fillColor = ~ pal_positive(log(positive)),
     weight = 0.5,
     opacity = 1,
@@ -476,8 +567,8 @@ leaflet(us_map) %>%
     group = "States: Cases"
   ) %>%
   addPolygons(
-    data = state_map_testing,
-    fillColor = ~ pal_total(log(total)),
+    data = ctp_st_map,
+    fillColor = ~ pal_total(log(totalTestResults)),
     weight = 0.5,
     opacity = 1,
     color = "black",
@@ -498,15 +589,15 @@ leaflet(us_map) %>%
     group = "States: Tests"
   ) %>%
   addCircleMarkers(
-    lng = us_daily$Long_,
-    lat = us_daily$Lat,
+    lng = jhu_us_map$Long_,
+    lat = jhu_us_map$Lat,
     label = lab_circle,
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
       direction = "auto"
     ),
-    radius = log(us_daily$Confirmed),
+    radius = log(jhu_us_map$Confirmed),
     weight = 10,
     fillColor = "red",
     stroke = F,
@@ -523,34 +614,34 @@ leaflet(us_map) %>%
 ```
 
 ## Global
-```{r world:map, fig.height=4.5}
+```{r map:world, fig.height=4.5}
 lab <- paste0(
   "<strong>",
-  daily_update$Country_Region,
-  ifelse(daily_update$Province_State == "", "", ": "),
-  daily_update$Admin2,
-  ifelse(daily_update$Admin2 == "", "", ", "),
-  daily_update$Province_State,
+  jhu_daily_update$Country_Region,
+  ifelse(jhu_daily_update$Province_State == "", "", ": "),
+  jhu_daily_update$Admin2,
+  ifelse(jhu_daily_update$Admin2 == "", "", ", "),
+  jhu_daily_update$Province_State,
   "</strong><br>",
-  prettyNum(daily_update$Confirmed , big.mark = ","),
+  prettyNum(jhu_daily_update$Confirmed , big.mark = ","),
   " cases<br>",
-  prettyNum(daily_update$Deaths, big.mark = ","),
+  prettyNum(jhu_daily_update$Deaths, big.mark = ","),
   " deaths"
 ) %>%
   lapply(htmltools::HTML)
 
-leaflet(daily_update) %>%
+leaflet(jhu_daily_update) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addCircleMarkers(
-    lng = daily_update$Long_,
-    lat = daily_update$Lat,
+    lng = jhu_daily_update$Long_,
+    lat = jhu_daily_update$Lat,
     label = lab,
     labelOptions = labelOptions(
       style = list("font-weight" = "normal", padding = "3px 8px"),
       textsize = "15px",
       direction = "auto"
     ),
-    radius = log(daily_update$Confirmed),
+    radius = log(jhu_daily_update$Confirmed),
     weight = 10,
     fillColor = "red",
     stroke = F
@@ -559,8 +650,8 @@ leaflet(daily_update) %>%
 
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
 ## United States
-```{r us:testing}
-ggplot(us_testing, aes(x = date, y = total)) +
+```{r testing:us}
+ggplot(ctp_us_time, aes(x = date, y = totalTestResults)) +
   geom_point(color = "darkorange", aes(y = positive)) +
   geom_line(color = "darkorange", aes(y = positive)) +
   geom_point(color = "seagreen", aes(y = negative)) +
@@ -575,18 +666,18 @@ ggplot(us_testing, aes(x = date, y = total)) +
 ```
 
 ## By State
-```{r state:testing, fig.show="animate", ffmpeg.format="gif", dev="jpeg"}
+```{r testing:state, fig.show="animate", ffmpeg.format="gif", dev="jpeg", eval=FALSE}
 state_ts <- list()
 state_names <- c()
-for (i in unique(state_testing$state)) {
-  state_ts[[i]] <- state_testing[state_testing$state == i, ]
+for (i in unique(ctp_st_time$state)) {
+  state_ts[[i]] <- ctp_st_time[ctp_st_time$state == i, ]
   state_names <-
-    c(state_names, unique(state_testing[state_testing$state == i, "NAME"]))
+    c(state_names, unique(ctp_st_time[ctp_st_time$state == i, "NAME"]))
 }
 plots <- map2(
   state_ts,
   state_names,
-  ~ ggplot(.x, aes(x = date, y = total)) +
+  ~ ggplot(.x, aes(x = date, y = totalTestResults)) +
     geom_point(color = "darkorange", aes(y = positive)) +
     geom_line(color = "darkorange", aes(y = positive)) +
     geom_point(color = "seagreen", aes(y = negative)) +
@@ -598,13 +689,13 @@ plots <- map2(
       name = "Date",
       date_breaks = "1 week",
       date_labels = "%b %e",
-      limits = c(min(state_testing$date), NA)
+      limits = c(min(ctp_st_time$date), NA)
     ) +
     scale_y_continuous(
       name = "Tests",
       n.breaks = 11,
       trans = "log10",
-      limits = c(1, max(state_testing$total))
+      limits = c(1, max(ctp_st_time$totalTestResults))
     ) +
     theme_dark
 )
@@ -612,7 +703,7 @@ walk(plots, print)
 ```
 
 ## Philadelphia
-```{r philly:testing}
+```{r ph:testing}
 ggplot(cop3, aes(x = Date, y = TOT)) +
   geom_line(aes(y = NEG), color = "seagreen") +
   geom_line(aes(y = POS), color = "darkorange") +
@@ -632,10 +723,9 @@ ggplot(cop3, aes(x = Date, y = TOT)) +
 ## United States {.tabset .tabset-fade .tabset-pills}
 ### Logarithmic
 ```{r us:logged}
-ggplot(us_ts, aes(x = date, y = cases)) +
-  #geom_smooth(method = "lm", formula = y ~ x, color =  "darkgray") +
+ggplot(jhu_us_ts, aes(x = date, y = cases)) +
   geom_smooth(
-    data = subset(us_ts, us_ts$date > "2020-02-29"),
+    data = subset(jhu_us_ts, jhu_us_ts$date > "2020-02-29"),
     aes(x = date, y = deaths),
     method = "lm",
     formula = y ~ x,
@@ -643,7 +733,7 @@ ggplot(us_ts, aes(x = date, y = cases)) +
     fullrange = T
   ) +
   geom_smooth(
-    data = subset(us_ts, us_ts$date > "2020-02-29"),
+    data = subset(jhu_us_ts, jhu_us_ts$date > "2020-02-29"),
     aes(x = date, y = cases),
     method = "lm",
     formula = y ~ x,
@@ -669,8 +759,7 @@ ggplot(us_ts, aes(x = date, y = cases)) +
 
 ### Linear
 ```{r us:total}
-ggplot(us_ts, aes(x = date, y = cases)) +
-  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
+ggplot(jhu_us_ts, aes(x = date, y = cases)) +
   geom_point(color = "firebrick", aes(y = 20 * deaths)) +
   geom_line(color = "firebrick", aes(y = 20 * deaths)) +
   geom_point(color = "darkorange") +
@@ -718,7 +807,6 @@ ggplot(world_ts, aes(x = date, y = cases)) +
 ### Linear
 ```{r world:total}
 ggplot(world_ts, aes(x = date, y = cases)) +
-  #geom_smooth(method = "loess", formula = y ~ x, color = "white") +
   geom_point(color = "firebrick", aes(y = 20 * deaths)) +
   geom_line(color = "firebrick", aes(y = 20 * deaths)) +
   geom_point(color = "darkorange") +
