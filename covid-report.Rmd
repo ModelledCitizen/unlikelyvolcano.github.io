@@ -347,39 +347,45 @@ kable(
   column_spec(2, color = "firebrick")
 ```
 
-## Global
-[Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
-```{r wmt:world}
+## Pennsylvania
+[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
+```{r ctp:pa}
+pa_over <-
+  ctp_st_live[ctp_st_live$state %in% "PA", c("positive", "negative", "totalTestResults", "hospitalized", "death")]
+pa_over[1, ] <-
+  vapply(pa_over[1, ], prettyNum, "chr", big.mark = ",")
 kable(
-  worldometers[worldometers$`Country,Other` == "Total:", c(2, 7, 6, 4, 8, 9, 10)],
+  pa_over,
   col.names = c(
     "Cases",
-    "Active",
-    "Recovered",
-    "Deaths",
-    "Critical",
-    "Cases / 1M Pop.",
-    "Deaths / 1M Pop."
+    "Negative Tests",
+    "Total Tests",
+    "Hospitalized",
+    "Deaths"
   ),
   row.names = F,
-  align = "ccccc"
+  align = "ccccc",
+  digits = 3
 ) %>%
   kable_styling() %>%
   row_spec(1, bold = T) %>%
   column_spec(1, color = "darkorange") %>%
-  column_spec(2, color = "goldenrod") %>%
-  column_spec(3, color = "yellowgreen") %>%
-  column_spec(4, color = "firebrick")
+  column_spec(2, color = "seagreen") %>%
+  column_spec(3, color = "royalblue") %>%
+  column_spec(5, color = "firebrick")
 ```
 
 [JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r jhu_update_date`)
-```{r jhu:world}
-world_over <-
-  t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
-world_over[1, ] <-
-  vapply(world_over[1, ], prettyNum, "chr", big.mark = ",")
+```{r jhu:pa}
+jhu_pa_confirmed <- sum(jhu_daily_update$Confirmed[jhu_daily_update$Province_State %in% "Pennsylvania"])
+jhu_pa_recovered <- sum(jhu_daily_update$Recovered[jhu_daily_update$Province_State %in% "Pennsylvania"])
+jhu_pa_deaths <- sum(jhu_daily_update$Deaths[jhu_daily_update$Province_State %in% "Pennsylvania"])
+jhu_pa_active <- jhu_pa_confirmed - jhu_pa_recovered - jhu_pa_deaths
+
+jhu_pa <- t(c(jhu_pa_confirmed, jhu_pa_active, jhu_pa_recovered, jhu_pa_deaths))
+jhu_pa[1, ] <- vapply(jhu_pa[1, ], prettyNum, "chr", big.mark = ",")
 kable(
-  world_over,
+  jhu_pa,
   col.names = c("Cases", "Active", "Recovered", "Deaths"),
   row.names = F,
   align = "ccccc",
@@ -391,6 +397,23 @@ kable(
   column_spec(2, color = "goldenrod") %>%
   column_spec(3, color = "yellowgreen") %>%
   column_spec(4, color = "firebrick")
+```
+
+[The New York Times](https://github.com/nytimes/covid-19-data) (Updated: `r nyt_update_date`)
+```{r nyt:pa}
+nyt_pa <- nyt_states_live[nyt_states_live$state %in% "Pennsylvania", c("cases", "deaths")]
+nyt_pa[1, ] <- vapply(nyt_pa[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  nyt_pa,
+  col.names = c("Cases", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "firebrick")
 ```
 
 ## Philadelphia
@@ -454,9 +477,54 @@ kable(
   column_spec(2, color = "firebrick")
 ```
 
+## Global
+[Worldometers](https://www.worldometers.info/coronavirus/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
+```{r wmt:world}
+kable(
+  worldometers[worldometers$`Country,Other` == "Total:", c(2, 7, 6, 4, 8, 9, 10)],
+  col.names = c(
+    "Cases",
+    "Active",
+    "Recovered",
+    "Deaths",
+    "Critical",
+    "Cases / 1M Pop.",
+    "Deaths / 1M Pop."
+  ),
+  row.names = F,
+  align = "ccccc"
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "yellowgreen") %>%
+  column_spec(4, color = "firebrick")
+```
+
+[JHU CSSE](https://systems.jhu.edu/research/public-health/ncov/) (Updated: `r jhu_update_date`)
+```{r jhu:world}
+world_over <-
+  t(c(wrld_confirmed, wrld_active, wrld_recovered, wrld_deaths))
+world_over[1, ] <-
+  vapply(world_over[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  world_over,
+  col.names = c("Cases", "Active", "Recovered", "Deaths"),
+  row.names = F,
+  align = "ccccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "goldenrod") %>%
+  column_spec(3, color = "yellowgreen") %>%
+  column_spec(4, color = "firebrick")
+```
+
 # Case Map {.tabset .tabset-fade .tabset-pills}
 ## United States
-Find a GIF of of this map animated by day [here](https://unlikelyvolcano.com/spread.gif).
 ```{r map:us, fig.height=4.5}
 dmn_confirmed <-
   c(min(log(jhu_us_map$Confirmed[jhu_us_map$Confirmed > 0]), na.rm = T),
@@ -521,6 +589,7 @@ lab_circle <- paste0(
   " deaths"
 ) %>%
   lapply(htmltools::HTML)
+
 
 leaflet(jhu_us_map) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
@@ -609,9 +678,24 @@ leaflet(jhu_us_map) %>%
     position = "bottomleft",
     options = layersControlOptions(collapsed = F, autoZIndex = T)
   )  %>%
-  setView(lat =  37.8333333,
+  setView(lat = 37.8333333,
           lng = -98.585522,
-          zoom = 4)
+          zoom = 4) %>%
+  addEasyButton(easyButton(
+    icon = "fa-external-link",
+    title = "Open map in new tab",
+    onClick = JS("function(btn, map){ window.open('https://unlikelyvolcano.com/us-map.html') }")
+  )) %>%
+  addEasyButton(easyButton(
+    icon = "fa-film",
+    title = "See GIF of map over time",
+    onClick = JS("function(btn, map){ window.open('https://unlikelyvolcano.com/spread.gif') }")
+  )) %>%
+  htmlwidgets::saveWidget("us-map.html")
+```
+
+```{=html}
+<object type="text/html" data="us-map.html" width="1000" height="500" style="width:100%"></object>
 ```
 
 ## Global
@@ -648,7 +732,17 @@ leaflet(jhu_daily_update) %>%
     stroke = F
   ) %>% setView(lat = 0,
           lng = 0,
-          zoom = 2)
+          zoom = 2) %>%
+  addEasyButton(easyButton(
+    icon = "fa-external-link",
+    title = "Open map in new tab",
+    onClick = JS("function(btn, map){ window.open('https://unlikelyvolcano.com/world-map.html') }")
+  )) %>%
+  htmlwidgets::saveWidget("world-map.html")
+```
+
+```{=html}
+<object type="text/html" data="world-map.html" width="1000" height="500" style="width:100%"></object>
 ```
 
 # Cumulative Tests {.tabset .tabset-fade .tabset-pills}
