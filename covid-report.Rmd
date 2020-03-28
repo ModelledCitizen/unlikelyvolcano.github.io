@@ -274,7 +274,7 @@ kable(
   column_spec(4, color = "firebrick")
 ```
 
-[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
+[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.Date(), "%d %B %Y")`)
 ```{r ctp:us}
 us_over <-
   ctp_us_live[, c("positive", "negative", "totalTestResults", "hospitalized", "death")]
@@ -348,7 +348,7 @@ kable(
 ```
 
 ## Pennsylvania
-[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.time(), "%d %B %Y at %H:%M")`)
+[The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.Date(), "%d %B %Y")`)
 ```{r ctp:pa}
 pa_over <-
   ctp_st_live[ctp_st_live$state %in% "PA", c("positive", "negative", "totalTestResults", "hospitalized", "death")]
@@ -877,14 +877,21 @@ ggplot(jhu_us_ts, aes(x = date, y = cases)) +
 ```{r world:logged}
 ggplot(world_ts, aes(x = date, y = cases)) +
   geom_smooth(
-    aes(y = deaths),
+    data = subset(world_ts, world_ts$date > "2020-02-29"),
+    aes(x = date, y = deaths),
     method = "lm",
     formula = y ~ x,
-    color =  "darkgray"
+    color = "darkgrey",
+    fullrange = T
   ) +
-  geom_smooth(method = "lm",
-              formula = y ~ x,
-              color =  "darkgray") +
+  geom_smooth(
+    data = subset(world_ts, world_ts$date > "2020-02-29"),
+    aes(x = date, y = cases),
+    method = "lm",
+    formula = y ~ x,
+    color = "darkgrey",
+    fullrange = T
+  ) +
   geom_point(color = "firebrick", aes(y = deaths)) +
   geom_line(color = "firebrick", aes(y = deaths)) +
   geom_point(color = "darkorange") +
@@ -978,7 +985,7 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
   theme_dark
 ```
 
-## Rate of Change in New Cases {.tabset .tabset-fade .tabset-pills}
+## Growth Ratio {.tabset .tabset-fade .tabset-pills}
 ### United States
 ```{r us:growth}
 ggplot(us_growth_data, aes(x = date, y = change_new)) +
