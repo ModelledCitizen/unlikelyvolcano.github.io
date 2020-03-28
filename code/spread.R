@@ -58,7 +58,7 @@ saveGIF({
     plot(
       us_cases,
       col = us_cases[[paste0("Confirmed_", d)]],
-      border = "grey",
+      border = "gray87",
       sub = d,
       cex.sub = 4
     )
