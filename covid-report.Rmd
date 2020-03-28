@@ -669,7 +669,7 @@ ggplot(ctp_us_time, aes(x = date, y = totalTestResults)) +
 ```
 
 ## By State
-```{r testing:state, fig.show="animate", ffmpeg.format="gif", dev="jpeg", eval=FALSE}
+```{r testing:state, fig.show="animate", ffmpeg.format="gif", dev="jpeg"}
 state_ts <- list()
 state_names <- c()
 for (i in unique(ctp_st_time$state)) {
