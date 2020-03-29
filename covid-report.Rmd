@@ -848,7 +848,7 @@ ggplot(jhu_us_ts, aes(x = date, y = cases)) +
     name = "Cases",
     n.breaks = 11,
     trans = "log10",
-    limits = c(NA, NA),
+    limits = c(0.9, NA),
     sec.axis = dup_axis( ~ ., name = "Deaths")
   ) +
   theme_dark
