@@ -981,11 +981,10 @@ ggplot(wrld_growth_data, aes(x = date, y = new_cases)) +
     trans = "log10",
     sec.axis = dup_axis(name = "Deaths")
   ) +
-  #ggtitle("New Cases by Day on Earth") +
   theme_dark
 ```
 
-## Growth Ratio {.tabset .tabset-fade .tabset-pills}
+## Reproduction Ratio {.tabset .tabset-fade .tabset-pills}
 ### United States
 ```{r us:growth}
 ggplot(us_growth_data, aes(x = date, y = change_new)) +
