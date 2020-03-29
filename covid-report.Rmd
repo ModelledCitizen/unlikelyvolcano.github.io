@@ -617,13 +617,13 @@ leaflet(jhu_us_map) %>%
   addPolygons(
     data = ctp_st_map,
     fillColor = ~ pal_positive(log(positive)),
-    weight = 0.5,
+    weight = 1,
     opacity = 1,
-    color = "black",
+    color = ~ pal_positive(log(positive)),
     fillOpacity = 1,
     smoothFactor = 0.5,
     highlight = highlightOptions(
-      weight = 3,
+      weight = 1,
       color = "black",
       bringToFront = T,
       sendToBack = T
@@ -639,13 +639,13 @@ leaflet(jhu_us_map) %>%
   addPolygons(
     data = ctp_st_map,
     fillColor = ~ pal_total(log(totalTestResults)),
-    weight = 0.5,
+    weight = 1,
     opacity = 1,
-    color = "black",
+    color = ~ pal_total(log(totalTestResults)),
     fillOpacity = 1,
     smoothFactor = 0.5,
     highlight = highlightOptions(
-      weight = 3,
+      weight = 1,
       color = "black",
       bringToFront = T,
       sendToBack = T
