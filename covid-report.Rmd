@@ -119,7 +119,7 @@ error = function(cond) {
 
 ```{r data:ph, include=FALSE}
 ph_url <-
-  "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/31CD2E1E692E4278B85FFE0C5C0279D0-0:0/views/7713620505763405234_17874758422068147630?csv=true&showall=true"
+  "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/B1B044E223BC4E149432645F548F569F-0:0/views/7713620505763405234_17874758422068147630?csv=true&showall=true"
 tryCatch({
   cop <- read.csv(ph_url, stringsAsFactors = F)
 },
