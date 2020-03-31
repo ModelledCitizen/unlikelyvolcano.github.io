@@ -117,6 +117,30 @@ error = function(cond) {
 }, finally = {})
 ```
 
+```{r data:pa, include=FALSE}
+pa.counties <-
+  read_html("https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx") %>% 
+  html_nodes("#ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField > div > div > table") %>% 
+  html_table() %>%
+  (function(x) {x[[1]]}) %>%
+  (function(x) {colnames(x) <- x[1,]; x[-1,]})
+
+pa.overall <-
+  read_html("https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx") %>% 
+  html_nodes("#ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField > table:nth-child(2)") %>% 
+  html_table() %>%
+  (function(x) {x[[1]]}) %>%
+  (function(x) {colnames(x) <- x[1,]; x[-1,]})
+
+pa.update <-
+  read_html("https://www.health.pa.gov/topics/disease/coronavirus/Pages/Cases.aspx") %>% 
+  html_nodes("#ctl00_PlaceHolderMain_PageContent__ControlWrapper_RichHtmlField > p:nth-child(3) > span") %>% 
+  html_text() %>%
+  (function(x) gsub("\\.", "", x)) %>%
+  strptime("* Map, tables and case counts last updated at %I:%M %p on %m/%e/%Y") %>%
+  format.Date("%d %B %Y at %H:%M")
+```
+
 ```{r data:ph, include=FALSE}
 ph_url <-
   "https://public.tableau.com/vizql/w/COP-COVID-19/v/Stacked/vud/sessions/B1B044E223BC4E149432645F548F569F-0:0/views/7713620505763405234_17874758422068147630?csv=true&showall=true"
@@ -148,6 +172,8 @@ for (i in 1:nrow(cop2)) {
 }
 cop3[["TOT"]] <- cop3$NEG + cop3$POS
 cop3 <- cop3[cop3$Date > "2020-02-29", ]
+
+phl.update <- format(strptime(unique(cop$UpdatedDate), format = "%m/%e/%Y %I:%M:%S %p"), "%d %B %Y at %H:%M")
 ```
 
 ```{r data:us, include=FALSE}
@@ -348,6 +374,28 @@ kable(
 ```
 
 ## Pennsylvania
+[Commonwealth of Pennsylvania](https://www.health.pa.gov/topics/disease/coronavirus/Pages/Coronavirus.aspx) (Updated: `r pa.update`)
+```{r pa:pa}
+pa.overall[["Total"]]                   <-
+  as.numeric(gsub(",", "", pa.overall$Negative)) + as.numeric(gsub(",", "", pa.overall$Positive))
+pa.overall <- pa.overall[,c("Positive", "Negative", "Total", "Deaths")]
+pa.overall[1, ] <-
+  vapply(pa.overall[1, ], prettyNum, "chr", big.mark = ",")
+kable(
+  pa.overall,
+  col.names = c("Cases", "Negative Tests", "Total Tests", "Deaths"),
+  row.names = F,
+  align = "cccc",
+  digits = 3
+) %>%
+  kable_styling() %>%
+  row_spec(1, bold = T) %>%
+  column_spec(1, color = "darkorange") %>%
+  column_spec(2, color = "seagreen") %>%
+  column_spec(3, color = "royalblue") %>%
+  column_spec(4, color = "firebrick")
+```
+
 [The COVID Tracking Project](https://covidtracking.com/) (Updated: `r format(Sys.Date(), "%d %B %Y")`)
 ```{r ctp:pa}
 pa_over <-
@@ -417,7 +465,7 @@ kable(
 ```
 
 ## Philadelphia
-[The City of Philadelphia](https://www.phila.gov/programs/coronavirus-disease-2019-covid-19/) (Updated: `r format(strptime(unique(cop$UpdatedDate), format = "%m/%e/%Y %I:%M:%S %p"), "%d %B %Y at %H:%M")`)
+[The City of Philadelphia](https://www.phila.gov/programs/coronavirus-disease-2019-covid-19/) (Updated: `r phl.update`)
 ```{r ph:ph}
 ph_over <- cop3[nrow(cop3), c("POS", "NEG", "TOT")]
 ph_over[1, ] <-
