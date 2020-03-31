@@ -17,3 +17,16 @@ pa.counties <-
   html_table() %>%
   (function(x) {x[[1]]}) %>%
   (function(x) {colnames(x) <- x[1,]; x[-1,]})
+
+
+
+
+read_html("https://public.tableau.com/profile/cityofphiladelphia#!/vizhome/COP-COVID-19/Stacked") %>%
+  html_nodes("#title7713620505763405234_17874758422068147630 > div.tab-textRegion-boundary > div > span > div:nth-child(3) > span") %>%
+  html_text()
+
+%>%
+  (function(x) {x[[1]]}) %>%
+  (function(x) {colnames(x) <- x[1,]; x[-1,]})
+
+
