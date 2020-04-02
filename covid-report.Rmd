@@ -598,12 +598,14 @@ pal_total <-
                domain = dmn_total,
                na.color = "white")
 
-
 lab_counties <- paste0(
   "<strong>",
-  jhu_us_map$Admin2,
-  ifelse(jhu_us_map$Admin2 == "", "", ", "),
-  jhu_us_map$Province_State,
+  jhu_us_map$NAMELSAD,
+  ", ",
+  #ifelse(jhu_us_map$Admin2 == "", "", ", "),
+  vapply(as.numeric(jhu_us_map$STATEFP), function(x)
+    acs::fips.state$STATE_NAME[acs::fips.state$STATE == x], "character"),
+  #jhu_us_map$Province_State,
   "</strong><br>",
   prettyNum(jhu_us_map$Confirmed , big.mark = ","),
   " cases<br>",
