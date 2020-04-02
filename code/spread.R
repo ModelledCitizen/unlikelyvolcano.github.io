@@ -35,6 +35,7 @@ combined <- reduce(daily, join)
 combined[, -1] <- apply(combined[, -1], 2, function(x) {ifelse(x > 0, log(x), 0)})
 
 for (i in 3:ncol(combined)) {
+  combined[is.na(combined[, i]),  i] <- combined[is.na(combined[ , i]), i - 1]
   combined[combined[ , i] < combined[ , i - 1], i] <- combined[combined[ , i] < combined[ , i - 1], i - 1]
 }
 
