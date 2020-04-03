@@ -19,13 +19,43 @@ error = function(cond) {
 jhu_us_live <- jhu_daily_update[jhu_daily_update$Country_Region %in% "US",]
 jhu_us_mat <- jhu_us_live[!duplicated(jhu_us_live$FIPS), ]
 jhu_us_mat$FIPS <- sprintf("%05d", jhu_us_mat$FIPS)
-jhu_us_map <- readRDS("data/us_counties.RDS")
-jhu_us_map <- merge(jhu_us_map, jhu_us_mat, by.x = "GEOID", by.y = "FIPS")
-rm(jhu_us_mat)
 
+jhu_us_map <- readRDS("data/us_counties.RDS")
+jhu_us_map$STATENM <-
+  vapply(as.numeric(jhu_us_map$STATEFP), function(x)
+    acs::fips.state$STATE_NAME[acs::fips.state$STATE == x], "character")
+jhu_us_map <- merge(jhu_us_map, jhu_us_mat, by.x = "GEOID", by.y = "FIPS")
+
+jhu_us_mis <- jhu_us_live[duplicated(jhu_us_live$FIPS), ]
+jhu_us_mis$NKEY <- paste0(jhu_us_mis$Admin2, jhu_us_mis$Province_State)
+
+jhu_us_map$NKEY <- paste0(jhu_us_map$NAME, jhu_us_map$STATENM)
+jhu_us_map$NKEY[duplicated(jhu_us_map$NKEY)] <-
+  paste0(jhu_us_map$NKEY[duplicated(jhu_us_map$NKEY)], 1:sum(duplicated(jhu_us_map$NKEY)))
+
+
+for (i in 1:nrow(jhu_us_map)) {
+  if (is.na(jhu_us_map$Confirmed[i])) {
+    if (jhu_us_map$NKEY[i] %in% jhu_us_mis$NKEY) {
+      jhu_us_map$Confirmed[i] <-
+        jhu_us_mis$Confirmed[jhu_us_mis$NKEY == jhu_us_map$NKEY[i]]
+      jhu_us_map$Deaths[i] <-
+        jhu_us_mis$Deaths[jhu_us_mis$NKEY == jhu_us_map$NKEY[i]]
+    }
+  }
+}
+rm(jhu_us_mat, jhu_us_mis)
+
+tmp <- jhu_us_map@data[jhu_us_map$GEOID == "36061", c("Confirmed", "Deaths")]
+jhu_us_map@data[jhu_us_map$GEOID == "36005", c("Confirmed", "Deaths")] <- tmp
+jhu_us_map@data[jhu_us_map$GEOID == "36081", c("Confirmed", "Deaths")] <- tmp
+jhu_us_map@data[jhu_us_map$GEOID == "36047", c("Confirmed", "Deaths")] <- tmp
+jhu_us_map@data[jhu_us_map$GEOID == "36085", c("Confirmed", "Deaths")] <- tmp
+rm(tmp)
 
 ctp_st_live <- read.csv("https://covidtracking.com/api/states.csv", stringsAsFactors = F)
 ctp_st_live$fips <- sprintf("%02d", ctp_st_live$fips)
+
 ctp_st_map <- readRDS("data/us_states.RDS")
 ctp_st_map <- merge(ctp_st_map, ctp_st_live, by.x = "STATEFP", by.y = "fips")
 
@@ -58,13 +88,19 @@ lab_counties <- paste0(
   "<strong>",
   jhu_us_map$NAMELSAD,
   ", ",
-  vapply(as.numeric(jhu_us_map$STATEFP), function(x)
-    acs::fips.state$STATE_NAME[acs::fips.state$STATE == x], "character"),
-  "</strong><br>",
-  prettyNum(jhu_us_map$Confirmed , big.mark = ","),
-  " cases<br>",
-  prettyNum(jhu_us_map$Deaths, big.mark = ","),
-  " deaths"
+  jhu_us_map$STATENM,
+  "</strong>",
+  ifelse(
+    !is.na(jhu_us_map$Confirmed),
+    paste0(
+      "<br>",
+      prettyNum(jhu_us_map$Confirmed, big.mark = ","),
+      " cases<br>",
+      prettyNum(jhu_us_map$Deaths, big.mark = ","),
+      " deaths"
+    ),
+    ""
+  )
 ) %>%
   lapply(htmltools::HTML)
 
