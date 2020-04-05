@@ -143,7 +143,7 @@ pa.update <-
 
 ```{r data:ph, include=FALSE}
 ph_url <-
-  "https://public.tableau.com/vizql/w/COP-COVID-19/v/Covid-19Split/vud/sessions/7AA517F2129F45509EEAE6BC2AB566C7-0:0/views/5944421909506510405_11910882336162863204?csv=true&showall=true"
+  "https://public.tableau.com/vizql/w/COP-COVID-19/v/Covid-19Split/vud/sessions/A0D904591CE64AE6951EF1F490EA70FB-0:0/views/5944421909506510405_11910882336162863204?csv=true&showall=true"
 tryCatch({
   cop <- read.csv(ph_url, stringsAsFactors = F)
 },
