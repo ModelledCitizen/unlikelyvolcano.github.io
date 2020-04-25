@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Open+Sans&display=swap');
 .hidemobile {
 }
 .showmobile {
@@ -7,13 +8,13 @@ div.buttons {
   width = 100%;
   text-align: center;
 }
-banner {
+alert {
   display: block;
   font-size: 2vw;
   font-weight: bold;
   background-color: white;
   text-align: center;
-  clear:both;
+  clear: both;
 }
 header {
   font-family: monospace;
@@ -21,7 +22,7 @@ header {
   color: #00FF00;
   white-space: pre;
   text-align: center;
-  clear:both;
+  clear: both;
 }
 body {
   background-color: black;
@@ -31,8 +32,14 @@ body {
 footer {
   font-family: monospace;
   color: white;
-  clear:both;
+  clear: both;
   text-align: center;
+}
+banner {
+  display: block;
+  text-align: center;
+  clear: both;
+  font-family: 'Lora', serif;
 }
 div.volcano {
   white-space: pre;
@@ -44,38 +51,56 @@ a.alert {
   color: #FF0000;
 }
 a.main {
-  background-color: #006600;
-  color: black;
-  font-family: 'Open Sans', sans-serif;
+  color: orange;
   text-decoration: none;
 }
 a.main:hover {
-  background-color: Red;
+  background-color: #006600;
+  color: white;
+}
+a.banner {
+  display: inline-block;
+  border: none;
+  color: white;
+  padding: 1% 1% 1% 1%;
+  text-align: center;
+  font-family: 'Inconsolata', monospace;
+  font-size: 1vw;
+  text-decoration: none;
+  cursor: pointer;
+}
+a.banner:hover {
+  color: orange;
 }
 a.button {
   display: inline-block;
   background-color: #006600;
   border: none;
   border-radius: 7.5px;
-  color: black;
+  color: white;
   padding: 1% 1% 1% 1%;
   text-align: center;
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inconsolata', monospace;
   font-size: 1.5vw;
   line-height: 125%;
   text-decoration: none;
   cursor: pointer;
 }
 a.button:hover {
-  background-color: Red;
+    color: orange;
+    background-color: black;
 }
 h1 {
-  font-family: 'Space Mono', monospace;
+  font-family: 'Inconsolata', monospace;
   color: #00FF00;
 }
 h2 {
-  font-family: 'Space Mono', monospace;
-  color: #00FF00;
+    font-family: 'Inconsolata', monospace;
+    color: #00FF00;
+}
+h3 {
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
 }
 p.main {
   font-family: 'Open Sans', sans-serif;
@@ -95,6 +120,9 @@ img.headshot {
 img.stats {
   max-width: 100%;
   filter: invert(1);
+}
+ul.indent {
+  list-style-type: none;
 }
 #container {
   #overflow: hidden;
