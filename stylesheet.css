@@ -65,7 +65,7 @@ a.banner {
   padding: 1% 1% 1% 1%;
   text-align: center;
   font-family: 'Inconsolata', monospace;
-  font-size: 1vw;
+  font-size: 12pt;
   text-decoration: none;
   cursor: pointer;
 }
@@ -107,7 +107,9 @@ p.main {
   padding-right: 5%;
 }
 p.noheight {
-  line-height: 1;
+    font-family: 'Inconsolata', monospace;
+    line-height: 1;
+    font-size: 12pt;
 }
 img.headshot {
   display: block;
@@ -150,11 +152,11 @@ ul.indent {
   header {
     font-size: 2vw;
   }
-  banner {
-    font-size: 6vw;
+  alert {
+      font-size: 6vw;
   }
-  .button {
-    font-size: 4vw;
+  a.button {
+      font-size: 4vw;
   }
   .hidemobile {
     display: none;
